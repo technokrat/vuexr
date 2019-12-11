@@ -1,0 +1,19 @@
+{
+  "name": "vuexr",
+  "version": "0.1.0",
+  "description": "An easy to learn, yet versatile augmented reality framework and plugin for your reactive, industrial web application.",
+  "main": "src/vuexr.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Atokulus/vuexr.git"
+  },
+  "author": "Markus Wegmann <mw@technokrat.ch>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Atokulus/vuexr/issues"
+  },
+  "homepage": "https://github.com/Atokulus/vuexr#readme"
+}
