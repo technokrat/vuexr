@@ -1,9 +1,9 @@
-import XRCanvasDirective from './directives/XRCanvasDirective.js';
+import XRView from '../components/XRView.vue';
 
 const VueXR = {
-    install(Vue, options) {
-        Vue.directive(XRCanvasDirective.name, XRCanvasDirective);
-    }
+  install(Vue, options) {
+    Vue.component(XRView.name, XRView);
+  }
 };
 
 export default VueXR;
