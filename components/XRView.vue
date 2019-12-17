@@ -2,6 +2,7 @@
   <div ref="view"
        style="width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: #333;">
     <video style="width: 100%;" ref="xrvideo"></video>
+    <canvas style="width: 100%;" ref="xrcanvas"></canvas>
     <button v-if="!xrSession" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%)"
             v-on:click="enterXR">Start XR
     </button>
@@ -13,6 +14,7 @@
 
 <script>
   import {mat4, vec3} from 'gl-matrix'
+  import XRVideoCamera from "../src/XRVideoCamera";
 
   const XRView = {
     name: 'xr-view',
@@ -129,7 +131,8 @@
         height: this.$refs.view.clientHeight,
       };
 
-      console.log(this.$data.dimensions);
+      this.$data.camera = new XRVideoCamera(this.$refs.xrvideo, this.$refs.xrcanvas, {});
+      this.$data.camera.load();
     }
   };
   export default XRView;

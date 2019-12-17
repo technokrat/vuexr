@@ -5,7 +5,7 @@
   "main": "src/vuexr.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:demo": "parcel demo/index.html"
+    "dev:demo": "webpack-dev-server --open --config demo.webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -18,15 +18,23 @@
   },
   "homepage": "https://github.com/Atokulus/vuexr#readme",
   "dependencies": {
-    "element-ui": "^2.13.0",
     "gl-matrix": "^3.1.0",
     "mathjs": "^6.2.5",
-    "vue": "^2.6.10",
+    "vue": "^2.6.11",
     "vue-hot-reload-api": "^2.3.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.7.5",
+    "@babel/preset-env": "^7.7.6",
     "@vue/component-compiler-utils": "^3.1.0",
-    "parcel-bundler": "^1.12.4",
-    "vue-template-compiler": "^2.6.10"
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.3.2",
+    "html-webpack-plugin": "^3.2.0",
+    "vue-loader": "^15.8.3",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.41.3",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
   }
 }
