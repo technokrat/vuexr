@@ -1,6 +1,6 @@
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
-//const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -16,7 +16,7 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, './demo/dist'),
     compress: true,
-    port: 9000
+    port: 9000,
   },
   module: {
     rules: [
@@ -44,11 +44,22 @@ module.exports = {
           'vue-style-loader',
           'css-loader'
         ]
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
       }
     ]
   },
   plugins: [
     //new CleanWebpackPlugin(),
     new VueLoaderPlugin(),
+    new CopyPlugin([
+      { from: './src/opencv_js.wasm', to: './opencv_js.wasm' },
+    ]),
   ]
 };

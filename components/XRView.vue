@@ -15,7 +15,6 @@
 <script>
   import {mat4, vec3} from 'gl-matrix'
   import XRVideoCamera from "../src/XRVideoCamera";
-  import cv from '../src/opencv.js';
 
   const XRView = {
     name: 'xr-view',
@@ -132,12 +131,8 @@
         height: this.$refs.view.clientHeight,
       };
 
-      //this.$data.camera = new XRVideoCamera(this.$refs.xrvideo, this.$refs.xrcanvas, {});
-      //this.$data.camera.load();
-
-      cv['onRuntimeInitialized'] = () => {
-        console.log(cv.detectMarkers);
-      };
+      this.$data.camera = new XRVideoCamera(this.$refs.xrvideo, this.$refs.xrcanvas, {});
+      this.$data.camera.load();
     }
   };
   export default XRView;

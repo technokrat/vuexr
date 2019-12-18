@@ -1,4 +1,4 @@
-import cv from './opencv.js';
+import CVMarkerTracker from './CVMarkerTracker.js'
 
 const DEFAULTS = {
   constraints: {
@@ -13,8 +13,9 @@ export default class XRVideoCamera {
     this.videoElement = videoElement;
     this.canvas = canvas;
     this.options = {...DEFAULTS, options};
-
     this.imageCapture = null;
+
+    this.tracker = new CVMarkerTracker();
   }
 
   load() {
@@ -27,11 +28,7 @@ export default class XRVideoCamera {
         this.videoElement.play();
       };
 
-      cv['onRuntimeInitialized'] = () => {
-        this.processOpenCV();
-      };
-
-
+      requestAnimationFrame(this.process);
     })
   }
 
@@ -46,17 +43,14 @@ export default class XRVideoCamera {
       x, y, img.width * ratio, img.height * ratio);
   }
 
-  processOpenCV() {
+  process() {
     this.imageCapture.grabFrame()
       .then(imageBitmap => {
         this.drawFrameToCanvas(this.canvas, imageBitmap);
 
-        let mat = cv.imread(this.canvas);
-        let grayImage = new cv.Mat();
-        cv.cvtColor(mat, grayImage, cv.COLOR_BGR2GRAY, 0);
+        this.tracker.process(this.canvas);
 
-        cv.imshow(this.canvas, grayImage);
-        this.processOpenCV();
+        requestAnimationFrame(this.process);
       });
   }
 }
