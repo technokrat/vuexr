@@ -1,4 +1,4 @@
 .idea/
 .cache/
-dist/
+demo/dist/
 node_modules/

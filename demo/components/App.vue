@@ -1,7 +1,10 @@
 <template>
-  <xr-view>
-    <div style="background-color: rgba(255,255,255,0.5); backdrop-filter: blur(3px); border-radius: 5px; width: 100px; height: 100px;">Hello VR</div>
-  </xr-view>
+<!--  <xr-view>-->
+<!--    <div style="background-color: rgba(255,255,255,0.5); backdrop-filter: blur(3px); border-radius: 5px; width: 100px; height: 100px;">Hello VR</div>-->
+<!--  </xr-view>-->
+  <cv-calibration>
+
+  </cv-calibration>
 </template>
 
 <script>

@@ -1,4 +1,4 @@
-import CVMarkerTracker from './CVMarkerTracker.js'
+import OpenCVSession from './OpenCVSession.js'
 
 const DEFAULTS = {
   constraints: {
@@ -15,7 +15,7 @@ export default class XRVideoCamera {
     this.options = {...DEFAULTS, options};
     this.imageCapture = null;
 
-    this.tracker = new CVMarkerTracker();
+    this.opencv = new OpenCVSession();
   }
 
   load() {
@@ -26,9 +26,11 @@ export default class XRVideoCamera {
       this.videoElement.srcObject = mediaStream;
       this.videoElement.onloadedmetadata = (e) => {
         this.videoElement.play();
+        this.canvas.width = this.videoElement.videoWidth;
+        this.canvas.height = this.videoElement.videoHeight;
       };
 
-      requestAnimationFrame(this.process);
+      window.requestAnimationFrame(() => {this.processCalibration();});
     })
   }
 
@@ -48,9 +50,20 @@ export default class XRVideoCamera {
       .then(imageBitmap => {
         this.drawFrameToCanvas(this.canvas, imageBitmap);
 
-        this.tracker.process(this.canvas);
+        this.opencv.grayOut(this.canvas);
 
-        requestAnimationFrame(this.process);
+        window.requestAnimationFrame(() => {this.process();});
+      });
+  }
+
+  processCalibration() {
+    this.imageCapture.grabFrame()
+      .then(imageBitmap => {
+        this.drawFrameToCanvas(this.canvas, imageBitmap);
+
+        this.opencv.calibrate(this.canvas);
+
+        window.requestAnimationFrame(() => {this.processCalibration();});
       });
   }
 }
