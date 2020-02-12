@@ -28,12 +28,9 @@ module.exports = {
       // AND `<script>` blocks in `.vue` files
       {
         test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /(node_modules|bower_components|vendor)/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env']
-          }
         }
       },
       // this will apply to both plain `.css` files
@@ -59,7 +56,7 @@ module.exports = {
     //new CleanWebpackPlugin(),
     new VueLoaderPlugin(),
     new CopyPlugin([
-      { from: './src/opencv_js.wasm', to: './opencv_js.wasm' },
+      { from: './vendor/opencv_js.wasm', to: './opencv_js.wasm' },
     ]),
   ]
 };
