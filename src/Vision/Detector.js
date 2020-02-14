@@ -21,17 +21,22 @@ export default class Detector {
     cv.detectMarkers(rbgFrame, this.dict, markerCorners, markerIds);
 
     if (markerIds.rows > 0) {
+      cv.estimatePoseSingleMarkers(markerCorners, ARUCO_SIZE, this.calibration.cameraMatrix, this.calibration.distCoeffs, rvecs, tvecs);
       if (highlight) {
         cv.drawDetectedMarkers(rbgFrame, markerCorners, markerIds);
-        cv.estimatePoseSingleMarkers(markerCorners, ARUCO_SIZE, this.calibration.cameraMatrix, this.calibration.distCoeffs, rvecs, tvecs);
+      }
 
-        for (let i = 0; i < markerIds.rows; ++i) {
-          let rvec = cv.matFromArray(3, 1, cv.CV_64F, [rvecs.doublePtr(0, i)[0], rvecs.doublePtr(0, i)[1], rvecs.doublePtr(0, i)[2]]);
-          let tvec = cv.matFromArray(3, 1, cv.CV_64F, [tvecs.doublePtr(0, i)[0], tvecs.doublePtr(0, i)[1], tvecs.doublePtr(0, i)[2]]);
+      for (let i = 0; i < markerIds.rows; ++i) {
+        let rvec = cv.matFromArray(3, 1, cv.CV_64F, [rvecs.doublePtr(0, i)[0], rvecs.doublePtr(0, i)[1], rvecs.doublePtr(0, i)[2]]);
+        let tvec = cv.matFromArray(3, 1, cv.CV_64F, [tvecs.doublePtr(0, i)[0], tvecs.doublePtr(0, i)[1], tvecs.doublePtr(0, i)[2]]);
+
+        this.session.poser.setDetectionTransform(markerIds.data32S[i], rvec, tvec)
+
+        if (highlight) {
           cv.drawAxis(rbgFrame, this.calibration.cameraMatrix, this.calibration.distCoeffs, rvec, tvec, ARUCO_SIZE);
-          rvec.delete();
-          tvec.delete();
         }
+        rvec.delete();
+        tvec.delete();
       }
     }
 

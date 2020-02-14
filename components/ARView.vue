@@ -80,6 +80,7 @@
     width: 100%;
     position: relative;
     background: gray;
+    overflow: hidden;
   }
 
   .calibration-assistant-buttons {
