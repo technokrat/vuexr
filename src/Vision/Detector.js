@@ -3,7 +3,8 @@ import cv from '../../vendor/opencv.js';
 const ARUCO_SIZE = 50; // mm
 
 export default class Detector {
-  constructor(calibration) {
+  constructor(session, calibration) {
+    this.session = session
     this.calibration = calibration;
     this.dict = new cv.aruco_Dictionary(cv.DICT_6X6_250);
   };

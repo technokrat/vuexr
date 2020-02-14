@@ -3,7 +3,7 @@ import {drawVideoFrameToCanvas} from "./helpers";
 const DEFAULTS = {
   constraints: {
     audio: false,
-    video: {facingMode: 'environment', width: 1280, height: 720}
+    video: {facingMode: 'environment', width: 640, height: 360}
   }
 };
 

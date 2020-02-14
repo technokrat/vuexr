@@ -3,19 +3,22 @@ import Calibration from './Calibration';
 import Detector from './Detector';
 import {readImage, showImage} from "./helpers";
 import CameraFeed from './CameraFeed';
+import Poser from "./Poser";
 
 export default class Session {
-  constructor(videoElement, canvas) {
+  constructor(videoElement, canvas, eventCallback) {
     this.canvas = canvas;
+    this.eventCallback = eventCallback
     this.feed = new CameraFeed(videoElement, canvas, this)
     this.initialized = false;
     this.state = 'CALIBRATION';
+    this.poser = new Poser(this);
 
     cv['onRuntimeInitialized'] = () => {
       this.initialized = true;
 
-      this.calibration = new Calibration();
-      this.detector = new Detector(this.calibration);
+      this.calibration = new Calibration(this);
+      this.detector = new Detector(this, this.calibration);
 
       if (this.calibration.cameraMatrix) {
         this.state = 'DETECTION'
@@ -34,8 +37,9 @@ export default class Session {
   }
 
   resetCalibration () {
-    this.calibration.removeCalibrationPoints()
-    this.calibration.removeCalibrationData()
+    this.calibration.resetCalibrationPoints()
+    this.calibration.resetCameraCalibration()
+
     this.state = "CALIBRATION"
   }
 
@@ -50,7 +54,6 @@ export default class Session {
         showImage(this.canvas, rgbFrame);
         rgbFrame.delete()
       }
-
 
       frame.delete();
     }

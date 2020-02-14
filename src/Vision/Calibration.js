@@ -5,15 +5,16 @@ const CHESSBOARD_WIDTH = 9;
 const CHESSBOARD_HEIGHT = 6;
 
 export default class Calibration {
-  constructor(name = "default_camera") {
+  constructor(session, name = "default_camera") {
+      this.session = session;
+      this.name = name;
       this.constructChessboardCoordinates();
       this.calibrationImagePoints = new cv.MatVector();
       this.calibrationObjectPoints = new cv.MatVector();
       this.cameraMatrix = null;
       this.distCoeffs = null;
-      this.name = name;
 
-      this.loadCalibrationData();
+      this.loadCameraCalibration();
     };
 
   destroy() {
@@ -21,46 +22,58 @@ export default class Calibration {
       this.calibrationObjectPoints.get(0).delete();
     }
 
-    this.removeCalibrationPoints();
-    this.removeCalibrationData();
+    for (let i = 0; i < this.calibrationImagePoints.rows; i++) {
+      this.calibrationImagePoints.get(i).delete();
+    }
+    this.calibrationImagePoints.delete();
+    this.calibrationObjectPoints.delete();
+
+
   }
 
-  removeCalibrationPoints () {
+  resetCalibrationPoints () {
     for (let i = 0; i < this.calibrationImagePoints.rows; i++) {
       this.calibrationImagePoints.get(i).delete();
     }
 
+    this.session.eventCallback({name: 'calibrationCaptureReset'})
+
     this.calibrationImagePoints.delete();
     this.calibrationObjectPoints.delete();
+
+    this.calibrationImagePoints = new cv.MatVector();
+    this.calibrationObjectPoints = new cv.MatVector();
   }
 
-  removeCalibrationData () {
+  resetCameraCalibration () {
     if (this.cameraMatrix) {
       this.cameraMatrix.delete();
       this.cameraMatrix = null;
       this.distCoeffs.delete();
       this.distCoeffs = null;
+      this.session.eventCallback({name: 'calibrationReset'})
       return true
     } else {
       return false
     }
   }
 
-  loadCalibrationData () {
+  loadCameraCalibration () {
     let calibration = window.localStorage.getItem(`${this.name}/calibration`);
 
     if (calibration) {
       calibration = JSON.parse(calibration);
-      this.removeCalibrationData();
+      this.resetCameraCalibration();
       this.cameraMatrix = cv.matFromArray(3, 3, cv.CV_64FC1, calibration.cameraMatrix);
       this.distCoeffs = cv.matFromArray(5, 1, cv.CV_64FC1, calibration.distCoeffs);
+      this.session.eventCallback({name: 'calibrationCalibrated'})
       return true
     } else {
       return false
     }
   }
 
-  storeCalibrationData () {
+  storeCameraCalibration () {
     if (this.cameraMatrix) {
       const calibration = {
         cameraMatrix: Array.from(this.cameraMatrix.data64F),
@@ -111,11 +124,15 @@ export default class Calibration {
           this.captureCalibrationPoints({
             imagePoints: corners,
             objectPoints: this.chessboardPoints
-          })
+          });
 
+          this.session.eventCallback({name: 'calibrationCaptured'});
           this.captureNextCalibrationPoints = false
+        } else {
+          this.session.eventCallback({name: 'calibrationCaptureReady'});
         }
       } else {
+        this.session.eventCallback({name: 'calibrationCaptureNotReady'});
         corners.delete();
       }
   }
@@ -161,7 +178,8 @@ export default class Calibration {
       stdDeviationsIntrinsics.delete();
       stdDeviationsExtrinsics.delete();
 
-      this.storeCalibrationData();
+      this.storeCameraCalibration();
+      this.session.eventCallback({name: 'calibrationCalibrated'})
 
       return {
         cameraMatrix,

@@ -1,10 +1,10 @@
-//import XRView from '../components/XRView.vue';
-import CameraCalibration from '../components/CameraCalibration.vue';
+import ARView from '../components/ARView.vue';
+import ARElement from "../components/ARElement.vue";
 
 const VueXR = {
   install(Vue, options) {
-    //Vue.component(XRView.name, XRView);
-    Vue.component(CameraCalibration.name, CameraCalibration);
+    Vue.component(ARView.name, ARView);
+    Vue.component(ARElement.name, ARElement);
   }
 };
 
