@@ -21,6 +21,8 @@ export default class Poser {
   }
 
   projectTarget(id, modelViewMatrix) {
+    modelViewMatrix = modelViewMatrix.map(element => element.toFixed(5))
+
     this.elements[id].element.style.transform = `matrix3d(${modelViewMatrix.join(',')})`;
   }
 

@@ -4,8 +4,9 @@
 <!--  </xr-view>-->
   <ar-view>
     <ar-element :id="23">
-<!--      <iframe src="http://blog.fefe.de" style="border: none;" width="500" height="300"></iframe>-->
-      Hello World!
+      <div style="border: none; transform: translateZ(-50px); padding: 10px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 10px;">Hello World!</div>
     </ar-element>
   </ar-view>
 </template>

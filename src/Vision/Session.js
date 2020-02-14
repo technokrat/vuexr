@@ -33,6 +33,7 @@ export default class Session {
 
   calibrate() {
     this.calibration.calibrate({width: this.canvas.width, height: this.canvas.height})
+    //this.calibration.calibrate({width: 1.0, height: this.canvas.height / this.canvas.width})
     this.state = "DETECTION"
   }
 

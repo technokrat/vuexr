@@ -28,53 +28,53 @@ export function drawVideoFrameToCanvas(canvas, img) {
 export function computeProjMat(session, cameraMatrix, rvec, tvec)
 {
   const empty = new cv.Mat();
+  const projMat = new cv.Mat();
+
+  const flipMat = cv.matFromArray(4, 4, cv.CV_64FC1, [
+    -1,0,0,0,
+    0,1,0,0,
+    0,0,-1,0,
+    0,0,0,1]
+  );
 
   const rotMat = new cv.Mat(3, 3, cv.CV_64FC1);
   //Convert rotation vector into rotation matrix
   cv.Rodrigues(rvec, rotMat);
 
-  // Construct RotTrans homogenous matrix
-  const rotTransMat = new cv.Mat(3, 4, cv.CV_64FC1); //Init.
-  const rotTransMatArray = new cv.MatVector();
-  //Append translation vector to rotation matrix
-  rotTransMatArray.push_back(rotMat);
-  rotTransMatArray.push_back(tvec);
-  cv.hconcat(rotTransMatArray, rotTransMat);
+  const homogeneousRotMat = cv.matFromArray(4,4,cv.CV_64FC1, [
+    rotMat.data64F[0], rotMat.data64F[1], rotMat.data64F[2], 0,
+    rotMat.data64F[3], rotMat.data64F[4], rotMat.data64F[5], 0,
+    rotMat.data64F[6], rotMat.data64F[7], rotMat.data64F[8], 0,
+    0,0,0,1
+  ]);
 
-  const homogenousRotTransMat = new cv.Mat(4, 4, cv.CV_64FC1); //Init.
-  const homogenousTransMatArray = new cv.MatVector();
-  homogenousTransMatArray.push_back(rotTransMat);
-  const homogenousVec = cv.matFromArray(1, 4, cv.CV_64FC1, [0,0,0,1]);
-  homogenousTransMatArray.push_back(homogenousVec);
 
-  cv.vconcat(homogenousTransMatArray, homogenousRotTransMat);
 
-  const invertZ = cv.matFromArray(4, 4, cv.CV_64FC1,
-    [1,0,0,0,
-      0,1,0,0,
-      0,0,-1,0,
-      0,0,0,1]
+  cv.gemm(homogeneousRotMat, flipMat, 1.0, empty, 1.0, projMat);
+
+  const transMat = cv.matFromArray(4, 4, cv.CV_64FC1, [
+    1,0,0,tvec.data64F[0],
+    0,1,0,tvec.data64F[1],
+    0,0,1,tvec.data64F[2],
+    0,0,0,1
+    ]
   );
 
-  //cv.gemm(invertZ, homogenousRotTransMat, 1.0, empty, 1.0, homogenousRotTransMat);
+  cv.gemm(transMat, projMat, 1.0, empty, 1.0, projMat);
 
   const realHeight = getComputedStyle(session.canvas).height.split('px')[0];
   let ratio = realHeight / session.canvas.height;
 
-  // Apply Perspective
   const focalLength = cameraMatrix.doubleAt(0,0);
 
   const perspMat = cv.matFromArray(4, 4, cv.CV_64FC1,
-    [focalLength,0,0,0,
-           0,focalLength,0,0,
-           0,0,focalLength,0,
-           0,0,1,0]
+    [1,0,0,0,
+           0,1,0,0,
+           0,0,1,0,
+           0,0,1/focalLength,0]
   );
 
-  const projMat = new cv.Mat();
-
-
-  cv.gemm(perspMat, homogenousRotTransMat, 1.0, empty, 1.0, projMat);
+  cv.gemm(perspMat, projMat, 1.0, empty, 1.0, projMat);
 
   const scaleMat = cv.matFromArray(4, 4, cv.CV_64FC1,
     [ratio,0,0,cameraMatrix.doubleAt(0,2) * ratio,

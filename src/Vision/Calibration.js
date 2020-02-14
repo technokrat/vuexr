@@ -170,6 +170,8 @@ export default class Calibration {
         perViewErrors
       );
 
+      console.log('mau')
+
       this.cameraMatrix = cameraMatrix;
       this.distCoeffs = distCoeffs;
 
