@@ -1,7 +1,7 @@
 <template>
   <div class="calibration-assistant">
-    <video style="width: 100%; display: none;" ref="video"></video>
-    <canvas style="width: 100%;" ref="canvas"></canvas>
+    <video style="width: 100%;" ref="video"></video>
+    <canvas style="position: absolute; top: 0; width: 100%; opacity: 0;" ref="canvas"></canvas>
     <div class="elements" ref="elements">
       <slot></slot>
     </div>

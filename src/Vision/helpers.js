@@ -62,8 +62,8 @@ export function computeProjMat(session, cameraMatrix, rvec, tvec)
 
   cv.gemm(transMat, projMat, 1.0, empty, 1.0, projMat);
 
-  const realHeight = getComputedStyle(session.canvas).height.split('px')[0];
-  let ratio = realHeight / session.canvas.height;
+  const realWidth = getComputedStyle(session.canvas).width.split('px')[0];
+  let ratio = realWidth / session.canvas.width;
 
   const focalLength = cameraMatrix.doubleAt(0,0);
 
@@ -83,9 +83,14 @@ export function computeProjMat(session, cameraMatrix, rvec, tvec)
       0,0,0,1]
   );
 
-  cv.gemm(scaleMat, projMat, 1.0, empty, 1.0, projMat);
+  // const scaleMat = cv.matFromArray(4, 4, cv.CV_64FC1,
+  //   [ratio,0,0,session.canvas.width / 2 * ratio,
+  //     0,ratio,0,session.canvas.height / 2 * ratio,
+  //     0,0,ratio,0,
+  //     0,0,0,1]
+  // );
 
-  console.log(projMat)
+  cv.gemm(scaleMat, projMat, 1.0, empty, 1.0, projMat);
 
   return projMat.t();
 }
