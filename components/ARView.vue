@@ -15,6 +15,7 @@
       <span v-if="!calibrated" class="hint-text">{{captures}} Captures</span>
       <span v-else class="hint-text">Calibrated</span>
     </div>
+    <div ref="ball" style="width: 10px; height: 10px; background: red; position: absolute; top: 50%; left: 50%"></div>
   </div>
 </template>
 
@@ -56,6 +57,9 @@
           this.captureReady = true
         } else if (event.name === 'calibrationCaptureNotReady') {
           this.captureReady = false
+        } else if (event.name === 'motionUpdated') {
+          console.log(event.position.y);
+          this.$refs.ball.style.transform = `translate(${event.position.x * 100}px, ${-event.position.y * 100}px)`
         }
       });
 

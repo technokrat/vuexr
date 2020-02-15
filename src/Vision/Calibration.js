@@ -27,8 +27,6 @@ export default class Calibration {
     }
     this.calibrationImagePoints.delete();
     this.calibrationObjectPoints.delete();
-
-
   }
 
   resetCalibrationPoints () {
@@ -169,8 +167,6 @@ export default class Calibration {
         stdDeviationsExtrinsics,
         perViewErrors
       );
-
-      console.log('mau')
 
       this.cameraMatrix = cameraMatrix;
       this.distCoeffs = distCoeffs;

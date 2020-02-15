@@ -4,9 +4,12 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
-  entry: './demo/src/index.js',
+  entry: {
+    main: './demo/src/main.js',
+    worker: './src/Vision/worker.js'
+  },
   output: {
-    filename: 'index_bundle.js',
+    filename: '[name].js',
     path: path.resolve(__dirname, './demo/dist'),
   },
   node: {

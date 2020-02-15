@@ -25,14 +25,14 @@ export function drawVideoFrameToCanvas(canvas, img) {
     x, y, img.width * ratio, img.height * ratio);
 }
 
-export function computeProjMat(session, cameraMatrix, rvec, tvec)
+export function computeProjMat(ratio, cameraMatrix, rvec, tvec)
 {
   const empty = new cv.Mat();
   const projMat = new cv.Mat();
 
   const flipMat = cv.matFromArray(4, 4, cv.CV_64FC1, [
-    -1,0,0,0,
-    0,1,0,0,
+    1,0,0,0,
+    0,-1,0,0,
     0,0,-1,0,
     0,0,0,1]
   );
@@ -48,8 +48,6 @@ export function computeProjMat(session, cameraMatrix, rvec, tvec)
     0,0,0,1
   ]);
 
-
-
   cv.gemm(homogeneousRotMat, flipMat, 1.0, empty, 1.0, projMat);
 
   const transMat = cv.matFromArray(4, 4, cv.CV_64FC1, [
@@ -61,9 +59,6 @@ export function computeProjMat(session, cameraMatrix, rvec, tvec)
   );
 
   cv.gemm(transMat, projMat, 1.0, empty, 1.0, projMat);
-
-  const realWidth = getComputedStyle(session.canvas).width.split('px')[0];
-  let ratio = realWidth / session.canvas.width;
 
   const focalLength = cameraMatrix.doubleAt(0,0);
 
@@ -91,6 +86,16 @@ export function computeProjMat(session, cameraMatrix, rvec, tvec)
   // );
 
   cv.gemm(scaleMat, projMat, 1.0, empty, 1.0, projMat);
+
+
+  empty.delete();
+  flipMat.delete();
+  rotMat.delete();
+  homogeneousRotMat.delete();
+  transMat.delete();
+  perspMat.delete();
+  scaleMat.delete();
+
 
   return projMat.t();
 }

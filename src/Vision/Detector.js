@@ -1,48 +1,28 @@
-import cv from '../../vendor/opencv.js';
-
-const ARUCO_SIZE = 50; // mm
-
 export default class Detector {
   constructor(session, calibration) {
     this.session = session
     this.calibration = calibration;
-    this.dict = new cv.aruco_Dictionary(cv.DICT_6X6_250);
+    this.detectionOngoing = false;
   };
 
-  detect(frame, highlight = true) {
-    const rbgFrame = new cv.Mat();
-    cv.cvtColor(frame, rbgFrame, cv.COLOR_RGBA2RGB);
-
-    const markerIds = new cv.Mat();
-    const markerCorners = new cv.MatVector();
-    const rvecs = new cv.Mat();
-    const tvecs = new cv.Mat();
-
-    cv.detectMarkers(rbgFrame, this.dict, markerCorners, markerIds);
-
-    if (markerIds.rows > 0) {
-      cv.estimatePoseSingleMarkers(markerCorners, ARUCO_SIZE, this.calibration.cameraMatrix, this.calibration.distCoeffs, rvecs, tvecs);
-      if (highlight) {
-        cv.drawDetectedMarkers(rbgFrame, markerCorners, markerIds);
-      }
-
-      for (let i = 0; i < markerIds.rows; ++i) {
-        let rvec = cv.matFromArray(3, 1, cv.CV_64F, [rvecs.doublePtr(0, i)[0], rvecs.doublePtr(0, i)[1], rvecs.doublePtr(0, i)[2]]);
-        let tvec = cv.matFromArray(3, 1, cv.CV_64F, [tvecs.doublePtr(0, i)[0], tvecs.doublePtr(0, i)[1], tvecs.doublePtr(0, i)[2]]);
-
-        this.session.poser.setDetectionTransform(markerIds.data32S[i], rvec, tvec)
-
-        if (highlight) {
-          cv.drawAxis(rbgFrame, this.calibration.cameraMatrix, this.calibration.distCoeffs, rvec, tvec, ARUCO_SIZE);
-        }
-        rvec.delete();
-        tvec.delete();
-      }
+  detect(highlight = true) {
+    if (!this.detectionOngoing) {
+      this.detectionOngoing = true;
+      this.session.worker.postMessage({
+        operation: 'DETECT',
+        image: this.session.canvas.getContext('2d').getImageData(0, 0, this.session.canvas.width, this.session.canvas.height),
+        calibration: {
+          cameraMatrix: Array.from(this.session.calibration.cameraMatrix.data64F),
+          distCoeffs: Array.from(this.session.calibration.distCoeffs.data64F)
+        },
+        highlight: highlight
+      })
     }
+  }
 
-    markerIds.delete();
-    markerCorners.delete();
-    return rbgFrame
+  detectionFinished(data) {
+    this.detectionOngoing = false;
+    this.session.poser.setMarkers(data.result.markers);
   }
 
 }
