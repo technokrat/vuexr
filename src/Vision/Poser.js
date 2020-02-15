@@ -1,6 +1,5 @@
 import cv from '../../vendor/opencv.js';
 
-import {mat4, vec3} from 'gl-matrix'
 import {computeProjMat} from "./helpers";
 
 export default class Poser {

@@ -4,6 +4,7 @@ import Detector from './Detector';
 import {readImage, showImage} from "./helpers";
 import CameraFeed from './CameraFeed';
 import Poser from "./Poser";
+import MotionEstimator from "./MotionEstimator";
 
 export default class Session {
   constructor(videoElement, canvas, eventCallback) {
@@ -13,6 +14,7 @@ export default class Session {
     this.initialized = false;
     this.state = 'CALIBRATION';
     this.poser = new Poser(this);
+    this.motion = new MotionEstimator(this);
 
     cv['onRuntimeInitialized'] = () => {
       this.initialized = true;
