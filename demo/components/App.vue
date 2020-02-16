@@ -7,12 +7,8 @@
 <!--      <div style="border: none; transform: translateZ(-0px); padding: 10px;-->
 <!--    background: rgba(255,255,255,0.9);-->
 <!--    border-radius: 10px;">Hello World!</div>-->
-        <div style="position: absolute; transform: translateX(-100px) rotateY(-20deg); border: none; padding: 10px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 10px;">Hello Links</div>
-        <div style="position: absolute; transform: translateX(+100px) rotateY(20deg); border: none; padding: 10px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 10px;">Hello Rechts</div>
+        <div class="hello hello1">Hello World!</div>
+        <div class="hello hello2">Hello again!</div>
     </ar-element>
   </ar-view>
 </template>
@@ -33,5 +29,17 @@
 
   body {
     margin: 0;
+  }
+
+  .hello {
+    position: absolute; box-sizing: border-box; width: 50px; height: 50px; font-size: 10px; border: none; padding: 10px; background: rgba(255,255,255,0.9); border-radius: 10px;
+  }
+
+  .hello1 {
+    transform: translate(-125px, -25px) rotateY(-20deg);
+  }
+
+  .hello2 {
+    transform: translate(75px, -25px) rotateY(+20deg);
   }
 </style>

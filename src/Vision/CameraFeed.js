@@ -18,18 +18,23 @@ export default class CameraFeed {
   }
 
   async load() {
-    const mediaStream = await navigator.mediaDevices.getUserMedia(this.options.constraints)
-    const track = mediaStream.getVideoTracks()[0]; // https://developer.mozilla.org/en-US/docs/Web/API/ImageCapture
-    this.imageCapture = new ImageCapture(track);
+    try {
+      const mediaStream = await navigator.mediaDevices.getUserMedia(this.options.constraints)
+      const track = mediaStream.getVideoTracks()[0]; // https://developer.mozilla.org/en-US/docs/Web/API/ImageCapture
+      this.imageCapture = new ImageCapture(track);
 
-    this.videoElement.srcObject = mediaStream;
-    this.videoElement.onloadedmetadata = (e) => {
-      this.videoElement.play();
-      this.canvas.width = this.videoElement.videoWidth;
-      this.canvas.height = this.videoElement.videoHeight;
+      this.videoElement.srcObject = mediaStream;
+      this.videoElement.onloadedmetadata = (e) => {
+        this.videoElement.play();
+        this.canvas.width = this.videoElement.videoWidth;
+        this.canvas.height = this.videoElement.videoHeight;
 
-      this.loop()
-    };
+        this.loop()
+      };
+    }
+    catch (e) {
+      console.error('Could not load camera feed!')
+    }
   }
 
   loop() {

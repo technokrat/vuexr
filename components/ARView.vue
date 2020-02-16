@@ -6,16 +6,16 @@
       <slot></slot>
     </div>
     <div class="calibration-assistant-buttons">
+      <button v-if="!enteredSession" v-on:click="enterSession">Enter Session</button>
       <button v-if="!calibrated" :disabled="!captureReady" class="capture-image" v-on:click="captureCalibrationPoints">Capture Calibration Frame</button>
       <button v-if="!calibrated" :disabled="!captures" v-on:click="calibrate">
         <span v-if="!calibrated">Calibrate</span>
         <span v-else>Recalibrate</span>
       </button>
       <button :disabled="!captures && !calibrated" v-on:click="reset">Reset</button>
-      <span v-if="!calibrated" class="hint-text">{{captures}} Captures</span>
+      <span v-if="!calibrated" class="hint-text">{{captures}}&nbsp;Captures</span>
       <span v-else class="hint-text">Calibrated</span>
     </div>
-    <div ref="ball" style="width: 10px; height: 10px; background: red; position: absolute; top: 50%; left: 50%"></div>
   </div>
 </template>
 
@@ -27,6 +27,7 @@
     data() {
       return {
         session: null,
+        enteredSession: false,
         captures: 0,
         calibrated: false,
         captureReady: false,
@@ -42,6 +43,10 @@
       reset() {
         this.session.resetCalibration()
       },
+      async enterSession() {
+        await this.session.enter();
+        this.enteredSession = true;
+      }
     },
     mounted() {
       this.session = new Session(this.$refs.video, this.$refs.canvas, (event) => {
@@ -57,9 +62,6 @@
           this.captureReady = true
         } else if (event.name === 'calibrationCaptureNotReady') {
           this.captureReady = false
-        } else if (event.name === 'motionUpdated') {
-          console.log(event.position.y);
-          this.$refs.ball.style.transform = `translate(${event.position.x * 100}px, ${-event.position.y * 100}px)`
         }
       });
 
@@ -68,12 +70,10 @@
           //console.log(vnode)
           this.session.poser.registerElement(
             vnode.componentOptions.propsData.id,
-            vnode.elm,
-            vnode.componentOptions.propsData.transform
+            vnode.elm
           )
         }
       })
-
     }
   };
   export default ARView;
@@ -99,6 +99,7 @@
     border-radius: 2px;
     border: none;
     padding: 5px 10px;
+    margin-bottom: 5px;
   }
 
   button:disabled {

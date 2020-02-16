@@ -25,7 +25,7 @@ export function drawVideoFrameToCanvas(canvas, img) {
     x, y, img.width * ratio, img.height * ratio);
 }
 
-export function computeProjMat(ratio, cameraMatrix, rvec, tvec)
+export function computeProjMat(ratio, cameraMatrix, rvec, tvec, viewMatrix)
 {
   const empty = new cv.Mat();
   const projMat = new cv.Mat();
@@ -59,6 +59,8 @@ export function computeProjMat(ratio, cameraMatrix, rvec, tvec)
   );
 
   cv.gemm(transMat, projMat, 1.0, empty, 1.0, projMat);
+
+  cv.gemm(viewMatrix, projMat, 1.0, empty, 1.0, projMat);
 
   const focalLength = cameraMatrix.doubleAt(0,0);
 
