@@ -1,18 +1,18 @@
 import {mat4, vec4, quat} from 'gl-matrix'
 
-const FREQUENCY = 60;
+const FREQUENCY = 240;
 const VELOCITY_DECAY = 0.99;
 const DRIFT_COMPENSATION = 1 / FREQUENCY * 0.1;
 
 export default class MotionEstimator {
   constructor(xr) {
     this.xr = xr;
-    this.accelerometer = new Accelerometer({frequency: FREQUENCY});
+    this.accelerometer = new LinearAccelerationSensor({frequency: FREQUENCY});
 
     this.timestamp = null;
     this.accelerometerDrift = {
       x: 0,
-      y: 9.95,
+      y: 0,
       z: 0
     };
     this.velocity = {
