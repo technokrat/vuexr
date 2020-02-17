@@ -40,7 +40,7 @@ export default class WebXR {
     if (pose) {
       this.currentTransform = pose.transform;
       this.session.poser.readjustElements();
-      //this.ctx.bindFramebuffer(this.ctx.FRAMEBUFFER, glLayer.framebuffer);
+      this.ctx.bindFramebuffer(this.ctx.FRAMEBUFFER, glLayer.framebuffer);
 
       // for (let view of pose.views) {
       //   const viewport = glLayer.getViewport(view);

@@ -1,5 +1,3 @@
-import cv from '../../vendor/opencv.js';
-
 const CHESSBOARD_PITCH = 25; // mm
 const CHESSBOARD_WIDTH = 9;
 const CHESSBOARD_HEIGHT = 6;
@@ -7,10 +5,11 @@ const CHESSBOARD_HEIGHT = 6;
 export default class Calibration {
   constructor(session, name = "default_camera") {
       this.session = session;
+      this.cv = session.cv;
       this.name = name;
       this.constructChessboardCoordinates();
-      this.calibrationImagePoints = new cv.MatVector();
-      this.calibrationObjectPoints = new cv.MatVector();
+      this.calibrationImagePoints = new this.cv.MatVector();
+      this.calibrationObjectPoints = new this.cv.MatVector();
       this.cameraMatrix = null;
       this.distCoeffs = null;
 
@@ -39,8 +38,8 @@ export default class Calibration {
     this.calibrationImagePoints.delete();
     this.calibrationObjectPoints.delete();
 
-    this.calibrationImagePoints = new cv.MatVector();
-    this.calibrationObjectPoints = new cv.MatVector();
+    this.calibrationImagePoints = new this.cv.MatVector();
+    this.calibrationObjectPoints = new this.cv.MatVector();
   }
 
   resetCameraCalibration () {
@@ -62,8 +61,8 @@ export default class Calibration {
     if (calibration) {
       calibration = JSON.parse(calibration);
       this.resetCameraCalibration();
-      this.cameraMatrix = cv.matFromArray(3, 3, cv.CV_64FC1, calibration.cameraMatrix);
-      this.distCoeffs = cv.matFromArray(5, 1, cv.CV_64FC1, calibration.distCoeffs);
+      this.cameraMatrix = this.cv.matFromArray(3, 3, this.cv.CV_64FC1, calibration.cameraMatrix);
+      this.distCoeffs = this.cv.matFromArray(5, 1, this.cv.CV_64FC1, calibration.distCoeffs);
       this.session.eventCallback({name: 'calibrationCalibrated'})
       return true
     } else {
@@ -85,36 +84,33 @@ export default class Calibration {
   }
 
   constructChessboardCoordinates() {
-    const size = new cv.Size(CHESSBOARD_WIDTH, CHESSBOARD_HEIGHT);
+    const size = new this.cv.Size(CHESSBOARD_WIDTH, CHESSBOARD_HEIGHT);
     const points = [];
 
     for (let j = 0; j < CHESSBOARD_HEIGHT; j++) {
       for (let i = 0; i < CHESSBOARD_WIDTH; i++) {
-        //points.push(new cv.Point(2.5 * i, 2.5 * j, 0))
         points.push(CHESSBOARD_PITCH * i);
         points.push(CHESSBOARD_PITCH * j);
         points.push(0)
       }
     }
 
-    this.chessboardPoints = cv.matFromArray(CHESSBOARD_WIDTH * CHESSBOARD_HEIGHT, 1, cv.CV_32FC3, points)
+    this.chessboardPoints = this.cv.matFromArray(CHESSBOARD_WIDTH * CHESSBOARD_HEIGHT, 1, this.cv.CV_32FC3, points)
   }
 
   findChessBoardCorners(frame, highlight = true) {
-      const corners = new cv.Mat();
-      const size = new cv.Size(CHESSBOARD_WIDTH, CHESSBOARD_HEIGHT);
-      const success = cv.findChessboardCorners(frame, size, corners);
-
-      const highlightColor = new cv.Scalar(192, 0, 255, 192);
+      const corners = new this.cv.Mat();
+      const size = new this.cv.Size(CHESSBOARD_WIDTH, CHESSBOARD_HEIGHT);
+      const success = this.cv.findChessboardCorners(frame, size, corners, this.cv.CALIB_CB_ADAPTIVE_THRESH + this.cv.CALIB_CB_NORMALIZE_IMAGE);
 
       if (success) {
         if (highlight) {
           for (let i = 0; i < corners.size().height; i++) {
             const x = corners.floatAt(i, 0);
             const y = corners.floatAt(i, 1);
-            const point = new cv.Point(x, y);
+            const point = new this.cv.Point(x, y);
 
-            cv.circle(frame, point, 4, highlightColor, 4)
+            this.cv.circle(frame, point, 4, new this.cv.Scalar(192, 0, 255, 192), 4)
           }
         }
 
@@ -131,7 +127,7 @@ export default class Calibration {
         }
       } else {
         this.session.eventCallback({name: 'calibrationCaptureNotReady'});
-        corners.delete();
+        //corners.delete();
       }
   }
 
@@ -145,17 +141,17 @@ export default class Calibration {
   }
 
   calibrate(size) {
-      const cameraMatrix = new cv.Mat();
-      const distCoeffs = new cv.Mat();
+      const cameraMatrix = new this.cv.Mat();
+      const distCoeffs = new this.cv.Mat();
 
-      const rvecs = new cv.MatVector();
-      const tvecs = new cv.MatVector();
+      const rvecs = new this.cv.MatVector();
+      const tvecs = new this.cv.MatVector();
 
-      const stdDeviationsIntrinsics = new cv.Mat();
-      const stdDeviationsExtrinsics = new cv.Mat();
+      const stdDeviationsIntrinsics = new this.cv.Mat();
+      const stdDeviationsExtrinsics = new this.cv.Mat();
 
-      const perViewErrors = new cv.Mat();
-      cv.calibrateCameraExtended(
+      const perViewErrors = new this.cv.Mat();
+    this.cv.calibrateCameraExtended(
         this.calibrationObjectPoints,
         this.calibrationImagePoints,
         size,

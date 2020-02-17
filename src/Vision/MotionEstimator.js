@@ -1,6 +1,6 @@
 import {mat4, vec4, quat} from 'gl-matrix'
 
-const FREQUENCY = 240;
+const FREQUENCY = 60;
 const VELOCITY_DECAY = 0.99;
 const DRIFT_COMPENSATION = 1 / FREQUENCY * 0.1;
 

@@ -53,7 +53,7 @@ export default class Poser {
         const transposed = cameraMatrix.t();
 
         const projMatrix = computeProjMat(ratio, this.session.calibration.cameraMatrix, oldRVec, oldTVec, transposed);
-        this.projectTarget(element.id, Array.from(projMatrix.data64F));
+        //this.projectTarget(element.id, Array.from(projMatrix.data64F));
 
         oldRVec.delete();
         oldTVec.delete();

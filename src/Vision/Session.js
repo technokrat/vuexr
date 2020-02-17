@@ -9,6 +9,7 @@ import WebXR from "./WebXR";
 
 export default class Session {
   constructor(videoElement, canvas, eventCallback) {
+    this.cv = null;
     this.initialized = false;
     this.canvas = canvas;
     this.eventCallback = eventCallback;
@@ -27,7 +28,8 @@ export default class Session {
 
     cv['onRuntimeInitialized'] = () => {
       this.initialized = true;
-
+      this.cv = cv;
+      console.log(cv)
       this.calibration = new Calibration(this);
       this.detector = new Detector(this, this.calibration);
 
@@ -63,8 +65,8 @@ export default class Session {
       if (this.state === 'CALIBRATION') {
         const frame = readImage(this.canvas);
         this.calibration.findChessBoardCorners(frame);
+        showImage(this.canvas, frame);
         frame.delete();
-        //showImage(this.canvas, frame);
       } else if (this.state === 'DETECTION') {
         //const rgbFrame = this.detector.detect(frame)
         //showImage(this.canvas, rgbFrame);

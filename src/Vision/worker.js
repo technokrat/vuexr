@@ -29,6 +29,7 @@ class CVProcessor {
       cv.detectMarkers(rbgFrame, this.dict, markerCorners, markerIds);
 
       if (markerIds.rows > 0) {
+
         const cameraMatrix = cv.matFromArray(3, 3, cv.CV_64FC1, data.calibration.cameraMatrix);
         const distCoeffs = cv.matFromArray(5, 1, cv.CV_64FC1, data.calibration.distCoeffs);
 
@@ -36,7 +37,6 @@ class CVProcessor {
         if (highlight) {
           cv.drawDetectedMarkers(rbgFrame, markerCorners, markerIds);
         }
-
 
         for (let i = 0; i < markerIds.rows; ++i) {
           let rvec = cv.matFromArray(3, 1, cv.CV_64F, [rvecs.doublePtr(0, i)[0], rvecs.doublePtr(0, i)[1], rvecs.doublePtr(0, i)[2]]);
@@ -60,7 +60,7 @@ class CVProcessor {
         cameraMatrix.delete()
       }
 
-      markerIds.delete();
+      //markerIds.delete();
       markerCorners.delete();
       rbgFrame.delete();
       frame.delete();
