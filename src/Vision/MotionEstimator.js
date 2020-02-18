@@ -19,7 +19,7 @@ export default class MotionEstimator {
       order: 3,
       characteristic: 'butterworth',
       Fs: FREQUENCY,
-      Fc: 10,
+      Fc: 5,
       gain: 0,
       preGain: false
     });
@@ -48,7 +48,7 @@ export default class MotionEstimator {
 
     this.accelerometer.addEventListener('reading', e => {
       const acceleration = vec4.fromValues(this.accelerometer.x, -this.accelerometer.z, this.accelerometer.y, 1);
-      this.orientation = Array.from(this.orientationSensor.quaternion)
+      this.orientation = Array.from(this.orientationSensor.quaternion);
 
       const rotationQuat = quat.fromValues(
         this.orientationSensor.quaternion[0],
@@ -95,10 +95,12 @@ export default class MotionEstimator {
 
       this.session.poser.readjustElements();
     });
+  };
 
+  run () {
     this.orientationSensor.start();
     this.accelerometer.start();
-  };
+  }
 
   getOffsetMatrix(referenceTransform) {
     const referenceRotationQuat = quat.fromValues(

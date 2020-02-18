@@ -5,8 +5,8 @@
     <div class="elements" ref="elements">
       <slot></slot>
     </div>
-    <div class="calibration-assistant-buttons">
-      <button v-if="!calibrated" :disabled="!captureReady" class="capture-image" v-on:click="captureCalibrationPoints">Capture Calibration Frame</button>
+    <div v-if="visionReady" class="calibration-assistant-buttons">
+      <button v-if="!calibrated" :disabled="!captureReady" class="capture-image" v-on:click="captureCalibrationPoints">Capture Frame</button>
       <button v-if="!calibrated" :disabled="!captures" v-on:click="calibrate">
         <span v-if="!calibrated">Calibrate</span>
         <span v-else>Recalibrate</span>
@@ -15,8 +15,9 @@
       <span v-if="!calibrated" class="hint-text">{{captures}}&nbsp;Captures</span>
       <span v-else class="hint-text">Calibrated</span>
     </div>
-    <div class="ball" ref="ball"></div>
-    <div class="ball2" ref="ball2"></div>
+    <div v-else class="loadingCV">
+      Loading CV&hellip;
+    </div>
   </div>
 </template>
 
@@ -31,6 +32,7 @@
         captures: 0,
         calibrated: false,
         captureReady: false,
+        visionReady: false,
       };
     },
     methods: {
@@ -43,9 +45,23 @@
       reset() {
         this.session.resetCalibration()
       },
+      updateElements() {
+        this.$slots.default.forEach(vnode => {
+          if (vnode.componentOptions && vnode.componentOptions.tag === 'ar-element') {
+            //console.log(vnode)
+            this.session.poser.registerElement(
+              vnode.componentOptions.propsData.id,
+              vnode.elm
+            )
+          }
+        })
+      }
     },
-    mounted() {
-      this.session = new Session(this.$refs.video, this.$refs.canvas, (event) => {
+    beforeMount() {
+      this.session = new Session();
+    },
+    mounted () {
+      this.session.run(this.$refs.video, this.$refs.canvas, (event) => {
         if (event.name === 'calibrationReset') {
           this.calibrated = false
         } else if (event.name === 'calibrationCaptureReset') {
@@ -58,27 +74,10 @@
           this.captureReady = true
         } else if (event.name === 'calibrationCaptureNotReady') {
           this.captureReady = false
-        // } else if (event.name === 'acceleration') {
-        //   this.$refs.ball.style.transform = `translate(${event.acceleration[0] * 10}px, ${event.acceleration[1] * 10}px)`;
-        //   this.$refs.ball2.style.transform = `translate(0, ${event.acceleration[2] * 10}px)`;
-        } else if (event.name === 'velocity') {
-          this.$refs.ball.style.transform = `translate(${event.velocity.x * 30}px, ${event.velocity.y * 30}px)`;
-          this.$refs.ball2.style.transform = `translate(0, ${event.velocity.z * 30}px)`;
-        // } else if (event.name === 'position') {
-        //   this.$refs.ball.style.transform = `translate(${-event.position.x * 10}px, ${-event.position.y * 10}px)`;
-        //   this.$refs.ball2.style.transform = `translate(0, ${-event.position.z * 10}px)`;
+        } else if (event.name === 'visionInitialized') {
+          this.visionReady = true
         }
       });
-
-      this.$slots.default.forEach(vnode => {
-        if (vnode.componentOptions.tag === 'ar-element') {
-          //console.log(vnode)
-          this.session.poser.registerElement(
-            vnode.componentOptions.propsData.id,
-            vnode.elm
-          )
-        }
-      })
     }
   };
   export default ARView;
@@ -146,4 +145,16 @@
     color: white; font-family: sans-serif; margin-left: 10px;
     text-shadow: 0 1px 1px rgba(0,0,0,0.5);
   }
+
+  .loadingCV {
+    position: absolute;
+    top: calc(50% - 0.4rem);
+    text-align: center;
+    width: 100%;
+    line-height: 0.8rem;
+    font-size: 0.8rem;
+    color: white; font-family: sans-serif; margin-left: 10px;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+  }
+
 </style>

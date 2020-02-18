@@ -5,6 +5,7 @@ const VueXR = {
   install(Vue, options) {
     Vue.component(ARView.name, ARView);
     Vue.component(ARElement.name, ARElement);
+    Vue.prototype.$vuexr = this;
   }
 };
 

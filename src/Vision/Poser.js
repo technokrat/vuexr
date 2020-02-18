@@ -1,7 +1,5 @@
 import cv from '../../vendor/opencv.js';
-
 import {computeProjMat} from "./helpers";
-import {Matrix} from "mathjs";
 
 export default class Poser {
   constructor(session) {
@@ -9,8 +7,12 @@ export default class Poser {
     this.elements = {}
   };
 
-  registerElement(id, element) {
-    this.elements[id] = {id, element, lastTransform: null, lastRVec: null, lastTVec: null}
+  registerElement(id, element, callback) {
+    this.elements[id] = {id, element, lastTransform: null, lastRVec: null, lastTVec: null, callback, tracked: false}
+  }
+
+  unregisterElement(id, element) {
+    delete this.elements[id]
   }
 
   setMarkers(markers) {
@@ -22,19 +24,20 @@ export default class Poser {
         this.elements[marker.id].lastTransform = this.session.motion.getCurrentTransform();
         this.elements[marker.id].lastRVec = marker.rvec;
         this.elements[marker.id].lastTVec = marker.tvec;
+        if (!this.elements[marker.id].tracked) {
+          this.elements[marker.id].tracked = true;
+          this.elements[marker.id].callback(true)
+        }
+      }
+    }
 
-        // const rvec = cv.matFromArray(3,1,cv.CV_64FC1, marker.rvec);
-        // const tvec = cv.matFromArray(3,1,cv.CV_64FC1, marker.tvec);
-        //
-        // const cameraMatrix = cv.Mat.eye(4,4,cv.CV_64FC1);
-        //
-        // const projMatrix = computeProjMat(ratio, this.session.calibration.cameraMatrix, rvec, tvec, cameraMatrix);
-        // this.projectTarget(marker.id, Array.from(projMatrix.data64F));
-        //
-        // rvec.delete();
-        // tvec.delete();
-        // cameraMatrix.delete();
-        // projMatrix.delete();
+    const markerIds = markers.map(marker => marker.id.toString());
+    const remainingElementIds = Object.keys(this.elements).filter(key => !(markerIds.includes(key)));
+
+    for (const id of remainingElementIds) {
+      if (this.elements[id].tracked) {
+        this.elements[id].tracked = false;
+        this.elements[id].callback(false)
       }
     }
   }
@@ -53,7 +56,7 @@ export default class Poser {
         const transposed = cameraMatrix.t();
 
         const projMatrix = computeProjMat(ratio, this.session.calibration.cameraMatrix, rvec, tvec, transposed);
-        this.projectTarget(element.id, Array.from(projMatrix.data64F));
+        this.projectElement(element.id, Array.from(projMatrix.data64F));
 
         rvec.delete();
         tvec.delete();
@@ -64,8 +67,8 @@ export default class Poser {
     }
   }
 
-  projectTarget(id, modelViewMatrix) {
-    modelViewMatrix = modelViewMatrix.map(element => element.toFixed(5))
+  projectElement(id, modelViewMatrix) {
+    modelViewMatrix = modelViewMatrix.map(el => el.toFixed(5))
     this.elements[id].element.style.transform = `matrix3d(${modelViewMatrix.join(',')})`;
   }
 }

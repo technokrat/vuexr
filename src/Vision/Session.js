@@ -7,12 +7,9 @@ import Poser from "./Poser";
 import MotionEstimator from "./MotionEstimator";
 
 export default class Session {
-  constructor(videoElement, canvas, eventCallback) {
+  constructor() {
     this.cv = null;
     this.initialized = false;
-    this.canvas = canvas;
-    this.eventCallback = eventCallback;
-    this.feed = new CameraFeed(videoElement, canvas, this);
     this.state = 'CALIBRATION';
     this.poser = new Poser(this);
     this.motion = new MotionEstimator(this);
@@ -25,7 +22,6 @@ export default class Session {
     };
 
     cv['onRuntimeInitialized'] = () => {
-      this.initialized = true;
       this.cv = cv;
       this.calibration = new Calibration(this);
       this.detector = new Detector(this, this.calibration);
@@ -34,10 +30,17 @@ export default class Session {
         this.state = 'DETECTION'
       }
 
-      console.log("Initialized OpenCV");
+      this.initialized = true;
+      this.eventCallback({name: 'visionInitialized'})
     };
+  }
 
+  run (videoElement, canvas, eventCallback) {
+    this.canvas = canvas;
+    this.eventCallback = eventCallback;
+    this.feed = new CameraFeed(videoElement, canvas, this);
     this.feed.load();
+    this.motion.run();
   }
 
   calibrate() {
