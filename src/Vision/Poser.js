@@ -19,22 +19,22 @@ export default class Poser {
 
     for (const marker of markers) {
       if (this.elements[marker.id]) {
-        this.elements[marker.id].lastTransform = this.session.xr.getCurrentTransform();
+        this.elements[marker.id].lastTransform = this.session.motion.getCurrentTransform();
         this.elements[marker.id].lastRVec = marker.rvec;
         this.elements[marker.id].lastTVec = marker.tvec;
 
-        const rvec = cv.matFromArray(3,1,cv.CV_64FC1, marker.rvec);
-        const tvec = cv.matFromArray(3,1,cv.CV_64FC1, marker.tvec);
-
-        const cameraMatrix = cv.Mat.eye(4,4,cv.CV_64FC1);
-
-        const projMatrix = computeProjMat(ratio, this.session.calibration.cameraMatrix, rvec, tvec, cameraMatrix);
-        this.projectTarget(marker.id, Array.from(projMatrix.data64F));
-
-        rvec.delete();
-        tvec.delete();
-        cameraMatrix.delete();
-        projMatrix.delete();
+        // const rvec = cv.matFromArray(3,1,cv.CV_64FC1, marker.rvec);
+        // const tvec = cv.matFromArray(3,1,cv.CV_64FC1, marker.tvec);
+        //
+        // const cameraMatrix = cv.Mat.eye(4,4,cv.CV_64FC1);
+        //
+        // const projMatrix = computeProjMat(ratio, this.session.calibration.cameraMatrix, rvec, tvec, cameraMatrix);
+        // this.projectTarget(marker.id, Array.from(projMatrix.data64F));
+        //
+        // rvec.delete();
+        // tvec.delete();
+        // cameraMatrix.delete();
+        // projMatrix.delete();
       }
     }
   }
@@ -46,17 +46,17 @@ export default class Poser {
 
     for (const element of allElements) {
       if (element.lastTransform) {
-        const oldRVec = cv.matFromArray(3,1,cv.CV_64FC1, element.lastRVec);
-        const oldTVec = cv.matFromArray(3,1,cv.CV_64FC1, element.lastTVec);
-        const offset = this.session.xr.getOffsetMatrix(element.lastTransform);
+        const rvec = cv.matFromArray(3,1,cv.CV_64FC1, element.lastRVec);
+        const tvec = cv.matFromArray(3,1,cv.CV_64FC1, element.lastTVec);
+        const offset = this.session.motion.getOffsetMatrix(element.lastTransform);
         const cameraMatrix = cv.matFromArray(4,4,cv.CV_64FC1, Array.from(offset));
         const transposed = cameraMatrix.t();
 
-        const projMatrix = computeProjMat(ratio, this.session.calibration.cameraMatrix, oldRVec, oldTVec, transposed);
-        //this.projectTarget(element.id, Array.from(projMatrix.data64F));
+        const projMatrix = computeProjMat(ratio, this.session.calibration.cameraMatrix, rvec, tvec, transposed);
+        this.projectTarget(element.id, Array.from(projMatrix.data64F));
 
-        oldRVec.delete();
-        oldTVec.delete();
+        rvec.delete();
+        tvec.delete();
         cameraMatrix.delete();
         projMatrix.delete();
         transposed.delete();

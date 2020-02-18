@@ -36,10 +36,10 @@
   }
 
   .hello1 {
-    transform: translate3d(-65px, -25px, 50px) rotateY(-20deg);
+    transform: translate3d(-65px, -25px, -10px) rotateY(-20deg);
   }
 
   .hello2 {
-    transform: translate3d(15px, -25px, 50px) rotateY(+20deg);
+    transform: translate3d(15px, -25px, -10px) rotateY(+20deg);
   }
 </style>

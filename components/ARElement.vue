@@ -20,7 +20,7 @@
     top:0;
     left: 0;
     transform-style : preserve-3d;
-    transition: transform 0.1s;
+    transition: transform 0.05s;
     transform-origin: 0 0 0;
   }
 </style>

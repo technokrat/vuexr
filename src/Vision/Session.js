@@ -5,7 +5,6 @@ import {readImage, showImage} from "./helpers";
 import CameraFeed from './CameraFeed';
 import Poser from "./Poser";
 import MotionEstimator from "./MotionEstimator";
-import WebXR from "./WebXR";
 
 export default class Session {
   constructor(videoElement, canvas, eventCallback) {
@@ -17,7 +16,6 @@ export default class Session {
     this.state = 'CALIBRATION';
     this.poser = new Poser(this);
     this.motion = new MotionEstimator(this);
-    this.xr = new WebXR(this);
 
     this.worker = new Worker("worker.js");
     this.worker.onmessage = msg => {
@@ -29,7 +27,6 @@ export default class Session {
     cv['onRuntimeInitialized'] = () => {
       this.initialized = true;
       this.cv = cv;
-      console.log(cv)
       this.calibration = new Calibration(this);
       this.detector = new Detector(this, this.calibration);
 
@@ -41,10 +38,6 @@ export default class Session {
     };
 
     this.feed.load();
-  }
-
-  async enter() {
-    await this.xr.enterXR();
   }
 
   calibrate() {
