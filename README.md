@@ -17,11 +17,11 @@ It is just as easy as:
 </ar-view>
 ```
 
-With VueXR, you are able to build a proof-of-concept AR-Prototype in minutes, using your existing 2D web-application.
-There is no need for you to dive into complex and hard to understand computer graphics – **just use your web development
+With VueXR, you are able to build an AR-Prototype in minutes using your existing 2D web-application.
+There is no need for you to dive into complex and hard to understand computer graphic topics – **just use your web development
 skills!**
 
-To achieve such functionality, we use *OpenCV.js*, *CSS-Transforms*, *Sensor API* and *Web Workers API* on a picture
+To achieve such functionality, VueXR uses *OpenCV.js*, *CSS-Transforms*, *Sensor API* and *Web Workers API* on a picture
 stream from your device's camera. Have a look at our sources or contact me at [mw@technokrat.ch](mailto:mw@technokrat.ch)
 or at https://technokrat.ch
 
@@ -30,8 +30,8 @@ or at https://technokrat.ch
 #### Why AR?
 
 ##### Industry
-Imagine, you could wander through your industrial hall with your smartphone, and directly see real-time sensor readouts
-hovering in 3D over your machinery. With a simple touch press you then open up a detailed view.
+Imagine, you could wander through an industrial hall with your smartphone, and directly see real-time sensor readouts
+hovering in 3D over the machinery. With a simple touch press you then open up a detailed view.
 
 You do not have to scroll through infinite pages of SCADA units on your computer in search for the specific machinery –
 You are now directly linked via the physical entity itself.
@@ -47,23 +47,20 @@ User Interface with next-generation features. With VueXR you can combine many al
 Conventional AR requires a lot of expertise in building native smartphone applications for a multitude of platforms,
 requiring hard to get specialists.
 
-For small and large businesses this poses a very large financial and personnel undertaking, to just evaluate, whether it's
-customers profit from an AR-based solution.
+For small and large businesses this poses a very large financial and personnel undertaking, while having bad time to market performance.
 
-In contrast, VueXR allows you to prototype your solution in no time, by leveraging the ease, accessibility, and mutli-platform
-capability of web technologies, as well as your
+In contrast, VueXR allows you to prototype a solution in no time, by leveraging the ease, accessibility, and mutli-platform
+capabilities of modern web technologies, as well as your existing web codebase: You only have to write your code once!
 
 
 #### Why [Technokrat](https://technokrat.ch)?
 [Technokrat](https://technokrat.ch) is a full-stack engineering service by ETH-alumni in Zurich, Switzerland, and is the maintainer behind VueXR.
 
 Our strength lies in the combination of research, electronics design, firmware, IoT, computer engineering, manufacturing,
-and **Software Development**.
+and **software development**.
 
-We can offer you a one-stop experience in upgrading (legacy) setups to AR or start from the beginning, and consult you
-in selecting the best competitive solution. We also integrate Web-APIs into your existing setup (such as REST, GraphQL,
-SOAP, Swagger, etc.). Just give us a call and we support you with a **Workshop or MVP in just under six weeks**, independent of small or
-enterprise scale businesses.
+We can offer you a one-stop experience in upgrading (legacy) setups to AR, or start from the beginning, and consult you and your team 
+in bootstraping and selecting the best competitive solution. We also integrate Web-APIs directly into your existing software (such as REST, GraphQL, SOAP, Swagger, etc.). Just give us a call and we support you with a **workshop or MVP in just under six weeks**.
 
 
 ### Getting Started
@@ -144,6 +141,9 @@ points. Press the red *Capture Frame* button, and repeat this around eight times
 *Calibrate* button when you are finished. You are now ready to detect the ArUco markers.
 
 ## Usage
+
+### Performance
+You have to use a state of the smartphone plattform, such as a Xiaomi 20K / 9T Pro with MIUI 11, as computer vision takes it's fair share of processing power.
 
 ### General
 In general, you only require two new components to use VueXR
