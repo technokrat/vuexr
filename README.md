@@ -16,7 +16,7 @@ There is no need for you to dive into complex and hard to understand computer gr
 skills!**
 
 To achieve such functionality, we use *OpenCV.js*, *CSS-Transforms*, *Sensor API* and *Web Workers API* on a picture
-stream from your devices camera. Have a look at our sources or contact me at [mw@technokrat.ch](mailto:mw@technokrat.ch)
+stream from your device's camera. Have a look at our sources or contact me at [mw@technokrat.ch](mailto:mw@technokrat.ch)
 or at https://technokrat.ch
 
 ### Getting Started
