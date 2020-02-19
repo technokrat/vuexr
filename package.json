@@ -4,8 +4,9 @@
   "description": "An easy to learn, yet versatile augmented reality framework and plugin for your reactive, industrial web application.",
   "main": "src/vuexr.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:demo": "webpack-dev-server --open --config demo.webpack.config.js"
+    "build": "webpack --config webpack.config.js",
+    "dev:demo": "webpack-dev-server --open --config demo.webpack.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",

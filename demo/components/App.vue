@@ -3,7 +3,7 @@
     <ar-view>
       <ar-element :id="23">
         <div class="hello hello1">Hello World!</div>
-        <div class="hello hello2">Hello again!</div>
+        <div class="hello hello2">Hallo Welt!</div>
       </ar-element>
       <ar-element :id="50" v-slot:="{tracked}">
         <div class="outer" :class="{tracked: tracked}">
@@ -80,6 +80,4 @@
     width: 50px;
     height: 50px;
   }
-
-
 </style>
