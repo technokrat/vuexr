@@ -25,9 +25,13 @@
         type: Number,
         default: 1000
       },
+      markerSize: {
+        type: Number,
+        default: 50
+      }
     },
     mounted () {
-      this.$parent.$data.session.poser.registerElement(this.id, this.$refs.element, (tracked) => {
+      this.$parent.$data.session.poser.registerElement(this.id, this.$refs.element, markerSize, (tracked) => {
         this.tracked = tracked;
 
         if (tracked) {

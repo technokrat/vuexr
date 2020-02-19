@@ -7,8 +7,17 @@ export default class Poser {
     this.elements = {}
   };
 
-  registerElement(id, element, callback) {
-    this.elements[id] = {id, element, lastTransform: null, lastRVec: null, lastTVec: null, callback, tracked: false}
+  registerElement(id, element, markerSize, callback) {
+    this.elements[id] = {
+      id,
+      element,
+      markerSize,
+      callback,
+      lastTransform: null,
+      lastRVec: null,
+      lastTVec: null,
+      tracked: false
+    }
   }
 
   unregisterElement(id, element) {
