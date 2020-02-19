@@ -3,6 +3,8 @@
 <a href="https://npmcharts.com/compare/vuexr?minimal=true"><img src="https://img.shields.io/npm/dm/vuexr.svg" alt="Downloads"></a>
 <a href="https://www.npmjs.com/package/vuexr"><img src="https://img.shields.io/npm/l/vuexr.svg" alt="License"></a>
 
+![VueXR Illustration](./doc/vuexr_illustration.svg  | width=500)
+
 VueXR is a Vue plugin that let's you project regular DOM components onto **augmented reality** (AR) markers in real-time.
 
 It is just as easy as:
