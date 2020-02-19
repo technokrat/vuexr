@@ -40,10 +40,8 @@ Leaving you more ease-of-access, you benefit from less cognitive demand, so you 
 Maybe you can even identify a failing component in advance, saving your company a lot.
 
 ##### Home Entertainment
-You are a small company offering custom upper-class smarthome & home entertainment solutions. You want to offer you customers a custom
-User Interface with next-generation features. With VueXR you can combine many already-existing web-solutions into one surface.
-
-You want to control your Philips Hue Gateway and your AV-receiver in the same AR-view. No problem for VueXR!
+You are a small company offering custom upper-class smarthome & home entertainment solutions. You want to offer your customers a custom
+User Interface with next-generation features. With VueXR you can combine many already-existing web-solutions into one surface. No problem for VueXR!
 
 #### Why VueXR?
 Conventional AR requires a lot of expertise in building native smartphone applications for a multitude of platforms,
