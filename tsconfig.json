@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "strict": true,
+    "module": "ES6",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "outDir": "./dist",
+    "sourceMap": true,
+    "declaration": true
+  }
+}

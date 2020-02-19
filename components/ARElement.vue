@@ -9,8 +9,9 @@
 </template>
 
 <script>
-  const ARElement = {
-    name: 'ar-element',
+  import Vue from "vue";
+
+  const ARElement = Vue.extend({
     data () {
       return {
         show: false,
@@ -43,7 +44,7 @@
     destroyed () {
       this.$parent.$data.session.poser.unregisterElement(this.id)
     }
-  };
+  });
   export default ARElement;
 </script>
 

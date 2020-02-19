@@ -5,9 +5,13 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
   mode: 'production',
   entry: {
-    vuexr: './src/vuexr.js',
-    worker: './src/Vision/worker.js'
+    vuexr: './src/vuexr.ts',
+    worker: './src/worker.js'
   },
+  resolve:  {
+    extensions: ['.ts', '.js', '.json']
+  },
+  devtool: 'source-map',
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, './dist'),
@@ -17,6 +21,11 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
       {
         test: /\.vue$/,
         loader: 'vue-loader'
@@ -50,10 +59,6 @@ module.exports = {
     ]
   },
   plugins: [
-    //new CleanWebpackPlugin(),
     new VueLoaderPlugin(),
-    new CopyPlugin([
-      { from: './vendor/opencv_js.wasm', to: './opencv_js.wasm' },
-    ]),
-  ]
+  ],
 };

@@ -11,7 +11,7 @@ It is just as easy as:
 </ar-view>
 ```
 
-With VueXR, you are able to build a proof-of-concept AR-Prototype in minutes, using your existing 2D web-application.
+With Vuexr, you are able to build a proof-of-concept AR-Prototype in minutes, using your existing 2D web-application.
 There is no need for you to dive into complex and hard to understand computer graphics – **just use your web development
 skills!**
 
@@ -36,11 +36,11 @@ Then add `vuexr` to your index.ts (or index.ts)
 ```javascript
 import Vue from 'vue';
 
-// Import the VueXR plugin
-import VueXR from 'vuexr';
-// or const VueXR = require('vuexr');
+// Import the Vuexr plugin
+import {VueXR} from 'vuexr';
+// or const Vuexr = require('vuexr');
 
-// Install the VueXR plugin
+// Install the Vuexr plugin
 Vue.use(VueXR);
 
 // Initialize your application
@@ -86,19 +86,19 @@ folder (where your deployed *index.html* is located). See the [demo.webpack.conf
 inspiration.
 
 You are now ready to test the application with a smartphone. Remember that you have to connect via `HTTPS` or
-`localhost` for VueXR to work. Accept the camera permission request.
+`localhost` for Vuexr to work. Accept the camera permission request.
 
 #### Calibration
 For each new device we first need to calibrate the camera (i.e. automatically calculate the focal length), to project our
 DOM elements with the correct perspective. Just open [this chessboard pattern](./vendor/pattern.png) on a different
-screen, and try to fit all chessboard fields into the camera's view. VueXR will highlight the chessboard's intersection
+screen, and try to fit all chessboard fields into the camera's view. Vuexr will highlight the chessboard's intersection
 points. Press the red *Capture Frame* button, and repeat this around eight times for different perspectives. Press the
 *Calibrate* button when you are finished. You are now ready to detect the ArUco markers.
 
 ## Usage
 
 ### General
-In general, you only require two new components to use VueXR
+In general, you only require two new components to use Vuexr
 
 * `<ar-view>` is our wrapper around the AR-session. It does initialize all required components for computer vision, camera,
 and position tracking. It can contain arbitrarily many `<ar-element>`'s
@@ -110,7 +110,7 @@ and position tracking. It can contain arbitrarily many `<ar-element>`'s
     marker, for precise projection.
 
 ### Markers
-VueXR can detect **6x6** ArUco markers up to decimal ID `250`. The are quite robust, and encode orientation and identity
+Vuexr can detect **6x6** ArUco markers up to decimal ID `250`. The are quite robust, and encode orientation and identity
 in one. Use this [generator webpage](http://chev.me/arucogen/) to print out a marker and stick it onto your toaster!
 
 An `<ar-element>`'s origin is based in the middle of the marker. Use absolute positioning or CSS transforms to correctly
@@ -124,7 +124,7 @@ set the CSS attribute `transform-style` to `preserve-3d` for all nested elements
 By default, if a `<ar-element>` times out due to not being tracked anymore, it will fade out and it's content removed from the DOM.
 See (https://vuejs.org/v2/guide/transitions.html#Transitioning-Single-Elements-Components).
 
-If you want to handle things yourself, VueXR offers you a way to check if an `<ar-element>` is tracked from inside your
+If you want to handle things yourself, Vuexr offers you a way to check if an `<ar-element>` is tracked from inside your
 `<ar-element>`'s content using [Scoped Slots](https://vuejs.org/v2/guide/components-slots.html#Scoped-Slots)
 
 Just use the following pattern to access the `tracked` property for a given `<ar-element>`:
@@ -140,7 +140,7 @@ Just use the following pattern to access the `tracked` property for a given `<ar
 ```
 
 Of course you are free to assign `tracked` to a sub-components property, use it for conditional rendering, and other
-fun stuff (VueXR fully supports the reactive features of Vue).
+fun stuff (Vuexr fully supports the reactive features of Vue).
 
 To animate the content based on the `tracked` state, you are free to use CSS transitions and/or animations. E.g. you could
 write
@@ -171,23 +171,24 @@ yarn install
 yarn run dev:demo
 ```
 
-You can now access a demo application of VueXR under `http://localhost:9000`. To see some AR-content point your camera
+You can now access a demo application of Vuexr under `http://localhost:9000`. To see some AR-content point your camera
 onto AruCo markers with ID `23` and `50`.
 
 ## License
-VueXR is licensed under the [*MIT License*](./LICENSE).
+Vuexr is licensed under the [*MIT License*](./LICENSE).
 
-VueXR Copyright (c) 2020. Markus Wegmann, Technokrat LLC.
+Vuexr Copyright (c) 2020. Markus Wegmann, Technokrat LLC.
 
-Technokrat LLC and the developers of VueXR are not liable for any damages in relation to the use or installment of VueXR.
+Technokrat LLC and the developers of Vuexr are not liable for any damages in relation to the use or installment of Vuexr.
 
 ## Future Work
 * More customizable and user-friendly initialization UI
 * Compile OpenCV.js with WebAssembly SIMD support
 * Move calibration to web worker
-* Support for TypeScript and code cleanup
+* Rewrite JS to TypeScript and code cleanup
 * Documentation and Webpage (incl. Demo)
 * More responsive position tracking
 * DOM-Rendering in WebXR API
+* Marker Scheme ID Attributes (allowing for future proof support of other marker systems)
 
 If you are interested in supporting this project contact me at [mw@technokrat.ch](mailto:mw@technokrat.ch)

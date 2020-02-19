@@ -5,8 +5,11 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: {
-    main: './demo/src/main.js',
-    worker: './src/Vision/worker.js'
+    main: './demo/src/main.ts',
+    worker: './src/worker.js'
+  },
+  resolve:  {
+    extensions: ['.ts', '.js', '.json']
   },
   output: {
     filename: '[name].js',
@@ -23,6 +26,11 @@ module.exports = {
   },
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+      },
       {
         test: /\.vue$/,
         loader: 'vue-loader'

@@ -22,10 +22,10 @@
 </template>
 
 <script>
+  import Vue from "vue";
   import Session from "../src/Vision/Session";
 
-  const ARView = {
-    name: 'ar-view',
+  const ARView = Vue.extend({
     data() {
       return {
         session: null,
@@ -79,7 +79,7 @@
         }
       });
     }
-  };
+  });
   export default ARView;
 </script>
 

@@ -1,4 +1,4 @@
-import cv from '../../vendor/opencv.js';
+import cv from '../vendor/opencv.js';
 
 const ARUCO_SIZE = 50; // mm
 

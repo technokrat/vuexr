@@ -17,9 +17,10 @@
 </template>
 
 <script>
-  const App = {
-    name: 'app',
-  };
+  import Vue from "vue";
+
+  const App = Vue.extend({
+  });
 
   export default App;
 </script>

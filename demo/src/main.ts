@@ -1,9 +1,6 @@
-import "core-js/stable";
-import "regenerator-runtime/runtime";
-
 import Vue from 'vue';
 
-import VueXR from '../../src/vuexr';
+import {VueXR} from '../../src/vuexr';
 import App from '../components/App.vue';
 
 Vue.use(VueXR);
