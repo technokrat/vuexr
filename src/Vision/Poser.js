@@ -16,6 +16,7 @@ export default class Poser {
       lastTransform: null,
       lastRVec: null,
       lastTVec: null,
+      lastRMat: null,
       tracked: false
     }
   }
@@ -33,6 +34,7 @@ export default class Poser {
         this.elements[marker.id].lastTransform = this.session.motion.getCurrentTransform();
         this.elements[marker.id].lastRVec = marker.rvec;
         this.elements[marker.id].lastTVec = marker.tvec;
+        this.elements[marker.id].lastRMat = marker.rmat;
         if (!this.elements[marker.id].tracked) {
           this.elements[marker.id].tracked = true;
           this.elements[marker.id].callback(true)
@@ -58,20 +60,10 @@ export default class Poser {
 
     for (const element of allElements) {
       if (element.lastTransform) {
-        const rvec = cv.matFromArray(3,1,cv.CV_64FC1, element.lastRVec);
-        const tvec = cv.matFromArray(3,1,cv.CV_64FC1, element.lastTVec);
         const offset = this.session.motion.getOffsetMatrix(element.lastTransform);
-        const cameraMatrix = cv.matFromArray(4,4,cv.CV_64FC1, Array.from(offset));
-        const transposed = cameraMatrix.t();
 
-        const projMatrix = computeProjMat(ratio, this.session.calibration.cameraMatrix, rvec, tvec, transposed);
-        this.projectElement(element.id, Array.from(projMatrix.data64F));
-
-        rvec.delete();
-        tvec.delete();
-        cameraMatrix.delete();
-        projMatrix.delete();
-        transposed.delete();
+        const projMatrix = computeProjMat(ratio, this.session.calibration.cameraMatrix, element.lastRMat, element.lastTVec, offset);
+        this.projectElement(element.id, Array.from(projMatrix));
       }
     }
   }

@@ -7,6 +7,12 @@ const POSITION_DECAY = 0.995;
 const DRIFT_COMPENSATION = 1 / FREQUENCY * 0.000001;
 
 export default class MotionEstimator {
+  static supported () {
+    if (LinearAccelerationSensor && RelativeOrientationSensor) {
+      return true;
+    }
+  }
+
   constructor(session) {
     this.session = session;
     this.accelerometer = new LinearAccelerationSensor({frequency: FREQUENCY, referenceFrame: 'screen'});

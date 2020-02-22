@@ -1,4 +1,5 @@
 import cv from '../../vendor/opencv.js';
+import { mat4, vec4 } from 'gl-matrix'
 
 export function grayOut(frame) {
     const grayImage = new cv.Mat();
@@ -25,79 +26,55 @@ export function drawVideoFrameToCanvas(canvas, img) {
     x, y, img.width * ratio, img.height * ratio);
 }
 
-export function computeProjMat(ratio, cameraMatrix, rvec, tvec, viewMatrix)
+export function computeProjMat(ratio, cameraMatrix, rmat, tvec, viewMatrix)
 {
-  const empty = new cv.Mat();
-  const projMat = new cv.Mat();
 
-  const flipMat = cv.matFromArray(4, 4, cv.CV_64FC1, [
+  const projMat = mat4.create();
+
+  const flipMat = mat4.fromValues(
     1,0,0,0,
     0,-1,0,0,
     0,0,-1,0,
-    0,0,0,1]
-  );
-
-  const rotMat = new cv.Mat(3, 3, cv.CV_64FC1);
-  //Convert rotation vector into rotation matrix
-  cv.Rodrigues(rvec, rotMat);
-
-  const homogeneousRotMat = cv.matFromArray(4,4,cv.CV_64FC1, [
-    rotMat.data64F[0], rotMat.data64F[1], rotMat.data64F[2], 0,
-    rotMat.data64F[3], rotMat.data64F[4], rotMat.data64F[5], 0,
-    rotMat.data64F[6], rotMat.data64F[7], rotMat.data64F[8], 0,
     0,0,0,1
-  ]);
-
-  cv.gemm(homogeneousRotMat, flipMat, 1.0, empty, 1.0, projMat);
-
-  const transMat = cv.matFromArray(4, 4, cv.CV_64FC1, [
-    1,0,0,tvec.data64F[0],
-    0,1,0,tvec.data64F[1],
-    0,0,1,tvec.data64F[2],
-    0,0,0,1
-    ]
   );
 
-  cv.gemm(transMat, projMat, 1.0, empty, 1.0, projMat);
-
-  cv.gemm(viewMatrix, projMat, 1.0, empty, 1.0, projMat);
-
-  const focalLength = cameraMatrix.doubleAt(0,0);
-
-  const perspMat = cv.matFromArray(4, 4, cv.CV_64FC1,
-    [1,0,0,0,
-           0,1,0,0,
-           0,0,1,0,
-           0,0,1/focalLength,0]
+  const homogeneousRotMat = mat4.fromValues(
+    rmat[0], rmat[3], rmat[6], 0,
+    rmat[1], rmat[4], rmat[7], 0,
+    rmat[2], rmat[5], rmat[8], 0,
+    0, 0,0, 1
   );
 
-  cv.gemm(perspMat, projMat, 1.0, empty, 1.0, projMat);
+  mat4.mul(projMat, homogeneousRotMat, flipMat);
 
-  const scaleMat = cv.matFromArray(4, 4, cv.CV_64FC1,
-    [ratio,0,0,cameraMatrix.doubleAt(0,2) * ratio,
-      0,ratio,0,cameraMatrix.doubleAt(1,2) * ratio,
-      0,0,ratio,0,
-      0,0,0,1]
+  const transMat = mat4.fromValues(
+    1,0,0, 0,
+    0,1,0, 0,
+    0,0,1,0,
+    tvec[0], tvec[1], tvec[2], 1
   );
 
-  // const scaleMat = cv.matFromArray(4, 4, cv.CV_64FC1,
-  //   [ratio,0,0,session.canvas.width / 2 * ratio,
-  //     0,ratio,0,session.canvas.height / 2 * ratio,
-  //     0,0,ratio,0,
-  //     0,0,0,1]
-  // );
+  mat4.mul(projMat, transMat, projMat);
+  mat4.mul(projMat, viewMatrix, projMat);
 
-  cv.gemm(scaleMat, projMat, 1.0, empty, 1.0, projMat);
+  const focalLength = cameraMatrix[0];
 
+  const perspMat = mat4.fromValues(
+  1,0,0,0,
+   0,1,0,0,
+   0,0,1,1/focalLength,
+   0,0,0,0
+  );
 
-  empty.delete();
-  flipMat.delete();
-  rotMat.delete();
-  homogeneousRotMat.delete();
-  transMat.delete();
-  perspMat.delete();
-  scaleMat.delete();
+  mat4.mul(projMat, perspMat, projMat);
 
+  const scaleMat = mat4.fromValues(
+    ratio, 0, 0, 0,
+    0, ratio, 0, 0,
+    0, 0, ratio, 0,
+    cameraMatrix[6] * ratio, cameraMatrix[7] * ratio, 0, 1
+  );
 
-  return projMat.t();
+  mat4.mul(projMat, scaleMat, projMat);
+  return projMat;
 }

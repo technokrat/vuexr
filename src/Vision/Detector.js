@@ -12,8 +12,8 @@ export default class Detector {
         operation: 'DETECT',
         image: this.session.canvas.getContext('2d').getImageData(0, 0, this.session.canvas.width, this.session.canvas.height),
         calibration: {
-          cameraMatrix: Array.from(this.session.calibration.cameraMatrix.data64F),
-          distCoeffs: Array.from(this.session.calibration.distCoeffs.data64F)
+          cameraMatrix: this.session.calibration.cameraMatrix,
+          distCoeffs: this.session.calibration.distCoeffs
         },
         highlight: highlight
       })

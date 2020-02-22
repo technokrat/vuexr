@@ -1,6 +1,5 @@
 <template>
   <div class="calibration-assistant">
-    <video style="width: 100%; display: none" ref="video"></video>
     <canvas style="width: 100%; opacity: 1.0;" ref="canvas"></canvas>
     <div class="elements" ref="elements">
       <slot></slot>
@@ -35,6 +34,12 @@
         visionReady: false,
       };
     },
+    props: {
+      name: {
+        type: String,
+        default: 'default'
+      }
+    },
     methods: {
       captureCalibrationPoints() {
         this.session.calibration.setCaptureNextcalibrationPoints()
@@ -58,10 +63,10 @@
       }
     },
     beforeMount() {
-      this.session = new Session();
+      this.session = this.$vuexr.requestSession(this.name)
     },
     mounted () {
-      this.session.run(this.$refs.video, this.$refs.canvas, (event) => {
+      this.session.run(this.$refs.canvas, (event) => {
         if (event.name === 'calibrationReset') {
           this.calibrated = false
         } else if (event.name === 'calibrationCaptureReset') {
@@ -78,36 +83,23 @@
           this.visionReady = true
         }
       });
+    },
+    destroyed() {
+      this.session.pause();
     }
   });
   export default ARView;
 </script>
 
 <style>
-  .ball {
-    width: 5px;
-    height: 5px;
-    border-radius: 2.5px;
-    position: absolute;
-    top: calc(50% - 2.5px);
-    left: calc(50% - 2.5px);
-    background: red;
-  }
-
-  .ball2 {
-    width: 5px;
-    height: 5px;
-    border-radius: 2.5px;
-    position: absolute;
-    top: calc(50% - 2.5px);
-    left: calc(50% - 2.5px);
-    background: green;
-  }
-
   .calibration-assistant {
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: relative;
-    background: gray;
+    width: 100%;
+    height: 100%;
+    background: #333344;
     overflow: hidden;
   }
 
