@@ -3,42 +3,50 @@ const CHESSBOARD_WIDTH = 9;
 const CHESSBOARD_HEIGHT = 6;
 
 export default class Calibration {
-  constructor(session, name = "default") {
-      this.session = session;
-      this.name = name;
+  constructor(session) {
+    this.session = session;
 
-      this.findChessboardOngoing = false;
-      this.calibrationOngoing = false;
-      this.captureNextCalibrationPoints = false;
+    this.findChessboardOngoing = false;
+    this.calibrationOngoing = false;
+    this.captureNextCalibrationPoints = false;
 
-      this.cameraMatrix = null;
-      this.distCoeffs = null;
+    this.cameraMatrix = null;
+    this.distCoeffs = null;
 
-      this.loadCameraCalibration();
-    };
+    this.calibrationStatus =  {
+      captureReady: false,
+      calibrated: false,
+      captures: 0,
+    }
+  };
 
   resetCalibrationPoints () {
     this.session.worker.postMessage({
       operation: 'RESET_CALIBRATION_POINTS',
     });
 
-    this.session.eventCallback({name: 'calibrationCaptureReset'})
+    this.calibrationStatus.captures = 0
+    this.session.eventCallback({name: 'statusChanged'})
   }
 
   resetCameraCalibration () {
     this.cameraMatrix = null;
     this.distCoeffs = null;
+
+    this.calibrationStatus.calibrated = false
+    this.session.eventCallback({name: 'statusChanged'})
   }
 
   loadCameraCalibration () {
-    let calibration = window.localStorage.getItem(`${this.name}/calibration`);
+    let calibration = window.localStorage.getItem(`vuexr/${this.session.name}/calibration/${this.session.feed.feedStatus.selected}`);
 
     if (calibration) {
       calibration = JSON.parse(calibration);
       this.resetCameraCalibration();
       this.cameraMatrix = calibration.cameraMatrix;
       this.distCoeffs = calibration.distCoeffs;
-      this.session.eventCallback({name: 'calibrationCalibrated'});
+      this.calibrationStatus.calibrated = true;
+      this.session.eventCallback({name: 'statusChanged'});
       return true
     } else {
       return false
@@ -51,7 +59,7 @@ export default class Calibration {
         cameraMatrix: this.cameraMatrix,
         distCoeffs: this.distCoeffs
       };
-      window.localStorage.setItem(`${this.name}/calibration`, JSON.stringify(calibration));
+      window.localStorage.setItem(`vuexr/${this.session.name}/calibration/${this.session.feed.feedStatus.selected}`, JSON.stringify(calibration));
       return true
     } else {
       return false
@@ -72,15 +80,18 @@ export default class Calibration {
 
   findChessBoardCornersCaptured() {
     this.captureNextCalibrationPoints = false;
-    this.session.eventCallback({name: 'calibrationCaptured'})
+    this.calibrationStatus.captures++
+    this.session.eventCallback({name: 'statusChanged'})
   }
 
   findChessBoardCornersCaptureReady() {
-    this.session.eventCallback({name: 'calibrationCaptureReady'})
+    this.calibrationStatus.captureReady = true
+    this.session.eventCallback({name: 'statusChanged'})
   }
 
   findChessBoardCornersCaptureNotReady() {
-    this.session.eventCallback({name: 'calibrationCaptureNotReady'})
+    this.calibrationStatus.captureReady = false
+    this.session.eventCallback({name: 'statusChanged'})
   }
 
   setCaptureNextcalibrationPoints () {
@@ -105,6 +116,8 @@ export default class Calibration {
     this.distCoeffs = data.result.distCoeffs;
 
     this.storeCameraCalibration();
-    this.session.eventCallback({name: 'calibrationCalibrated'})
+
+    this.calibrationStatus.calibrated = true;
+    this.session.eventCallback({name: 'statusChanged'})
   }
 }

@@ -7,16 +7,8 @@ const POSITION_DECAY = 0.995;
 const DRIFT_COMPENSATION = 1 / FREQUENCY * 0.000001;
 
 export default class MotionEstimator {
-  static supported () {
-    if (LinearAccelerationSensor && RelativeOrientationSensor) {
-      return true;
-    }
-  }
-
   constructor(session) {
     this.session = session;
-    this.accelerometer = new LinearAccelerationSensor({frequency: FREQUENCY, referenceFrame: 'screen'});
-    this.orientationSensor = new RelativeOrientationSensor({ frequency: FREQUENCY, referenceFrame: 'screen' });
 
     const iirCalculator = new Fili.CalcCascades();
     const availableFilters = iirCalculator.available();
@@ -52,60 +44,131 @@ export default class MotionEstimator {
       z: 0
     };
 
-    this.accelerometer.addEventListener('reading', e => {
-      const acceleration = vec4.fromValues(this.accelerometer.x, -this.accelerometer.z, this.accelerometer.y, 1);
-      this.orientation = Array.from(this.orientationSensor.quaternion);
+    this.motionStatus = {
+      acceleration: {
+        error: null
+      },
+      gyro: {
+        error: null
+      }
+    }
+  };
 
-      const rotationQuat = quat.fromValues(
+  readingHandler (e) {
+    const acceleration = vec4.fromValues(this.accelerometer.x, -this.accelerometer.z, this.accelerometer.y, 1);
+    this.orientation = Array.from(this.orientationSensor.quaternion);
+
+    const rotationQuat = quat.fromValues(
         this.orientationSensor.quaternion[0],
         this.orientationSensor.quaternion[1],
         this.orientationSensor.quaternion[2],
         this.orientationSensor.quaternion[3]
-      );
+    );
 
-      //quat.invert(rotationQuat, rotationQuat)
+    vec4.transformQuat(acceleration, acceleration, rotationQuat);
 
-      vec4.transformQuat(acceleration, acceleration, rotationQuat);
+    acceleration[0] = this.iirFilter.x.singleStep(acceleration[0]);
+    acceleration[1] = this.iirFilter.y.singleStep(acceleration[1]);
+    acceleration[2] = this.iirFilter.z.singleStep(acceleration[2]);
 
-      acceleration[0] = this.iirFilter.x.singleStep(acceleration[0]);
-      acceleration[1] = this.iirFilter.y.singleStep(acceleration[1]);
-      acceleration[2] = this.iirFilter.z.singleStep(acceleration[2]);
+    // this.accelerometerDrift.x = this.accelerometerDrift.x * (1 - DRIFT_COMPENSATION) + acceleration[0] * DRIFT_COMPENSATION;
+    // this.accelerometerDrift.y = this.accelerometerDrift.y * (1 - DRIFT_COMPENSATION) + acceleration[1] * DRIFT_COMPENSATION;
+    // this.accelerometerDrift.z = this.accelerometerDrift.z * (1 - DRIFT_COMPENSATION) + acceleration[2] * DRIFT_COMPENSATION;
 
-      // this.accelerometerDrift.x = this.accelerometerDrift.x * (1 - DRIFT_COMPENSATION) + acceleration[0] * DRIFT_COMPENSATION;
-      // this.accelerometerDrift.y = this.accelerometerDrift.y * (1 - DRIFT_COMPENSATION) + acceleration[1] * DRIFT_COMPENSATION;
-      // this.accelerometerDrift.z = this.accelerometerDrift.z * (1 - DRIFT_COMPENSATION) + acceleration[2] * DRIFT_COMPENSATION;
+    // this.velocity.x += (acceleration[0] - this.accelerometerDrift.x) / FREQUENCY;
+    // this.velocity.y += (acceleration[1] - this.accelerometerDrift.y) / FREQUENCY;
+    // this.velocity.z += (acceleration[2] - this.accelerometerDrift.z) / FREQUENCY;
 
-      // this.velocity.x += (acceleration[0] - this.accelerometerDrift.x) / FREQUENCY;
-      // this.velocity.y += (acceleration[1] - this.accelerometerDrift.y) / FREQUENCY;
-      // this.velocity.z += (acceleration[2] - this.accelerometerDrift.z) / FREQUENCY;
+    this.velocity.x += acceleration[0] / FREQUENCY;
+    this.velocity.y += acceleration[1] / FREQUENCY;
+    this.velocity.z += acceleration[2] / FREQUENCY;
 
-      this.velocity.x += acceleration[0] / FREQUENCY;
-      this.velocity.y += acceleration[1] / FREQUENCY;
-      this.velocity.z += acceleration[2] / FREQUENCY;
+    this.position.x += this.velocity.x / FREQUENCY * 1000;
+    this.position.y += this.velocity.y / FREQUENCY * 1000;
+    this.position.z += this.velocity.z / FREQUENCY * 1000;
 
-      this.position.x += this.velocity.x / FREQUENCY * 1000;
-      this.position.y += this.velocity.y / FREQUENCY * 1000;
-      this.position.z += this.velocity.z / FREQUENCY * 1000;
+    this.velocity.x *= VELOCITY_DECAY;
+    this.velocity.y *= VELOCITY_DECAY;
+    this.velocity.z *= VELOCITY_DECAY;
 
-      this.velocity.x *= VELOCITY_DECAY;
-      this.velocity.y *= VELOCITY_DECAY;
-      this.velocity.z *= VELOCITY_DECAY;
+    this.position.x *= POSITION_DECAY;
+    this.position.y *= POSITION_DECAY;
+    this.position.z *= POSITION_DECAY;
 
-      this.position.x *= POSITION_DECAY;
-      this.position.y *= POSITION_DECAY;
-      this.position.z *= POSITION_DECAY;
+    this.session.eventCallback({name: 'acceleration', acceleration})
+    this.session.eventCallback({name: 'velocity', velocity: this.velocity})
+    this.session.eventCallback({name: 'position', position: this.position})
 
-      this.session.eventCallback({name: 'acceleration', acceleration})
-      this.session.eventCallback({name: 'velocity', velocity: this.velocity})
-      this.session.eventCallback({name: 'position', position: this.position})
+    this.session.poser.readjustElements();
+  }
 
-      this.session.poser.readjustElements();
-    });
-  };
+  async init () {
+    if (window.LinearAccelerationSensor && window.RelativeOrientationSensor) {
+      try {
+        this.accelerometer = new LinearAccelerationSensor({frequency: FREQUENCY, referenceFrame: 'screen'});
+        this.accelerometer.addEventListener('error', event => {
+          if (event.error.name === 'NotAllowedError') {
+            this.motionStatus.acceleration = {
+              error: event.error
+            }
+          } else if (event.error.name === 'NotReadableError' ) {
+            this.motionStatus.acceleration = {
+              error: event.error
+            }
+          }
+          this.accelerometer.stop();
+          this.session.eventCallback({name: 'statusChanged'})
+        });
+
+        this.orientationSensor = new RelativeOrientationSensor({ frequency: FREQUENCY, referenceFrame: 'screen' });
+        this.orientationSensor.addEventListener('error', event => {
+          if (event.error.name === 'NotAllowedError') {
+            this.motionStatus.gyro = {
+              error: event.error
+            }
+          } else if (event.error.name === 'NotReadableError' ) {
+            this.motionStatus.gyro = {
+              error: event.error
+            }
+          }
+          this.orientationSensor.stop();
+          this.session.eventCallback({name: 'statusChanged'})
+        });
+
+        this.accelerometer.addEventListener('reading', e => {
+          this.readingHandler(e)
+        });
+
+        this.run();
+      } catch (error) {
+        // Handle construction errors.
+        if (error.name === 'SecurityError') {
+          this.motionStatus = {
+            error: 'Permission denied'
+          }
+        } else if (error.name === 'ReferenceError') {
+          this.motionStatus = {
+            error: 'Sensor is not supported by the User Agent.'
+          }
+        } else {
+          throw error;
+        }
+      }
+    } else {
+      this.motionStatus = {
+        error: "NotSupported"
+      }
+    }
+  }
 
   run () {
     this.orientationSensor.start();
     this.accelerometer.start();
+  }
+
+  pause () {
+    this.orientationSensor.stop();
+    this.accelerometer.stop();
   }
 
   getOffsetMatrix(referenceTransform) {

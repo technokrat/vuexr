@@ -1,42 +1,94 @@
 <template>
-  <div class="setup" ref="element">
+  <div class="setup">
+    <div v-if="status">
+      <h4 class="title">Augmented Reality Setup</h4>
+      <div class="status-line">
+        Video
+        <span v-if="this.status.feed.error" class="status-value" :title="this.status.feed.error">❌</span>
+        <span v-else class="status-value" :title="this.status.feed.available">✓</span>
+      </div>
+      <hr>
+      <div class="status-line">
+        Accelerometer
+        <span v-if="this.status.motion.acceleration.error" class="status-value" :title="this.status.motion.acceleration.error">⚠</span>
+        <span v-else class="status-value">✓</span>
+      </div>
+      <hr>
+      <div class="status-line">
+        Gyroscope
+        <span v-if="this.status.motion.gyro.error" class="status-value" :title="this.status.motion.gyro.error">⚠</span>
+        <span v-else class="status-value">✓</span>
+      </div>
+      <hr>
+      <div class="status-line">
+        Computer Vision
+        <span v-if="!this.status.worker.initialized" class="status-value">❌</span>
+        <span v-else class="status-value">✓</span>
+      </div>
+      <hr>
+      <select class="camera-selection" v-model="selected" @change="this.selectCamera">
+        <option disabled value="">Please select a Camera</option>
+        <option v-for="item in availableCameras" :value="item.deviceId">{{item.label}}</option>
+      </select>
+    </div>
   </div>
 </template>
 
 <script>
   import Vue from "vue";
+  import Session from "../src/Vision/Session";
 
   const ARSetup = Vue.extend({
     data () {
       return {
-        cameraSupport: false,
-        accelerometerSupport: false,
-        gyroscopeSupport: false,
-        openCVLoaded: false,
-        error: false,
+        selected: null
+      }
+    },
+    computed: {
+      availableCameras () {
+        return this.status.feed.available
+      }
+    },
+    props: {
+      session: Session,
+      status: Object
+    },
+    methods: {
+      selectCamera (event) {
+        this.session.feed.selectCamera(this.selected)
       }
     },
     mounted () {
-      
+      this.selected = this.session.feed.feedStatus.selected
+    },
+    updated() {
+      this.selected = this.session.feed.feedStatus.selected;
     }
   });
-  export default ARElement;
+  export default ARSetup;
 </script>
 
 <style>
-  .element {
-    position: absolute;
-    top:0;
-    left: 0;
-    transform-style : preserve-3d;
-    transition: transform 0.1s;
-    transform-origin: 0 0 0;
+  .setup {
+    box-sizing: border-box;
+    max-width: 100%;
+    width: 300px;
+    padding: 20px 20px;
+    margin: 20px;
+    background-color: white;
+    border-radius: 4px;
   }
 
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
+  .camera-selection {
+    width: 100%;
   }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    opacity: 0;
+
+  .status-value {
+    float: right;
   }
+
+  .title {
+    text-align: center;
+  }
+
 </style>

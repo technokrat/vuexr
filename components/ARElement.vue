@@ -31,7 +31,7 @@
       }
     },
     mounted () {
-      this.$parent.$data.session.poser.registerElement(this.id, this.$refs.element, markerSize, (tracked) => {
+      this.$parent.$data.session.poser.registerElement(this.id, this.$refs.element, this.markerSize, (tracked) => {
         this.tracked = tracked;
 
         if (tracked) {

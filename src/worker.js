@@ -14,8 +14,8 @@ class CVProcessor {
       this.dict = new cv.aruco_Dictionary(cv.DICT_6X6_250);
 
       this.constructChessboardCoordinates();
-      this.calibrationImagePoints = new this.cv.MatVector();
-      this.calibrationObjectPoints = new this.cv.MatVector();
+      this.calibrationImagePoints = new cv.MatVector();
+      this.calibrationObjectPoints = new cv.MatVector();
 
       this.initialized = true;
       console.log("Initialized OpenCV inside worker.js");
@@ -27,7 +27,7 @@ class CVProcessor {
   }
 
   constructChessboardCoordinates() {
-    const size = new this.cv.Size(CHESSBOARD_WIDTH, CHESSBOARD_HEIGHT);
+    const size = new cv.Size(CHESSBOARD_WIDTH, CHESSBOARD_HEIGHT);
     const points = [];
 
     for (let j = 0; j < CHESSBOARD_HEIGHT; j++) {
@@ -38,7 +38,7 @@ class CVProcessor {
       }
     }
 
-    this.chessboardPoints = this.cv.matFromArray(CHESSBOARD_WIDTH * CHESSBOARD_HEIGHT, 1, this.cv.CV_32FC3, points)
+    this.chessboardPoints = cv.matFromArray(CHESSBOARD_WIDTH * CHESSBOARD_HEIGHT, 1, cv.CV_32FC3, points)
   }
 
   detect(data, highlight = false) {
@@ -111,18 +111,18 @@ class CVProcessor {
 
   findChessBoardCorners(data, highlight = false) {
     const frame = cv.matFromImageData(data.image);
-    const corners = new this.cv.Mat();
-    const size = new this.cv.Size(CHESSBOARD_WIDTH, CHESSBOARD_HEIGHT);
-    const success = this.cv.findChessboardCorners(frame, size, corners, this.cv.CALIB_CB_ADAPTIVE_THRESH + this.cv.CALIB_CB_NORMALIZE_IMAGE);
+    const corners = new cv.Mat();
+    const size = new cv.Size(CHESSBOARD_WIDTH, CHESSBOARD_HEIGHT);
+    const success = cv.findChessboardCorners(frame, size, corners, cv.CALIB_CB_ADAPTIVE_THRESH + cv.CALIB_CB_NORMALIZE_IMAGE);
 
     if (success) {
       if (highlight) {
         for (let i = 0; i < corners.size().height; i++) {
           const x = corners.floatAt(i, 0);
           const y = corners.floatAt(i, 1);
-          const point = new this.cv.Point(x, y);
+          const point = new cv.Point(x, y);
 
-          this.cv.circle(frame, point, 4, new this.cv.Scalar(192, 0, 255, 192), 4)
+          cv.circle(frame, point, 4, new cv.Scalar(192, 0, 255, 192), 4)
         }
       }
 
@@ -166,17 +166,17 @@ class CVProcessor {
   }
 
   calibrate(data) {
-    const cameraMatrix = new this.cv.Mat();
-    const distCoeffs = new this.cv.Mat();
+    const cameraMatrix = new cv.Mat();
+    const distCoeffs = new cv.Mat();
 
-    const rvecs = new this.cv.MatVector();
-    const tvecs = new this.cv.MatVector();
+    const rvecs = new cv.MatVector();
+    const tvecs = new cv.MatVector();
 
-    const stdDeviationsIntrinsics = new this.cv.Mat();
-    const stdDeviationsExtrinsics = new this.cv.Mat();
+    const stdDeviationsIntrinsics = new cv.Mat();
+    const stdDeviationsExtrinsics = new cv.Mat();
 
-    const perViewErrors = new this.cv.Mat();
-    this.cv.calibrateCameraExtended(
+    const perViewErrors = new cv.Mat();
+    cv.calibrateCameraExtended(
       this.calibrationObjectPoints,
       this.calibrationImagePoints,
       new cv.Size(data.width, data.height),

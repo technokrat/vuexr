@@ -1,37 +1,24 @@
 <template>
-  <div class="calibration-assistant">
-    <canvas style="width: 100%; opacity: 1.0;" ref="canvas"></canvas>
+  <div class="ar-view">
+    <canvas class="ar-canvas" ref="canvas"></canvas>
     <div class="elements" ref="elements">
       <slot></slot>
     </div>
-    <div v-if="visionReady" class="calibration-assistant-buttons">
-      <button v-if="!calibrated" :disabled="!captureReady" class="capture-image" v-on:click="captureCalibrationPoints">Capture Frame</button>
-      <button v-if="!calibrated" :disabled="!captures" v-on:click="calibrate">
-        <span v-if="!calibrated">Calibrate</span>
-        <span v-else>Recalibrate</span>
-      </button>
-      <button :disabled="!captures && !calibrated" v-on:click="reset">Reset</button>
-      <span v-if="!calibrated" class="hint-text">{{captures}}&nbsp;Captures</span>
-      <span v-else class="hint-text">Calibrated</span>
-    </div>
-    <div v-else class="loadingCV">
-      Loading CV&hellip;
+    <div class="setup-container">
+      <ARSetup :session="this.session" :status="this.status"></ARSetup>
     </div>
   </div>
 </template>
 
 <script>
   import Vue from "vue";
-  import Session from "../src/Vision/Session";
+  import ARSetup from "./ARSetup.vue";
 
   const ARView = Vue.extend({
     data() {
       return {
         session: null,
-        captures: 0,
-        calibrated: false,
-        captureReady: false,
-        visionReady: false,
+        status: null,
       };
     },
     props: {
@@ -41,66 +28,77 @@
       }
     },
     methods: {
-      captureCalibrationPoints() {
-        this.session.calibration.setCaptureNextcalibrationPoints()
-      },
-      calibrate() {
-        this.session.calibrate()
-      },
-      reset() {
-        this.session.resetCalibration()
-      },
-      updateElements() {
+      updateElements () {
         this.$slots.default.forEach(vnode => {
           if (vnode.componentOptions && vnode.componentOptions.tag === 'ar-element') {
-            //console.log(vnode)
             this.session.poser.registerElement(
               vnode.componentOptions.propsData.id,
               vnode.elm
             )
           }
         })
+      },
+      sessionCallback (event) {
+        if (event.name === 'initialized' || event.name === 'statusChanged') {
+          this.status = {
+            initialized: this.session.initialized,
+            feed: this.session.feed.feedStatus,
+            motion: this.session.motion.motionStatus,
+            worker: this.session.workerStatus
+          }
+        }
+
       }
     },
     beforeMount() {
       this.session = this.$vuexr.requestSession(this.name)
     },
     mounted () {
-      this.session.run(this.$refs.canvas, (event) => {
-        if (event.name === 'calibrationReset') {
-          this.calibrated = false
-        } else if (event.name === 'calibrationCaptureReset') {
-          this.captures = 0;
-        } else if (event.name === 'calibrationCalibrated') {
-          this.calibrated = true
-        } else if (event.name === 'calibrationCaptured') {
-          this.captures++
-        } else if (event.name === 'calibrationCaptureReady') {
-          this.captureReady = true
-        } else if (event.name === 'calibrationCaptureNotReady') {
-          this.captureReady = false
-        } else if (event.name === 'visionInitialized') {
-          this.visionReady = true
-        }
-      });
+      this.session.init(this.$refs.canvas, (event) => {
+        this.sessionCallback(event)
+      }).then(() => {
+        this.session.run();
+      })
     },
     destroyed() {
+      this.$slots.default.forEach(vnode => {
+        if (vnode.componentOptions && vnode.componentOptions.tag === 'ar-element') {
+          this.session.poser.unregisterElement(
+            vnode.componentOptions.propsData.id
+          )
+        }
+      })
+
       this.session.pause();
+    },
+    components: {
+      ARSetup
     }
   });
   export default ARView;
 </script>
 
 <style>
-  .calibration-assistant {
+  .ar-view {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     position: relative;
     width: 100%;
     height: 100%;
     background: #333344;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     overflow: hidden;
+  }
+
+  .setup-container {
+
+  }
+
+  .camera-canvas {
+    width: 100%;
+    opacity: 1.0;
   }
 
   .calibration-assistant-buttons {
@@ -133,17 +131,6 @@
   }
 
   .hint-text {
-    font-size: 0.8rem;
-    color: white; font-family: sans-serif; margin-left: 10px;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
-  }
-
-  .loadingCV {
-    position: absolute;
-    top: calc(50% - 0.4rem);
-    text-align: center;
-    width: 100%;
-    line-height: 0.8rem;
     font-size: 0.8rem;
     color: white; font-family: sans-serif; margin-left: 10px;
     text-shadow: 0 1px 1px rgba(0,0,0,0.5);

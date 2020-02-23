@@ -1,7 +1,6 @@
 export default class Detector {
-  constructor(session, calibration) {
+  constructor(session) {
     this.session = session
-    this.calibration = calibration;
     this.detectionOngoing = false;
   };
 
