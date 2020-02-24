@@ -1,7 +1,3 @@
-const CHESSBOARD_PITCH = 25; // mm
-const CHESSBOARD_WIDTH = 9;
-const CHESSBOARD_HEIGHT = 6;
-
 export default class Calibration {
   constructor(session) {
     this.session = session;
@@ -25,7 +21,7 @@ export default class Calibration {
       operation: 'RESET_CALIBRATION_POINTS',
     });
 
-    this.calibrationStatus.captures = 0
+    this.calibrationStatus.captures = 0;
     this.session.eventCallback({name: 'statusChanged'})
   }
 
@@ -33,7 +29,7 @@ export default class Calibration {
     this.cameraMatrix = null;
     this.distCoeffs = null;
 
-    this.calibrationStatus.calibrated = false
+    this.calibrationStatus.calibrated = false;
     this.session.eventCallback({name: 'statusChanged'})
   }
 
@@ -46,6 +42,7 @@ export default class Calibration {
       this.cameraMatrix = calibration.cameraMatrix;
       this.distCoeffs = calibration.distCoeffs;
       this.calibrationStatus.calibrated = true;
+      this.session.state = 'DETECTION';
       this.session.eventCallback({name: 'statusChanged'});
       return true
     } else {
@@ -59,6 +56,7 @@ export default class Calibration {
         cameraMatrix: this.cameraMatrix,
         distCoeffs: this.distCoeffs
       };
+
       window.localStorage.setItem(`vuexr/${this.session.name}/calibration/${this.session.feed.feedStatus.selected}`, JSON.stringify(calibration));
       return true
     } else {
@@ -66,7 +64,7 @@ export default class Calibration {
     }
   }
 
-  findChessBoardCorners() {
+  findChessBoardCorners(highlight = true) {
     if (!this.findChessboardOngoing) {
       this.findChessboardOngoing = true;
       this.session.worker.postMessage({
@@ -76,21 +74,25 @@ export default class Calibration {
         highlight: highlight
       })
     }
+
   }
 
   findChessBoardCornersCaptured() {
+    this.findChessboardOngoing = false;
     this.captureNextCalibrationPoints = false;
-    this.calibrationStatus.captures++
+    this.calibrationStatus.captures++;
     this.session.eventCallback({name: 'statusChanged'})
   }
 
   findChessBoardCornersCaptureReady() {
-    this.calibrationStatus.captureReady = true
+    this.findChessboardOngoing = false;
+    this.calibrationStatus.captureReady = true;
     this.session.eventCallback({name: 'statusChanged'})
   }
 
   findChessBoardCornersCaptureNotReady() {
-    this.calibrationStatus.captureReady = false
+    this.findChessboardOngoing = false;
+    this.calibrationStatus.captureReady = false;
     this.session.eventCallback({name: 'statusChanged'})
   }
 
@@ -105,15 +107,14 @@ export default class Calibration {
         operation: 'CALIBRATE',
         width: size.width,
         height: size.height,
-        highlight: highlight
       })
     }
   }
 
   calibrationFinished(data) {
     this.calibrationOngoing = false;
-    this.cameraMatrix = data.result.cameraMatrix;
-    this.distCoeffs = data.result.distCoeffs;
+    this.cameraMatrix = data.result.calibration.cameraMatrix;
+    this.distCoeffs = data.result.calibration.distCoeffs;
 
     this.storeCameraCalibration();
 

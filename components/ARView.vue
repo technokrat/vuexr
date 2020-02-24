@@ -1,11 +1,22 @@
 <template>
-  <div class="ar-view">
-    <canvas class="ar-canvas" ref="canvas"></canvas>
-    <div class="elements" ref="elements">
-      <slot></slot>
+  <div class="ar-view-wrapper">
+    <div class="ar-view">
+      <canvas class="ar-canvas" ref="canvas"></canvas>
+      <div class="elements" ref="elements">
+        <slot></slot>
+      </div>
+      <div v-if="this.status && this.status.initialized && !this.status.calibration.calibrated" class="controls-container">
+        <ARControls :session="this.session" :status="this.status"></ARControls>
+      </div>
     </div>
-    <div class="setup-container">
-      <ARSetup :session="this.session" :status="this.status"></ARSetup>
+    <div @click="this.openSetup" class="setup-button">
+      ⚙
+    </div>
+    <div v-if="this.status && this.status.initialized" class="setup-container">
+      <ARSetup v-if="this.status.setup.show" :session="this.session" :status="this.status" @close="this.closeSetup"></ARSetup>
+    </div>
+    <div v-else class="loading-text">
+      Loading&hellip;
     </div>
   </div>
 </template>
@@ -13,6 +24,7 @@
 <script>
   import Vue from "vue";
   import ARSetup from "./ARSetup.vue";
+  import ARControls from "./ARControls.vue";
 
   const ARView = Vue.extend({
     data() {
@@ -38,13 +50,21 @@
           }
         })
       },
+      closeSetup () {
+        this.session.showSetup(false);
+      },
+      openSetup () {
+        this.session.showSetup(true);
+      },
       sessionCallback (event) {
         if (event.name === 'initialized' || event.name === 'statusChanged') {
           this.status = {
             initialized: this.session.initialized,
             feed: this.session.feed.feedStatus,
             motion: this.session.motion.motionStatus,
-            worker: this.session.workerStatus
+            worker: this.session.workerStatus,
+            calibration: this.session.calibration.calibrationStatus,
+            setup: this.session.setup
           }
         }
 
@@ -58,7 +78,7 @@
         this.sessionCallback(event)
       }).then(() => {
         this.session.run();
-      })
+      });
     },
     destroyed() {
       this.$slots.default.forEach(vnode => {
@@ -67,44 +87,65 @@
             vnode.componentOptions.propsData.id
           )
         }
-      })
+      });
 
       this.session.pause();
     },
     components: {
-      ARSetup
+      ARSetup,
+      ARControls
     }
   });
   export default ARView;
 </script>
 
 <style>
-  .ar-view {
+  .ar-view-wrapper {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     background: #333344;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  .ar-view {
+    position: relative;
+    width: 100%;
     overflow: hidden;
   }
 
-  .setup-container {
-
-  }
-
-  .camera-canvas {
+  .ar-canvas {
     width: 100%;
-    opacity: 1.0;
   }
 
-  .calibration-assistant-buttons {
-    margin: 10px;
+  .setup-button {
     position: absolute;
+    z-index: 2;
+    top: 5px;
+    right: 5px;
+    color: white;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1.2rem;
+  }
+
+  .setup-container {
+    position: absolute;
+    z-index: 5;
+    top: calc(50% - 180px);
+    left: calc(50% - 150px);
+  }
+
+  .controls-container {
+    position: absolute;
+    z-index: 1;
     bottom: 0;
+    left: 5px;
   }
 
   button {
@@ -120,20 +161,14 @@
     background-color: rgba(255,255,255,0.8);
   }
 
-  .capture-image {
-    background-color: rgba(255,0,0,0.8);
-    color: white;
-  }
-
-  .capture-image:disabled {
-    background-color: rgba(255,0,0,0.6);
-    color: #ddd;
-  }
-
-  .hint-text {
+  .loading-text {
+    position: absolute;
+    top: calc(50% - 0.8rem);
+    text-align: center;
     font-size: 0.8rem;
-    color: white; font-family: sans-serif; margin-left: 10px;
+    line-height: 0.8rem;
+    color: white;
+    margin-left: 10px;
     text-shadow: 0 1px 1px rgba(0,0,0,0.5);
   }
-
 </style>

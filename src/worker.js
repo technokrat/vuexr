@@ -27,7 +27,6 @@ class CVProcessor {
   }
 
   constructChessboardCoordinates() {
-    const size = new cv.Size(CHESSBOARD_WIDTH, CHESSBOARD_HEIGHT);
     const points = [];
 
     for (let j = 0; j < CHESSBOARD_HEIGHT; j++) {
@@ -57,7 +56,6 @@ class CVProcessor {
       cv.detectMarkers(rbgFrame, this.dict, markerCorners, markerIds);
 
       if (markerIds.rows > 0) {
-
         const cameraMatrix = cv.matFromArray(3, 3, cv.CV_64FC1, data.calibration.cameraMatrix);
         const distCoeffs = cv.matFromArray(5, 1, cv.CV_64FC1, data.calibration.distCoeffs);
 
@@ -136,7 +134,6 @@ class CVProcessor {
           operation: 'FIND_CHESSBOARD_CORNERS_CAPTURED',
         });
       } else {
-        this.session.eventCallback({name: 'calibrationCaptureReady'});
         postMessage({
           operation: 'FIND_CHESSBOARD_CORNERS_READY',
         });
@@ -157,12 +154,18 @@ class CVProcessor {
   }
 
   resetCalibrationPoints () {
-    for (let i = 0; i < calibrationImagePoints.left; i++) {
+    if (this.calibrationImagePoints) {
+      for (let i = 0; i < this.calibrationImagePoints.size(); i++) {
+        this.calibrationImagePoints.get(i).delete();
+      }
       this.calibrationImagePoints.delete();
+      this.calibrationImagePoints = new cv.MatVector();
     }
-    this.calibrationImagePoints.delete();
-    this.calibrationObjectPoints.get(0).delete();
-    this.calibrationObjectPoints.delete();
+
+    if (this.calibrationObjectPoints) {
+      this.calibrationObjectPoints.delete();
+      this.calibrationObjectPoints = new cv.MatVector();
+    }
   }
 
   calibrate(data) {

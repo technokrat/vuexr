@@ -1,12 +1,17 @@
 <template>
   <div class="setup">
     <div v-if="status">
-      <h4 class="title">Augmented Reality Setup</h4>
+      <div class="close-button" @click="close">×</div>
+      <h2 class="title">AR Setup</h2>
       <div class="status-line">
         Video
-        <span v-if="this.status.feed.error" class="status-value" :title="this.status.feed.error">❌</span>
+        <span v-if="this.status.feed.error" class="status-value" :title="this.status.feed.error">✗</span>
         <span v-else class="status-value" :title="this.status.feed.available">✓</span>
       </div>
+      <select class="camera-selection" style="margin-top: 5px" v-model="selected" @change="this.selectCamera">
+        <option disabled value="">Please select a Camera</option>
+        <option v-for="item in availableCameras" :value="item.deviceId">{{item.label}}</option>
+      </select>
       <hr>
       <div class="status-line">
         Accelerometer
@@ -22,14 +27,18 @@
       <hr>
       <div class="status-line">
         Computer Vision
-        <span v-if="!this.status.worker.initialized" class="status-value">❌</span>
+        <span v-if="!this.status.worker.initialized" class="status-value">✗</span>
         <span v-else class="status-value">✓</span>
       </div>
       <hr>
-      <select class="camera-selection" v-model="selected" @change="this.selectCamera">
-        <option disabled value="">Please select a Camera</option>
-        <option v-for="item in availableCameras" :value="item.deviceId">{{item.label}}</option>
-      </select>
+      <div class="status-line">
+        Calibration
+        <span v-if="!this.status.calibration.calibrated" class="status-value">✗</span>
+        <span v-else class="status-value">✓</span>
+      </div>
+      <div v-if="this.status.calibration.calibrated" style="margin-top: 15px; text-align: center;">
+        <button class="reset-button" @click="this.reset">Reset</button>
+      </div>
     </div>
   </div>
 </template>
@@ -56,6 +65,12 @@
     methods: {
       selectCamera (event) {
         this.session.feed.selectCamera(this.selected)
+      },
+      reset() {
+        this.session.resetCalibration()
+      },
+      close() {
+        this.$emit('close')
       }
     },
     mounted () {
@@ -70,13 +85,24 @@
 
 <style>
   .setup {
+    position: relative;
     box-sizing: border-box;
     max-width: 100%;
     width: 300px;
-    padding: 20px 20px;
-    margin: 20px;
-    background-color: white;
+    height: 360px;
+    padding: 10px 20px;
+    background-color: rgba(255,255,255,0.8);
+    backdrop-filter: blur(5px);
     border-radius: 4px;
+  }
+
+  .close-button {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    cursor: pointer;
   }
 
   .camera-selection {
@@ -88,6 +114,7 @@
   }
 
   .title {
+    font-weight: lighter;
     text-align: center;
   }
 

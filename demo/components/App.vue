@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <ar-view>
+  <div class="app-body">
+    <ar-view v-if="this.show">
       <ar-element :id="23">
         <div class="hello hello1">Hello World!</div>
         <div class="hello hello2">Hallo Welt!</div>
@@ -20,6 +20,11 @@
   import Vue from "vue";
 
   const App = Vue.extend({
+    data () {
+      return {
+        show: true
+      }
+    }
   });
 
   export default App;
@@ -33,6 +38,10 @@
 
   body {
     margin: 0;
+  }
+
+  .app-body {
+    height: 100%;
   }
 
   .hello {

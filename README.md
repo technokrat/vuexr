@@ -59,7 +59,7 @@ capabilities of modern web technologies, as well as your existing web codebase: 
 Our strength lies in the combination of research, electronics design, firmware, IoT, computer engineering, manufacturing,
 and **software development**.
 
-We can offer you a one-stop experience in upgrading (legacy) setups to AR, or start from the beginning, and consult you and your team 
+We can offer you a one-stop experience in upgrading (legacy) setups to AR, or start from the beginning, and consult you and your team
 in bootstraping and selecting the best competitive solution. We also integrate Web-APIs directly into your existing software (such as REST, GraphQL, SOAP, Swagger, etc.). Just give us a call and we support you with a **workshop or MVP in just under six weeks**.
 
 
@@ -108,7 +108,7 @@ Add the following inside your preferred component (e.g. *App.vue*)
 
   const App = Vue.extend({
     name: 'app',
-  })
+  });
 
   export default App;
 </script>
@@ -216,7 +216,7 @@ Clone this repository and run
 
 ```sh
 yarn install
-yarn run dev:demo
+yarn run demo:serve
 ```
 
 You can now access a demo application of VueXR under `http://localhost:9000`. To see some AR-content point your camera
@@ -224,7 +224,6 @@ onto AruCo markers with ID `23` and `50`.
 
 ## Contribution
 ### Future Work
-* More customizable and user-friendly initialization UI
 * Compile OpenCV.js with WebAssembly SIMD support
 * Move calibration to web worker
 * Rewrite JS to TypeScript and code cleanup
@@ -232,6 +231,7 @@ onto AruCo markers with ID `23` and `50`.
 * More responsive position tracking
 * DOM-Rendering in WebXR API
 * Marker Scheme ID Attributes (allowing for future proof support of other marker systems)
+* CI and Test Coverage
 
 If you are interested in supporting this project contact me at [mw@technokrat.ch](mailto:mw@technokrat.ch)
 

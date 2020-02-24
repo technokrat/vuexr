@@ -1,13 +1,15 @@
 <template>
   <div class="controls">
-      <button v-if="!calibrated" :disabled="!captureReady" class="capture-image" v-on:click="captureCalibrationPoints">Capture Frame</button>
-      <button v-if="!calibrated" :disabled="!captures" v-on:click="calibrate">
-        <span v-if="!calibrated">Calibrate</span>
-        <span v-else>Recalibrate</span>
-      </button>
-      <button :disabled="!captures && !calibrated" v-on:click="reset">Reset</button>
-      <span v-if="!calibrated" class="hint-text">{{captures}}&nbsp;Captures</span>
-      <span v-else class="hint-text">Calibrated</span>
+      <div v-if="this.status">
+        <button v-if="!this.status.calibration.calibrated" :disabled="!this.status.calibration.captureReady" class="capture-image" v-on:click="captureCalibrationPoints">Capture Frame</button>
+        <button v-if="!this.status.calibration.calibrated" :disabled="!this.status.calibration.captures" v-on:click="calibrate">
+          <span v-if="!this.status.calibration.calibrated">Calibrate</span>
+          <span v-else>Recalibrate</span>
+        </button>
+        <button :disabled="!this.status.calibration.captures && !this.status.calibration.calibrated" v-on:click="reset">Reset</button>
+        <span v-if="!this.status.calibration.calibrated" class="hint-text">{{this.status.calibration.captures}}&nbsp;Captures</span>
+        <span v-else class="hint-text">Calibrated</span>
+      </div>
   </div>
 </template>
 
@@ -44,5 +46,20 @@
 </script>
 
 <style>
+  .capture-image {
+    background-color: rgba(255,0,0,0.8);
+    color: white;
+  }
 
+  .capture-image:disabled {
+    background-color: rgba(255,0,0,0.6);
+    color: #ddd;
+  }
+
+  .hint-text {
+    font-size: 0.8rem;
+    color: white;
+    margin-left: 10px;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+  }
 </style>

@@ -1,7 +1,5 @@
-import cv from '../../vendor/opencv.js';
 import Calibration from './Calibration';
 import Detector from './Detector';
-import {readImage, showImage} from "./helpers";
 import CameraFeed from './CameraFeed';
 import Poser from "./Poser";
 import MotionEstimator from "./MotionEstimator";
@@ -18,18 +16,45 @@ export default class Session {
     this.detector = new Detector(this);
     this.workerStatus = {error: null, initialized: false};
     this.eventCallback = null;
+
+    this.setup = {
+      show: true
+    }
+  }
+
+  loadSetup () {
+    let setup = window.localStorage.getItem(`vuexr/${this.name}/setup`);
+    if (setup) {
+      setup = JSON.parse(setup);
+      return setup
+    } else {
+      return {
+        show: true
+      }
+    }
+  }
+
+  storeSetup () {
+    window.localStorage.setItem(`vuexr/${this.name}/setup`, JSON.stringify(this.setup));
+  }
+
+  showSetup (show) {
+    this.setup.show = show;
+    this.storeSetup();
+    this.eventCallback({name: 'statusChanged'})
   }
 
   async init (canvas, eventCallback) {
-    this.canvas = canvas
-    this.eventCallback = eventCallback
+    this.setup = this.loadSetup();
+    this.canvas = canvas;
+    this.eventCallback = eventCallback;
 
     if (!this.initialized) {
       await Promise.all([
         this.feed.init(),
         this.motion.init(),
         this.initWorker()
-      ])
+      ]);
       this.initialized = true;
     }
 
@@ -63,10 +88,12 @@ export default class Session {
       this.calibration.findChessBoardCornersCaptureReady()
     } else if (msg.data.operation === 'FIND_CHESSBOARD_CORNERS_NOT_READY') {
       this.calibration.findChessBoardCornersCaptureNotReady()
+    } else if (msg.data.operation === 'CALIBRATE') {
+      this.calibration.calibrationFinished(msg.data)
     }
   }
 
-  run (selected = null) {
+  run () {
     this.feed.run();
     this.motion.run();
   }
@@ -74,7 +101,6 @@ export default class Session {
   pause () {
     this.feed.stop();
     this.motion.stop();
-    this.paused = true;
   }
 
   calibrate() {

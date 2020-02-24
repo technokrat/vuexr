@@ -1,4 +1,4 @@
-import cv from '../../vendor/opencv.js';
+import {mat4} from 'gl-matrix'
 import {computeProjMat} from "./helpers";
 
 export default class Poser {
@@ -21,17 +21,18 @@ export default class Poser {
     }
   }
 
-  unregisterElement(id, element) {
+  unregisterElement(id) {
     delete this.elements[id]
   }
 
   setMarkers(markers) {
-    const realWidth = getComputedStyle(this.session.canvas).width.split('px')[0];
-    const ratio = realWidth / this.session.canvas.width;
-
     for (const marker of markers) {
       if (this.elements[marker.id]) {
-        this.elements[marker.id].lastTransform = this.session.motion.getCurrentTransform();
+        if (!this.session.motion.motionStatus.acceleration.error && !this.session.motion.motionStatus.gyro.error) {
+          this.elements[marker.id].lastTransform = this.session.motion.getCurrentTransform();
+        } else {
+          this.elements[marker.id].lastTransform = mat4.create()
+        }
         this.elements[marker.id].lastRVec = marker.rvec;
         this.elements[marker.id].lastTVec = marker.tvec;
         this.elements[marker.id].lastRMat = marker.rmat;
@@ -51,6 +52,10 @@ export default class Poser {
         this.elements[id].callback(false)
       }
     }
+
+    if (this.session.motion.motionStatus.acceleration.error || this.session.motion.motionStatus.gyro.error) {
+      this.readjustElements()
+    }
   }
 
   readjustElements() {
@@ -61,7 +66,6 @@ export default class Poser {
     for (const element of allElements) {
       if (element.lastTransform) {
         const offset = this.session.motion.getOffsetMatrix(element.lastTransform);
-
         const projMatrix = computeProjMat(ratio, this.session.calibration.cameraMatrix, element.lastRMat, element.lastTVec, offset);
         this.projectElement(element.id, Array.from(projMatrix));
       }
@@ -69,7 +73,7 @@ export default class Poser {
   }
 
   projectElement(id, modelViewMatrix) {
-    modelViewMatrix = modelViewMatrix.map(el => el.toFixed(5))
+    modelViewMatrix = modelViewMatrix.map(el => el.toFixed(5));
     this.elements[id].element.style.transform = `matrix3d(${modelViewMatrix.join(',')})`;
   }
 }

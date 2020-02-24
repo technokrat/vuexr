@@ -66,7 +66,7 @@ export default class CameraFeed {
 
   stop () {
     if (this.mediaStream) {
-      window.cancelAnimationFrame(this.animationFrameRequest)
+      window.cancelAnimationFrame(this.animationFrameRequest);
       this.track.stop();
       this.track = null;
       this.mediaStream = null;
@@ -75,12 +75,15 @@ export default class CameraFeed {
   }
 
   async selectCamera (id) {
-    this.stop();
-    this.feedStatus.selected = id;
-    this.storeCamera();
-    await this.run();
+    if (this.feedStatus.selected !== id) {
+      this.stop();
+      this.feedStatus.selected = id;
+      this.storeCamera();
+      this.session.calibration.resetCalibrationPoints();
+      await this.run();
 
-    this.session.eventCallback({name: 'statusChanged'});
+      this.session.eventCallback({name: 'statusChanged'});
+    }
   }
 
   async listAvailable () {
@@ -101,11 +104,11 @@ export default class CameraFeed {
       }
 
       this.track = this.mediaStream.getVideoTracks()[0];
-      this.feedStatus.selected = this.track.getSettings().deviceId
+      this.feedStatus.selected = this.track.getSettings().deviceId;
       this.storeCamera();
       this.session.eventCallback({name: 'statusChanged'});
 
-      this.session.calibration.loadCameraCalibration()
+      this.session.calibration.loadCameraCalibration();
 
       this.imageCapture = new ImageCapture(this.track);  // https://developer.mozilla.org/en-US/docs/Web/API/ImageCapture
 
@@ -119,7 +122,7 @@ export default class CameraFeed {
       };
     }
     catch (e) {
-      console.error(e)
+      console.log(e)
     }
   }
 

@@ -1,5 +1,5 @@
 import cv from '../../vendor/opencv.js';
-import { mat4, vec4 } from 'gl-matrix'
+import { mat4 } from 'gl-matrix'
 
 export function grayOut(frame) {
     const grayImage = new cv.Mat();
@@ -28,7 +28,6 @@ export function drawVideoFrameToCanvas(canvas, img) {
 
 export function computeProjMat(ratio, cameraMatrix, rmat, tvec, viewMatrix)
 {
-
   const projMat = mat4.create();
 
   const flipMat = mat4.fromValues(
@@ -72,7 +71,7 @@ export function computeProjMat(ratio, cameraMatrix, rmat, tvec, viewMatrix)
     ratio, 0, 0, 0,
     0, ratio, 0, 0,
     0, 0, ratio, 0,
-    cameraMatrix[6] * ratio, cameraMatrix[7] * ratio, 0, 1
+    cameraMatrix[2] * ratio, cameraMatrix[5] * ratio, 0, 1
   );
 
   mat4.mul(projMat, scaleMat, projMat);
