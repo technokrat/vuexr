@@ -166,7 +166,7 @@ export default class MotionEstimator {
     this.accelerometer.start();
   }
 
-  pause () {
+  stop () {
     this.orientationSensor.stop();
     this.accelerometer.stop();
   }

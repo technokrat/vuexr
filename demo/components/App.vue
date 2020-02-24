@@ -13,6 +13,7 @@
         </div>
       </ar-element>
     </ar-view>
+<!--    <button @click="this.toggle">Toggle</button>-->
   </div>
 </template>
 
@@ -23,6 +24,11 @@
     data () {
       return {
         show: true
+      }
+    },
+    methods: {
+      toggle () {
+        this.show = !this.show;
       }
     }
   });

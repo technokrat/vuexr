@@ -36,7 +36,7 @@
         <span v-if="!this.status.calibration.calibrated" class="status-value">✗</span>
         <span v-else class="status-value">✓</span>
       </div>
-      <div v-if="this.status.calibration.calibrated" style="margin-top: 15px; text-align: center;">
+      <div v-if="this.status.calibration.calibrated" style="margin-top: 20px; text-align: center;">
         <button class="reset-button" @click="this.reset">Reset</button>
       </div>
     </div>
@@ -83,7 +83,7 @@
   export default ARSetup;
 </script>
 
-<style>
+<style scoped>
   .setup {
     position: relative;
     box-sizing: border-box;
@@ -118,4 +118,17 @@
     text-align: center;
   }
 
+  button {
+    background-color: rgba(255,255,255,0.8);
+    border-radius: 30px;
+    border: #ccc;
+    padding: 10px 20px;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid rgba(0,0,0,0.4);
+  }
 </style>

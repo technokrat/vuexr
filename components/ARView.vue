@@ -5,12 +5,12 @@
       <div class="elements" ref="elements">
         <slot></slot>
       </div>
-      <div v-if="this.status && this.status.initialized && !this.status.calibration.calibrated" class="controls-container">
-        <ARControls :session="this.session" :status="this.status"></ARControls>
-      </div>
     </div>
     <div @click="this.openSetup" class="setup-button">
       ⚙
+    </div>
+    <div v-if="this.status && this.status.initialized && !this.status.calibration.calibrated" class="controls-container">
+      <ARControls :session="this.session" :status="this.status"></ARControls>
     </div>
     <div v-if="this.status && this.status.initialized" class="setup-container">
       <ARSetup v-if="this.status.setup.show" :session="this.session" :status="this.status" @close="this.closeSetup"></ARSetup>
@@ -99,7 +99,7 @@
   export default ARView;
 </script>
 
-<style>
+<style scoped>
   .ar-view-wrapper {
     position: relative;
     display: flex;
@@ -146,19 +146,6 @@
     z-index: 1;
     bottom: 0;
     left: 5px;
-  }
-
-  button {
-    background-color: rgba(255,255,255,0.8);
-    //backdrop-filter: blur(5px);
-    border-radius: 2px;
-    border: none;
-    padding: 5px 10px;
-    margin-bottom: 5px;
-  }
-
-  button:disabled {
-    background-color: rgba(255,255,255,0.8);
   }
 
   .loading-text {

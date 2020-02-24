@@ -45,15 +45,28 @@
   export default ARControls;
 </script>
 
-<style>
+<style scoped>
+  button {
+    background-color: rgba(255,255,255,0.8);
+    border-radius: 2px;
+    border: none;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+  }
+
+  button:disabled {
+    background-color: rgba(255,255,255,0.8);
+  }
+
+
   .capture-image {
     background-color: rgba(255,0,0,0.8);
     color: white;
   }
 
   .capture-image:disabled {
-    background-color: rgba(255,0,0,0.6);
-    color: #ddd;
+    background-color: rgba(156, 0, 0, 0.6);
+    color: #ccc;
   }
 
   .hint-text {
