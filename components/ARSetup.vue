@@ -6,7 +6,7 @@
       <div class="status-line">
         Video
         <span v-if="this.status.feed.error" class="status-value" :title="this.status.feed.error">✗</span>
-        <span v-else class="status-value" :title="this.status.feed.available">✓</span>
+        <span v-else class="status-value">✓</span>
       </div>
       <select class="camera-selection" style="margin-top: 5px" v-model="selected" @change="this.selectCamera">
         <option disabled value="">Please select a Camera</option>
@@ -89,7 +89,7 @@
     box-sizing: border-box;
     max-width: 100%;
     width: 300px;
-    height: 360px;
+    min-height: 360px;
     padding: 10px 20px;
     background-color: rgba(255,255,255,0.8);
     backdrop-filter: blur(5px);
@@ -122,7 +122,7 @@
     background-color: rgba(255,255,255,0.8);
     border-radius: 30px;
     border: #ccc;
-    padding: 10px 20px;
+    padding: 10px 15px;
     margin-bottom: 5px;
     cursor: pointer;
   }

@@ -1,4 +1,5 @@
-import SessionManager from "./Vision/SessionManager";
+import {VueXR} from "./vuexr";
+import Vue from "vue";
 
 declare module "*.svg" {
   const content: any;
@@ -7,6 +8,7 @@ declare module "*.svg" {
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $vuexr: SessionManager;
+    $vuexr: VueXR
   }
 }
+

@@ -127,8 +127,34 @@ Add the following inside your preferred component (e.g. *App.vue*)
 ```
 
 You need to copy the [opencv_js.wasm](./vendor/opencv_js.wasm) and [worker.js](./dist/worker.js) file to your static/public
-folder (where your deployed *index.html* is located). See the [demo.webpack.config.js](./demo.webpack.config.js) for
-inspiration.
+folder (where your deployed *index.html* is located).
+
+```javascript
+// vue.config.js
+const path = require('path')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+
+module.exports = {
+  // ...
+  configureWebpack: {
+    plugins: [
+      new CopyWebpackPlugin([
+        {
+          from: path.join(__dirname, 'node_modules/vuexr/vendor/opencv_js.wasm'),
+          to: 'opencv_js.wasm'
+        },
+        {
+          from: path.join(__dirname, 'node_modules/vuexr/dist/worker.js'),
+          to: 'worker.js'
+        }
+      ])
+    ]
+  }
+  // ...
+}
+```
+
+See the [demo.webpack.config.js](./demo.webpack.config.js) for further inspiration.
 
 You are now ready to test the application with a smartphone. Remember that you have to connect via `HTTPS` or
 `localhost` for VueXR to work. Accept the camera permission request.
