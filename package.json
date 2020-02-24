@@ -1,6 +1,6 @@
 {
   "name": "vuexr",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "description": "VueXR is a Vue plugin that let's you project regular DOM components onto augmented reality (AR) markers in real-time.",
   "main": "./dist/vuexr.js",
   "types": "./dist/src/vuexr.d.ts",
@@ -21,14 +21,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Atokulus/vuexr.git"
+    "url": "git+https://github.com/technokrat-llc/vuexr.git"
   },
   "author": "Markus Wegmann <mw@technokrat.ch>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Atokulus/vuexr/issues"
+    "url": "https://github.com/technokrat-llc/vuexr/issues"
   },
-  "homepage": "https://github.com/Atokulus/vuexr#readme",
+  "homepage": "https://github.com/technokrat-llc/vuexr#readme",
   "dependencies": {
     "@babel/runtime": "^7.8.4",
     "core-js": "^3.6.4",
