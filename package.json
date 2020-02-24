@@ -1,17 +1,17 @@
 {
   "name": "vuexr",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "VueXR is a Vue plugin that let's you project regular DOM components onto augmented reality (AR) markers in real-time.",
   "main": "./dist/vuexr.js",
   "types": "./dist/src/vuexr.d.ts",
   "files": [
-    "src/**/*.ts",
-    "src/**/*.js",
-    "src/custom.d.ts",
     "components/**/*.vue",
     "dist/*.js",
     "dist/src/*.d.ts",
-    "doc/vuexr_illustration.svg"
+    "src/**/*.js",
+    "src/**/*.ts",
+    "src/custom.d.ts",
+    "vendor/opencv_js.wasm"
   ],
   "scripts": {
     "build": "webpack --config webpack.config.js",
