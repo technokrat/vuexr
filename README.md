@@ -155,10 +155,10 @@ and position tracking. It can contain arbitrarily many `<ar-element>`'s
     * The `timeout` attribute (of type `Number` in milliseconds, default `1000`) sets the time, a `<ar-element>` vanishes
     after it is not detected by the camera anymore
     * **(NOT SUPPORTED)** The `markerSize` attribute (of type `Number` in millimeters, default `50`) sets the size of the respective ArUco
-    marker, for precise projection.
+    marker for accurate projection sizing.
 
 ### Markers
-VueXR can detect **6x6** ArUco markers up to decimal ID `250`. The are quite robust, and encode orientation and identity
+VueXR can detect **6x6** ArUco markers up to decimal ID `250`. They are quite robust, and encode orientation and identity
 in one. Use this [generator webpage](http://chev.me/arucogen/) to print out a marker and stick it onto your toaster!
 
 An `<ar-element>`'s origin is based in the middle of the marker. Use absolute positioning or CSS transforms to correctly
