@@ -25,45 +25,23 @@ To achieve such functionality, VueXR uses *OpenCV.js*, *CSS-Transforms*, *Sensor
 stream from your device's camera. Have a look at our sources or contact me at [mw@technokrat.ch](mailto:mw@technokrat.ch)
 or at https://technokrat.ch
 
-### Inspiration
+## Getting Started
 
-#### Why AR?
+##### TLDR
+1. Install `vuexr` package
+2. `Vue.use(VueXR)`
+3.
+```
+<ar-view>
+  <ar-element :id="23">
+    <div class="hello">Hello World!</div>
+  </ar-element>
+</ar-view>
+```
+4. **Copy the [opencv_js.wasm](./vendor/opencv_js.wasm) and [worker.js](./dist/worker.js) file to your static/public server folder (where your deployed *index.html* is located).**
+5. **Access your application in a [secure context](https://w3c.github.io/webappsec-secure-contexts/) via HTTPS or `localhost` (e.g. doing port-forwarding)**
 
-##### Industry
-Imagine, you could wander through an industrial hall with your smartphone, and directly see real-time sensor readouts
-hovering in 3D over the machinery. With a simple touch press you then open up a detailed view.
-
-You do not have to scroll through infinite pages of SCADA units on your computer in search for the specific machinery –
-You are now directly linked via the physical entity itself.
-
-Leaving you more ease-of-access, you benefit from less cognitive demand, so you can do your job more efficient.
-Maybe you can even identify a failing component in advance, saving your company a lot.
-
-##### Home Entertainment
-You are a small company offering custom upper-class smarthome & home entertainment solutions. You want to offer your customers a custom
-User Interface with next-generation features. With VueXR you can combine many already-existing web-solutions into one surface. No problem for VueXR!
-
-#### Why VueXR?
-Conventional AR requires a lot of expertise in building native smartphone applications for a multitude of platforms,
-requiring hard to get specialists.
-
-For small and large businesses this poses a very large financial and personnel undertaking, while having bad time to market performance.
-
-In contrast, VueXR allows you to prototype a solution in no time, by leveraging the ease, accessibility, and mutli-platform
-capabilities of modern web technologies, as well as your existing web codebase: You only have to write your code once!
-
-
-#### Why [Technokrat](https://technokrat.ch)?
-[Technokrat](https://technokrat.ch) is a full-stack engineering service by ETH-alumni in Zurich, Switzerland, and is the maintainer behind VueXR.
-
-Our strength lies in the combination of research, electronics design, firmware, IoT, computer engineering, manufacturing,
-and **software development**.
-
-We can offer you a one-stop experience in upgrading (legacy) setups to AR, or start from the beginning, and consult you and your team
-in bootstraping and selecting the best competitive solution. We also integrate Web-APIs directly into your existing software (such as REST, GraphQL, SOAP, Swagger, etc.). Just give us a call and we support you with a **workshop or MVP in just under six weeks**.
-
-
-### Getting Started
+##### Elaborate
 
 First install the `vuexr` npm package.
 
@@ -126,8 +104,9 @@ Add the following inside your preferred component (e.g. *App.vue*)
 </style>
 ```
 
-You need to copy the [opencv_js.wasm](./vendor/opencv_js.wasm) and [worker.js](./dist/worker.js) file to your static/public
-folder (where your deployed *index.html* is located).
+Last but not least, **you need to copy the [opencv_js.wasm](./vendor/opencv_js.wasm) and [worker.js](./dist/worker.js) file to your static/public server folder (where your deployed *index.html* is located).**
+
+The following is an excerpt of how to do this automatically with `vue.config.js` based on Webpack:
 
 ```javascript
 // vue.config.js
@@ -156,8 +135,8 @@ module.exports = {
 
 See the [demo.webpack.config.js](./demo.webpack.config.js) for further inspiration.
 
-You are now ready to test the application with a smartphone. Remember that you have to connect via `HTTPS` or
-`localhost` for VueXR to work. Accept the camera permission request.
+You are now ready to test the application with a smartphone. **Remember that you have to connect in a [secure context](https://w3c.github.io/webappsec-secure-contexts/) via `HTTPS` or
+`localhost` (e.g. by using the `chrome://inspect` port-forwarding feature) for VueXR to work. Accept the camera's permission request.
 
 #### Calibration
 For each new device we first need to calibrate the camera (i.e. automatically calculate the focal length), to project our
@@ -267,3 +246,40 @@ If you are interested in supporting this project contact me at [mw@technokrat.ch
 Copyright (c) 2020. Markus Wegmann, [Technokrat LLC](https://technokrat.ch).
 
 Technokrat LLC and the developers of VueXR are not liable for any damages in relation to the use or installment of VueXR.
+
+## Inspiration
+
+### Why AR?
+
+#### Industry
+Imagine, you could wander through an industrial hall with your smartphone, and directly see real-time sensor readouts
+hovering in 3D over the machinery. With a simple touch press you then open up a detailed view.
+
+You do not have to scroll through infinite pages of SCADA units on your computer in search for the specific machinery –
+You are now directly linked via the physical entity itself.
+
+Leaving you more ease-of-access, you benefit from less cognitive demand, so you can do your job more efficient.
+Maybe you can even identify a failing component in advance, saving your company a lot.
+
+#### Home Entertainment
+You are a small company offering custom upper-class smarthome & home entertainment solutions. You want to offer your customers a custom
+User Interface with next-generation features. With VueXR you can combine many already-existing web-solutions into one surface. No problem for VueXR!
+
+### Why VueXR?
+Conventional AR requires a lot of expertise in building native smartphone applications for a multitude of platforms,
+requiring hard to get specialists.
+
+For small and large businesses this poses a very large financial and personnel undertaking, while having bad time to market performance.
+
+In contrast, VueXR allows you to prototype a solution in no time, by leveraging the ease, accessibility, and mutli-platform
+capabilities of modern web technologies, as well as your existing web codebase: You only have to write your code once!
+
+
+### Why [Technokrat](https://technokrat.ch)?
+[Technokrat](https://technokrat.ch) is a full-stack engineering service by ETH-alumni in Zurich, Switzerland, and is the maintainer behind VueXR.
+
+Our strength lies in the combination of research, electronics design, firmware, IoT, computer engineering, manufacturing,
+and **software development**.
+
+We can offer you a one-stop experience in upgrading (legacy) setups to AR, or start from the beginning, and consult you and your team
+in bootstraping and selecting the best competitive solution. We also integrate Web-APIs directly into your existing software (such as REST, GraphQL, SOAP, Swagger, etc.). Just give us a call and we support you with a **workshop or MVP in just under six weeks**.
