@@ -52,7 +52,7 @@ npm install vuexr
 # yarn add vuexr
 ```
 
-Then add `VueXR` to your index.ts (or index.ts)
+Then add `VueXR` to your index.js (or index.ts)
 
 ```javascript
 import Vue from 'vue';
