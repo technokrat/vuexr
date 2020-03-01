@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="icon.svg"
+   inkscape:version="1.0beta2 (368ca91, 2020-02-26)"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 190.27162 199.76938"
+   height="199.76938mm"
+   width="190.27162mm">
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linear-gradient"
+       x1="374.8812"
+       y1="1153.5903"
+       x2="686.35248"
+       y2="647.00427"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0.191"
+         stop-color="#f2f2f2"
+         id="stop10" />
+      <stop
+         offset="0.2747"
+         stop-color="#b3b3b3"
+         id="stop12" />
+      <stop
+         offset="0.4359"
+         stop-color="#b9b9b9"
+         id="stop14" />
+      <stop
+         offset="0.6531"
+         stop-color="#cacaca"
+         id="stop16" />
+      <stop
+         offset="0.8994"
+         stop-color="#e6e6e6"
+         id="stop18" />
+    </linearGradient>
+    <clipPath
+       id="clip-path">
+      <polygon
+         points="634.078,976.729 738.124,909.416 737.161,1024.128 633.115,1091.441 "
+         style="fill:none"
+         id="polygon21" />
+    </clipPath>
+    <linearGradient
+       id="linear-gradient-2"
+       x1="271.61389"
+       y1="960.6651"
+       x2="1032.3094"
+       y2="1297.4104"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#fff"
+         stop-opacity="0"
+         id="stop24" />
+      <stop
+         offset="1"
+         stop-color="#009245"
+         stop-opacity="0.3"
+         id="stop26" />
+    </linearGradient>
+    <linearGradient
+       id="linear-gradient-3"
+       x1="109.6139"
+       y1="898.6651"
+       x2="870.30951"
+       y2="1235.4104"
+       gradientUnits="userSpaceOnUse">
+      <stop
+         offset="0"
+         stop-color="#fff"
+         stop-opacity="0"
+         id="stop29" />
+      <stop
+         offset="1"
+         stop-color="#1b1464"
+         stop-opacity="0.32"
+         id="stop31" />
+    </linearGradient>
+    <mask
+       id="mask"
+       x="1031.0804"
+       y="1130.4894"
+       width="179.0166"
+       height="454.051"
+       maskUnits="userSpaceOnUse">
+      <path
+         inkscape:connector-curvature="0"
+         d="m 1205.3091,1131.0328 -155.525,98.4363 a 3.5943,3.5943 0 0 0 -1.6865,2.997 v 349.0959 a 2.9132,2.9132 0 0 0 3.2238,2.9665 3.4736,3.4736 0 0 0 1.6322,-0.5736 l 155.525,-103.3408 a 3.5865,3.5865 0 0 0 1.6183,-2.9593 v -344.1915 a 2.92,2.92 0 0 0 -3.23,-2.962 3.44,3.44 0 0 0 -1.5578,0.5315 z"
+         style="fill:#ffffff"
+         id="path34" />
+    </mask>
+    <linearGradient
+       id="linear-gradient-4"
+       x1="1088.0487"
+       y1="1483.2458"
+       x2="1179.0868"
+       y2="1335.1788"
+       xlink:href="#linear-gradient" />
+    <clipPath
+       id="clip-path-2">
+      <polygon
+         points="1051.579,1239.262 1202.138,1144.89 1202.56,1164.921 1052.001,1259.293 "
+         style="fill:none"
+         id="polygon38" />
+    </clipPath>
+    <clipPath
+       id="clip-path-3">
+      <polygon
+         points="1163.082,1433.313 1194.398,1413.053 1194.108,1447.579 1162.792,1467.839 "
+         style="fill:none"
+         id="polygon41" />
+    </clipPath>
+    <clipPath
+       id="clip-path-4">
+      <polygon
+         points="267.753,298.371 816.656,-10.348 830.453,499.924 281.55,808.643 "
+         style="fill:none"
+         id="polygon44" />
+    </clipPath>
+    <clipPath
+       id="clip-path-5">
+      <polygon
+         points="1059.192,1284.066 1193.857,1208.3 1193.065,1304.896 1058.401,1380.662 "
+         style="fill:none"
+         id="polygon47" />
+    </clipPath>
+    <clipPath
+       id="clip-path-6">
+      <polygon
+         points="385.509,1594.58 870.075,1322.047 875.561,1524.941 390.995,1797.474 "
+         style="fill:none"
+         id="polygon50" />
+    </clipPath>
+  </defs>
+  <sodipodi:namedview
+     inkscape:window-maximized="0"
+     inkscape:window-y="190"
+     inkscape:window-x="190"
+     inkscape:window-height="1263"
+     inkscape:window-width="1481"
+     fit-margin-bottom="0"
+     fit-margin-right="0"
+     fit-margin-left="0"
+     fit-margin-top="0"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="Layer_2"
+     inkscape:document-units="mm"
+     inkscape:cy="465.9469"
+     inkscape:cx="386.32239"
+     inkscape:zoom="0.98994949"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-9.3158529,0.89754942)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Ebene 1">
+    <g
+       transform="matrix(0.13661118,0,0,0.13661118,30.96629,19.228123)"
+       id="Layer_2"
+       data-name="Layer 2">
+      <g
+         transform="matrix(2.5822847,0,0,-2.5822847,232.6061,1071.5025)"
+         id="g699">
+        <g
+           transform="translate(178.06,235.01)"
+           id="g693">
+          <path
+             inkscape:connector-curvature="0"
+             d="M 0,0 -22.669,-39.264 -45.338,0 h -75.491 L -22.669,-170.02 75.491,0 Z"
+             fill="#41b883"
+             id="path691" />
+        </g>
+        <g
+           transform="translate(178.06,235.01)"
+           id="g697">
+          <path
+             inkscape:connector-curvature="0"
+             d="M 0,0 -22.669,-39.264 -45.338,0 H -81.565 L -22.669,-102.01 36.227,0 Z"
+             fill="#34495e"
+             id="path695" />
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
