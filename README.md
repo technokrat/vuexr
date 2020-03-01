@@ -194,18 +194,6 @@ If you need to determine dynamically whether your client supports VueXR before a
 
   export default App;
 </script>
-
-<style>
-  .hello {
-    position: absolute;
-    box-sizing: border-box;
-    width: 50px;
-    height: 50px;
-    background: rgba(255,255,255,0.9);
-    padding: 10px;
-    font-size: 10px;
-  }
-</style>
 ```
 
 ### Markers
