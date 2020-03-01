@@ -93,9 +93,9 @@ export default class Session {
     }
   }
 
-  run () {
-    this.feed.run();
-    this.motion.run();
+  async run () {
+    await this.feed.run();
+    await this.motion.run();
   }
 
   pause () {

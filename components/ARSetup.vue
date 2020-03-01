@@ -2,6 +2,10 @@
   <div class="setup">
     <div v-if="status">
       <div class="close-button" @click="close">×</div>
+      <div v-if="showCalibrationHint">
+
+      </div>
+      <div v-else>
       <h2 class="title">AR Setup</h2>
       <div class="status-line">
         Video
@@ -10,7 +14,10 @@
       </div>
       <select class="camera-selection" style="margin-top: 5px" v-model="selected" @change="this.selectCamera">
         <option disabled value="">Please select a Camera</option>
-        <option v-for="item in availableCameras" :value="item.deviceId">{{item.label}}</option>
+        <option v-for="item in availableCameras" :value="item.deviceId">
+          <span v-if="item.label">{{item.label}}</span>
+          <span v-else>{{item.deviceId}}</span>
+        </option>
       </select>
       <hr>
       <div class="status-line">
@@ -38,6 +45,7 @@
       </div>
       <div v-if="this.status.calibration.calibrated" style="margin-top: 20px; text-align: center;">
         <button class="reset-button" @click="this.reset">Reset</button>
+      </div>
       </div>
     </div>
   </div>
@@ -89,8 +97,7 @@
     box-sizing: border-box;
     max-width: 100%;
     width: 300px;
-    min-height: 360px;
-    padding: 10px 20px;
+    padding: 10px 20px 30px 20px;
     background-color: rgba(255,255,255,0.8);
     backdrop-filter: blur(5px);
     border-radius: 4px;

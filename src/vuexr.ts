@@ -36,6 +36,16 @@ export class VueXR {
     this.sessions[name].pause();
     delete this.sessions[name];
   }
+
+  async supported() {
+    if (navigator.mediaDevices) {
+      const streams = (await navigator.mediaDevices.enumerateDevices()).filter(stream => stream.kind === 'videoinput');
+
+      return !!streams.length;
+    }
+
+    return false;
+  }
 }
 
 // Automatic installation if Vue has been added to the global scope.

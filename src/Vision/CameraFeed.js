@@ -96,34 +96,48 @@ export default class CameraFeed {
   }
 
   async run() {
-    try {
-      if (this.feedStatus.selected) {
-        this.mediaStream = await navigator.mediaDevices.getUserMedia({video: { deviceId: this.feedStatus.selected }})
-      } else {
-        this.mediaStream = await navigator.mediaDevices.getUserMedia(this.options.constraints);
+      try {
+        if (this.feedStatus.selected) {
+          this.mediaStream = await navigator.mediaDevices.getUserMedia({video: { deviceId: this.feedStatus.selected }})
+        } else {
+          this.mediaStream = await navigator.mediaDevices.getUserMedia(this.options.constraints);
+        }
+
+        this.track = this.mediaStream.getVideoTracks()[0];
+        this.feedStatus.selected = this.track.getSettings().deviceId;
+        this.storeCamera();
+
+        const available = await this.listAvailable();
+        const selected = this.loadCamera();
+        this.feedStatus = {
+          error: null,
+          available,
+          selected
+        }
+
+        this.session.eventCallback({name: 'statusChanged'});
+
+        this.session.calibration.loadCameraCalibration();
+
+        this.imageCapture = new ImageCapture(this.track);  // https://developer.mozilla.org/en-US/docs/Web/API/ImageCapture
+
+        this.videoElement.srcObject = this.mediaStream;
+
+        await new Promise((resolve, reject) => {
+          this.videoElement.onloadedmetadata = (e) => {
+            this.videoElement.play();
+            this.session.canvas.width = this.videoElement.videoWidth;
+            this.session.canvas.height = this.videoElement.videoHeight;
+
+            resolve();
+
+            this.loop()
+          };
+        })
       }
-
-      this.track = this.mediaStream.getVideoTracks()[0];
-      this.feedStatus.selected = this.track.getSettings().deviceId;
-      this.storeCamera();
-      this.session.eventCallback({name: 'statusChanged'});
-
-      this.session.calibration.loadCameraCalibration();
-
-      this.imageCapture = new ImageCapture(this.track);  // https://developer.mozilla.org/en-US/docs/Web/API/ImageCapture
-
-      this.videoElement.srcObject = this.mediaStream;
-      this.videoElement.onloadedmetadata = (e) => {
-        this.videoElement.play();
-        this.session.canvas.width = this.videoElement.videoWidth;
-        this.session.canvas.height = this.videoElement.videoHeight;
-
-        this.loop()
-      };
-    }
-    catch (e) {
-      console.log(e)
-    }
+      catch (e) {
+        console.log(e)
+      }
   }
 
   loop() {

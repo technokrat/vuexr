@@ -31,9 +31,6 @@
         this.show = !this.show;
       }
     },
-    beforeMount() {
-      console.log(this.$options.vuexr)
-    }
   });
 
   export default App;
