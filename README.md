@@ -7,7 +7,7 @@
 
 VueXR is a Vue plugin that let's you project regular DOM components onto **augmented reality** (AR) markers in real-time.
 
-It is just as easy as:
+See the official demo at [vuexr.technokrat.ch](https://vuexr.technokrat.ch). It is just as easy as:
 
 ```html
 <ar-view>
@@ -256,7 +256,9 @@ component inside your Vue application. It will show an embedded image of the che
 
 
 ## Demo
-Clone this repository and run
+See the official demo at [vuexr.technokrat.ch](https://vuexr.technokrat.ch)
+
+Or clone this repository and run
 
 ```sh
 yarn install
@@ -264,14 +266,13 @@ yarn run demo:serve
 ```
 
 You can now access a demo application of VueXR under `http://localhost:9000`. To see some AR-content point your camera
-onto AruCo markers with ID `23` and `50`.
+onto the AruCo marker with ID `42`.
 
 ## Contribution
 ### Future Work
 * Compile OpenCV.js with WebAssembly SIMD support
-* Move calibration to web worker
-* Rewrite JS to TypeScript and code cleanup
-* Documentation and Webpage (incl. Demo)
+* Rewrite JS to TypeScript and cleanup code
+* Elaborate documentation on website
 * More responsive position tracking
 * DOM-Rendering in WebXR API
 * Marker Scheme ID Attributes (allowing for future proof support of other marker systems)

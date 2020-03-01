@@ -167,7 +167,7 @@
   .setup-container {
     position: absolute;
     z-index: 5;
-    top: calc(50% - 180px);
+    top: max(calc(50% - 180px), 10px);
     left: calc(50% - 150px);
   }
 

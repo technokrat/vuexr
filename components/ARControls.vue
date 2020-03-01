@@ -58,13 +58,10 @@
     background-color: rgba(255,255,255,0.8);
   }
 
-
   .capture-image {
     background-color: rgba(255,0,0,0.8);
     color: white;
-
-    border: 1px solid red; /* some kind of blue border */
-    box-shadow: 0px 0px 4px rgba(255,64,64,1);
+    box-shadow: 0 0 4px rgba(255,64,64,1);
   }
 
   .capture-image:disabled {

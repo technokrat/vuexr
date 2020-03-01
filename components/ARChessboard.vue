@@ -1,5 +1,5 @@
 <template>
-  <img :src="pattern" style="width: 100%;">
+  <img :src="pattern" style="max-width: 100%; max-height: 60vh">
 </template>
 
 <script>

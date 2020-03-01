@@ -111,8 +111,10 @@
     position: relative;
     box-sizing: border-box;
     max-width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
     width: 300px;
-    padding: 10px 20px 30px 20px;
+    padding: 10px 20px 20px 20px;
     background-color: rgba(255,255,255,0.8);
     backdrop-filter: blur(5px);
     border-radius: 4px;
@@ -148,6 +150,7 @@
     padding: 10px 15px;
     margin-bottom: 5px;
     cursor: pointer;
+    border: none;
   }
 
   button:focus {
