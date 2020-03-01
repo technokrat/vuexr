@@ -5,7 +5,7 @@
 <script>
   import Vue from "vue";
 
-  import pattern from '../vendor/pattern.png'
+  import pattern from '../src/Vision/chessboard'
 
   const ARChessboard = Vue.extend({
     data: function () {

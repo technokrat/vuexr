@@ -9,7 +9,7 @@ module.exports = [
       vuexr: './src/vuexr.ts',
     },
     resolve:  {
-      extensions: ['.ts', '.js', '.json']
+      extensions: ['.ts', '.js', '.json', '.png']
     },
     externals: {
       vue: 'vue',

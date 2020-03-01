@@ -11,7 +11,8 @@
     "src/**/*.js",
     "src/**/*.ts",
     "src/custom.d.ts",
-    "vendor/opencv_js.wasm"
+    "vendor/opencv_js.wasm",
+    "vendor/pattern.png"
   ],
   "scripts": {
     "build": "webpack --config webpack.config.js",

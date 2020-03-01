@@ -140,7 +140,7 @@ You are now ready to test the application with a smartphone. **Remember that you
 
 #### Calibration
 For each new device we first need to calibrate the camera (i.e. automatically calculate the focal length), to project our
-DOM elements with the correct perspective. Just open [this chessboard pattern](./vendor/pattern.png) on a different
+DOM elements with the correct perspective. Just display [this chessboard pattern](./vendor/pattern.png) on a different
 screen, and try to fit all chessboard fields into the camera's view. VueXR will highlight the chessboard's intersection
 points. Press the red *Capture Frame* button, and repeat this around eight times for different perspectives. Press the
 *Calibrate* button when you are finished. You are now ready to detect the ArUco markers.
@@ -148,7 +148,7 @@ points. Press the red *Capture Frame* button, and repeat this around eight times
 ## Usage
 
 ### Performance
-You have to use a state of the smartphone plattform, such as a Xiaomi 20K / 9T Pro with MIUI 11, as computer vision takes it's fair share of processing power.
+You have to use a state of the smartphone device, such as a Xiaomi 20K / 9T Pro with MIUI 11, as computer vision takes it's fair share of processing power.
 
 ### General
 In general, you only require two new components to use VueXR
@@ -161,6 +161,52 @@ and position tracking. It can contain arbitrarily many `<ar-element>`'s
     after it is not detected by the camera anymore
     * **(NOT SUPPORTED)** The `markerSize` attribute (of type `Number` in millimeters, default `50`) sets the size of the respective ArUco
     marker for accurate projection sizing.
+
+#### Check support
+
+If you need to determine dynamically whether your client supports VueXR before a session is established, use the
+`$vuexr.supported()` promise. E.g. you could write:
+
+```vue
+<template>
+    <ar-view v-if="supported">
+        // …
+    </ar-view>
+</template>
+
+<script>
+  import Vue from 'vue'
+
+  const App = Vue.extend({
+    data () {
+      return {
+        supported: false
+      }
+    },
+    mounted () {
+      this.$vuexr.supported().then((supported) => {
+        this.supported = supported;
+      }).catch(() => {
+        this.supported = false;
+      })
+    }
+  });
+
+  export default App;
+</script>
+
+<style>
+  .hello {
+    position: absolute;
+    box-sizing: border-box;
+    width: 50px;
+    height: 50px;
+    background: rgba(255,255,255,0.9);
+    padding: 10px;
+    font-size: 10px;
+  }
+</style>
+```
 
 ### Markers
 VueXR can detect **6x6** ArUco markers up to decimal ID `250`. They are quite robust, and encode orientation and identity
@@ -215,6 +261,11 @@ write
 
 ### Sizing
 One *millimeter* (*mm*) in real-world matches one *pixel* (*`px`*) in your `<ar-element>`, plain and simple.
+
+### Calibration Pattern
+Display [this chessboard pattern](./vendor/pattern.png) manually on a different screen, or use the `<ar-chessboard>`
+component inside your Vue application. It will show an embedded image of the chessboard pattern.
+
 
 ## Demo
 Clone this repository and run

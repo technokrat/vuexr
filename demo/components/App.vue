@@ -13,6 +13,7 @@
         </div>
       </ar-element>
     </ar-view>
+    <ar-chessboard></ar-chessboard>
 <!--    <button @click="this.toggle">Toggle</button>-->
   </div>
 </template>
