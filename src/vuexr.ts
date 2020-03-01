@@ -2,6 +2,7 @@ import _Vue from "vue";
 
 import ARView from '../components/ARView.vue';
 import ARElement from "../components/ARElement.vue";
+import ARChessboard from "../components/ARChessboard.vue";
 import Session from "./Vision/Session";
 
 export class VueXR {
@@ -9,8 +10,9 @@ export class VueXR {
   static install (Vue: typeof _Vue, options?: any) {
     Vue.component('ar-view', ARView);
     Vue.component('ar-element', ARElement);
+    Vue.component('ar-chessboard', ARChessboard);
     const vuexr = new VueXR();
-    Vue.prototype.$vuexr = vuexr
+    Vue.prototype.$vuexr = vuexr;
     Object.defineProperties(Vue.prototype, {
       $vuexr: {
         get() {

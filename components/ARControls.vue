@@ -1,8 +1,8 @@
 <template>
   <div class="controls">
       <div v-if="this.status">
-        <button v-if="!this.status.calibration.calibrated" :disabled="!this.status.calibration.captureReady" class="capture-image" v-on:click="captureCalibrationPoints">Capture Frame</button>
-        <button v-if="!this.status.calibration.calibrated" :disabled="!this.status.calibration.captures" v-on:click="calibrate">
+        <button v-if="!this.status.calibration.calibrated" :disabled="!this.status.calibration.captureReady" class="capture-image" v-on:click="captureCalibrationPoints">Capture</button>
+        <button v-if="!this.status.calibration.calibrated" :disabled="this.status.calibration.captures < 5" v-on:click="calibrate">
           <span v-if="!this.status.calibration.calibrated">Calibrate</span>
           <span v-else>Recalibrate</span>
         </button>
@@ -62,10 +62,15 @@
   .capture-image {
     background-color: rgba(255,0,0,0.8);
     color: white;
+
+    border: 1px solid red; /* some kind of blue border */
+    box-shadow: 0px 0px 4px rgba(255,64,64,1);
   }
 
   .capture-image:disabled {
-    background-color: rgba(156, 0, 0, 0.6);
+    background-color: rgba(128, 0, 0, 0.6);
+    border: none; /* some kind of blue border */
+    box-shadow: none;
     color: #ccc;
   }
 

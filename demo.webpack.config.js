@@ -9,7 +9,7 @@ module.exports = {
     worker: './src/worker.js'
   },
   resolve:  {
-    extensions: ['.ts', '.js', '.json']
+    extensions: ['.ts', '.js', '.json', '.png']
   },
   output: {
     filename: '[name].js',
