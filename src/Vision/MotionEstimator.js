@@ -144,31 +144,61 @@ export default class MotionEstimator {
         // Handle construction errors.
         if (error.name === 'SecurityError') {
           this.motionStatus = {
-            error: 'Permission denied'
+            acceleration: {
+              error: 'Permission denied',
+            },
+            gyro: {
+              error: 'Permission denied',
+            }
           }
         } else if (error.name === 'ReferenceError') {
           this.motionStatus = {
-            error: 'Sensor is not supported by the User Agent.'
+            acceleration: {
+              error: 'Sensor is not supported by the User Agent.',
+            },
+            gyro: {
+              error: 'Sensor is not supported by the User Agent.',
+            }
           }
         } else {
-          throw error;
+          this.motionStatus = {
+            acceleration: {
+              error: error,
+            },
+            gyro: {
+              error: error,
+            }
+          }
         }
       }
     } else {
       this.motionStatus = {
-        error: "NotSupported"
+        acceleration: {
+          error: "NotSupported"
+        },
+        gyro: {
+          error: "NotSupported"
+        }
       }
     }
   }
 
   run () {
-    this.orientationSensor.start();
-    this.accelerometer.start();
+    if (this.orientationSensor) {
+      this.orientationSensor.start();
+    }
+    if (this.accelerometer) {
+      this.accelerometer.start();
+    }
   }
 
   stop () {
-    this.orientationSensor.stop();
-    this.accelerometer.stop();
+    if (this.orientationSensor) {
+      this.orientationSensor.stop();
+    }
+    if (this.accelerometer) {
+      this.accelerometer.stop();
+    }
   }
 
   getOffsetMatrix(referenceTransform) {

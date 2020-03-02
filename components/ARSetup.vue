@@ -33,13 +33,13 @@
         <hr>
         <div class="status-line">
           Accelerometer
-          <span v-if="this.status.motion.acceleration.error" class="status-value" :title="this.status.motion.acceleration.error">⚠</span>
+          <span v-if="this.status.motion && this.status.motion.acceleration.error" class="status-value" :title="this.status.motion.acceleration.error">⚠</span>
           <span v-else class="status-value">✓</span>
         </div>
         <hr>
         <div class="status-line">
           Gyroscope
-          <span v-if="this.status.motion.gyro.error" class="status-value" :title="this.status.motion.gyro.error">⚠</span>
+          <span v-if="this.status.motion && this.status.motion.gyro.error" class="status-value" :title="this.status.motion.gyro.error">⚠</span>
           <span v-else class="status-value">✓</span>
         </div>
         <hr>
@@ -97,7 +97,7 @@
       }
     },
     mounted () {
-      this.selected = this.session.feed.feedStatus.selected
+      this.selected = this.session.feed.feedStatus.selected;
     },
     updated() {
       this.selected = this.session.feed.feedStatus.selected;

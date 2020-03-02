@@ -40,7 +40,8 @@ export class VueXR {
   }
 
   async supported() {
-    if (navigator.mediaDevices) {
+    // @ts-ignore
+    if (navigator.mediaDevices && window.ImageCapture) {
       const streams = (await navigator.mediaDevices.enumerateDevices()).filter(stream => stream.kind === 'videoinput');
 
       return !!streams.length;
