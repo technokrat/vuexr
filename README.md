@@ -7,6 +7,8 @@
 
 VueXR is a Vue plugin that let's you project regular DOM components onto **augmented reality** (AR) markers in real-time.
 
+Works on Chrome 79+
+
 See the official demo at [vuexr.technokrat.ch](https://vuexr.technokrat.ch). It is just as easy as:
 
 ```html
