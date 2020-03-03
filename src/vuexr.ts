@@ -39,15 +39,34 @@ export class VueXR {
     delete this.sessions[name];
   }
 
-  async supported() {
-    // @ts-ignore
-    if (navigator.mediaDevices && window.ImageCapture) {
-      const streams = (await navigator.mediaDevices.enumerateDevices()).filter(stream => stream.kind === 'videoinput');
+  async check() {
+    if (window.isSecureContext) {
+      // @ts-ignore
+      if (navigator.mediaDevices && window.ImageCapture) {
+        const streams = (await navigator.mediaDevices.enumerateDevices()).filter(stream => stream.kind === 'videoinput');
 
-      return !!streams.length;
+        if (streams.length) {
+          return {
+            supported: true,
+            error: null
+          }
+        } else {
+          return {
+            supported: false,
+            error: 'No camera is connected.'
+          }
+        }
+      }
+      return {
+        supported: false,
+        error: 'MediaDevices and/or ImageCapture API not supported.'
+      };
+    } else {
+      return {
+        supported: false,
+        error: 'You are not in a secure connection. Is HTTPS enabled?'
+      };
     }
-
-    return false;
   }
 }
 

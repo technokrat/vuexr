@@ -167,7 +167,7 @@ and position tracking. It can contain arbitrarily many `<ar-element>`'s
 #### Check support
 
 If you need to determine dynamically whether your client supports VueXR before a session is established, use the
-`$vuexr.supported()` promise. E.g. you could write:
+`$vuexr.check()` promise. E.g. you could write:
 
 ```vue
 <template>
@@ -186,7 +186,7 @@ If you need to determine dynamically whether your client supports VueXR before a
       }
     },
     mounted () {
-      this.$vuexr.supported().then((supported) => {
+      this.$vuexr.check().then(({supported, error}) => {
         this.supported = supported;
       }).catch(() => {
         this.supported = false;
