@@ -28,17 +28,25 @@ export default class CameraFeed {
   }
 
   async init () {
-    try {
-      const available = await this.listAvailable();
-      const selected = this.loadCamera();
-      this.feedStatus = {
-        error: null,
-        available,
-        selected
+    if (navigator.mediaDevices && ImageCapture) {
+      try {
+        const available = await this.listAvailable();
+        const selected = this.loadCamera();
+        this.feedStatus = {
+          error: null,
+          available,
+          selected
+        }
+      } catch (e) {
+        this.feedStatus = {
+          error: e,
+          available: [],
+          selected: null
+        }
       }
-    } catch (e) {
+    } else {
       this.feedStatus = {
-        error: e,
+        error: 'mediaDevices and/or ImageCapture API not supported!',
         available: [],
         selected: null
       }

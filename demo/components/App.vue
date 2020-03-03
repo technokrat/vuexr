@@ -29,18 +29,21 @@
           </div>
         </div>
         <div class="view" v-else-if="this.step === 'view'">
-          <!-- Here happens the magic! -->
-          <ar-view class="supported" v-if="supported">
-            <ar-element :id="42" v-slot:="{tracked}">
-              <div class="hello">
-                <h1 class="title">Vue<strong>XR</strong> says hello!</h1>
-                <p>Embed <strong>any</strong> DOM element in augmented reality.</p>
-                <div style="position: absolute; bottom: 0; right: 10px;">
-                  <p><small>Powered by <img src="../assets/technokrat_banner.svg" style="height: 9px; display: inline-block; vertical-align: middle;"></small></p>
+          <div v-if="supported" class="supported">
+            <!-- The magic happens here! -->
+            <ar-view>
+              <ar-element :id="42" v-slot:="{tracked}">
+                <div class="hello">
+                  <h1 class="title">Vue<strong>XR</strong> says hello!</h1>
+                  <p>Embed <strong>any</strong> DOM element in augmented reality.</p>
+                  <div style="position: absolute; bottom: 0; right: 10px;">
+                    <p><small>Powered by <img src="../assets/technokrat_banner.svg" style="height: 9px; display: inline-block; vertical-align: middle;"></small></p>
+                  </div>
                 </div>
-              </div>
-            </ar-element>
-          </ar-view>
+              </ar-element>
+            </ar-view>
+            <a class="back-button" href="" @click.prevent="step = 'selection'">Back</a>
+          </div>
           <div class="not-supported" v-else>
             <h2>Not supported!</h2>
             <p>Augmented Reality is <strong>not</strong> supported on this device. Do you have a camera?</p>
@@ -247,7 +250,20 @@
   }
 
   .demo > .view > .supported {
+    position: relative;
     height: 80vh;
+  }
+
+  .demo > .view > .supported > .back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(255,255,255,0.8);
+    padding: 8px;
+    border-radius: 2px;
+
+    text-decoration: none;
+    color: #333333;
   }
 
   .demo > .calibration {

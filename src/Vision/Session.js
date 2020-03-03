@@ -17,6 +17,15 @@ export default class Session {
     this.workerStatus = {error: null, initialized: false};
     this.eventCallback = null;
 
+    this.focusEventRegistration = () => {
+      this.feed.run().then(() => this.motion.run());
+    };
+
+    this.blurEventRegistration = () => {
+      this.feed.stop();
+      this.motion.stop();
+    };
+
     this.setup = {
       show: true
     }
@@ -96,11 +105,18 @@ export default class Session {
   async run () {
     await this.feed.run();
     await this.motion.run();
+
+    window.addEventListener('focus', this.focusEventRegistration);
+    window.addEventListener('blur', this.blurEventRegistration);
   }
 
   pause () {
     this.feed.stop();
     this.motion.stop();
+
+    window.removeEventListener('focus', this.focusEventRegistration);
+    window.removeEventListener('blur', this.blurEventRegistration);
+
   }
 
   calibrate() {
