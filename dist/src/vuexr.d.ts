@@ -5,5 +5,11 @@ export declare class VueXR {
     constructor();
     requestSession(name?: string): any;
     removeSession(name?: string): void;
-    supported(): Promise<boolean>;
+    check(): Promise<{
+        supported: boolean;
+        error: null;
+    } | {
+        supported: boolean;
+        error: string;
+    }>;
 }
