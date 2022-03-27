@@ -3,7 +3,7 @@
     <div class="ar-view">
       <canvas class="ar-canvas" ref="canvas"></canvas>
       <div class="elements" ref="elements">
-        <slot></slot>
+        <slot v-if="this.status && this.status.calibration.calibrated"></slot>
       </div>
     </div>
     <div @click="this.openSetup" class="setup-button">

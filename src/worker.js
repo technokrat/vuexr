@@ -1,4 +1,4 @@
-import cv from '../vendor/opencv.js';
+import cv_lib from '../vendor/opencv/build_simd/opencv';
 
 const ARUCO_SIZE = 50; // mm
 
@@ -7,15 +7,18 @@ const CHESSBOARD_WIDTH = 9;
 const CHESSBOARD_HEIGHT = 6;
 
 class CVProcessor {
+
   constructor() {
     this.initialized = false;
 
-    cv['onRuntimeInitialized'] = () => {
-      this.dict = new cv.aruco_Dictionary(cv.DICT_6X6_250);
+    cv_lib.then((cv) => {
+      this.cv = cv;
+      console.log(this.cv);
+      this.dict = new this.cv.aruco_Dictionary(this.cv.DICT_6X6_250);
 
       this.constructChessboardCoordinates();
-      this.calibrationImagePoints = new cv.MatVector();
-      this.calibrationObjectPoints = new cv.MatVector();
+      this.calibrationImagePoints = new this.cv.MatVector();
+      this.calibrationObjectPoints = new this.cv.MatVector();
 
       this.initialized = true;
       console.log("Initialized OpenCV inside worker.js");
@@ -23,7 +26,7 @@ class CVProcessor {
       postMessage({
         operation: 'WORKER_READY',
       });
-    };
+    });
   }
 
   constructChessboardCoordinates() {
@@ -37,40 +40,40 @@ class CVProcessor {
       }
     }
 
-    this.chessboardPoints = cv.matFromArray(CHESSBOARD_WIDTH * CHESSBOARD_HEIGHT, 1, cv.CV_32FC3, points)
+    this.chessboardPoints = this.cv.matFromArray(CHESSBOARD_WIDTH * CHESSBOARD_HEIGHT, 1, this.cv.CV_32FC3, points)
   }
 
   detect(data, highlight = false) {
     const markers = [];
 
     if(this.initialized) {
-      const frame = cv.matFromImageData(data.image);
-      const rbgFrame = new cv.Mat();
-      cv.cvtColor(frame, rbgFrame, cv.COLOR_RGBA2RGB);
+      const frame = this.cv.matFromImageData(data.image);
+      const rbgFrame = new this.cv.Mat();
+      this.cv.cvtColor(frame, rbgFrame, this.cv.COLOR_RGBA2RGB);
 
-      const markerIds = new cv.Mat();
-      const markerCorners = new cv.MatVector();
-      const rvecs = new cv.Mat();
-      const tvecs = new cv.Mat();
+      const markerIds = new this.cv.Mat();
+      const markerCorners = new this.cv.MatVector();
+      const rvecs = new this.cv.Mat();
+      const tvecs = new this.cv.Mat();
 
-      cv.detectMarkers(rbgFrame, this.dict, markerCorners, markerIds);
+      this.cv.detectMarkers(rbgFrame, this.dict, markerCorners, markerIds);
 
       if (markerIds.rows > 0) {
-        const cameraMatrix = cv.matFromArray(3, 3, cv.CV_64FC1, data.calibration.cameraMatrix);
-        const distCoeffs = cv.matFromArray(5, 1, cv.CV_64FC1, data.calibration.distCoeffs);
+        const cameraMatrix = this.cv.matFromArray(3, 3, this.cv.CV_64FC1, data.calibration.cameraMatrix);
+        const distCoeffs = this.cv.matFromArray(5, 1, this.cv.CV_64FC1, data.calibration.distCoeffs);
 
-        cv.estimatePoseSingleMarkers(markerCorners, ARUCO_SIZE, cameraMatrix, distCoeffs, rvecs, tvecs);
+        this.cv.estimatePoseSingleMarkers(markerCorners, ARUCO_SIZE, cameraMatrix, distCoeffs, rvecs, tvecs);
         if (highlight) {
-          cv.drawDetectedMarkers(rbgFrame, markerCorners, markerIds);
+          this.cv.drawDetectedMarkers(rbgFrame, markerCorners, markerIds);
         }
 
         for (let i = 0; i < markerIds.rows; ++i) {
-          let rvec = cv.matFromArray(3, 1, cv.CV_64F, [rvecs.doublePtr(0, i)[0], rvecs.doublePtr(0, i)[1], rvecs.doublePtr(0, i)[2]]);
-          let tvec = cv.matFromArray(3, 1, cv.CV_64F, [tvecs.doublePtr(0, i)[0], tvecs.doublePtr(0, i)[1], tvecs.doublePtr(0, i)[2]]);
+          let rvec = this.cv.matFromArray(3, 1, this.cv.CV_64F, [rvecs.doublePtr(0, i)[0], rvecs.doublePtr(0, i)[1], rvecs.doublePtr(0, i)[2]]);
+          let tvec = this.cv.matFromArray(3, 1, this.cv.CV_64F, [tvecs.doublePtr(0, i)[0], tvecs.doublePtr(0, i)[1], tvecs.doublePtr(0, i)[2]]);
 
-          const rotMat = new cv.Mat(3, 3, cv.CV_64FC1);
+          const rotMat = new this.cv.Mat(3, 3, this.cv.CV_64FC1);
           //Convert rotation vector into rotation matrix
-          cv.Rodrigues(rvec, rotMat);
+          this.cv.Rodrigues(rvec, rotMat);
 
           markers.push({
             id: markerIds.data32S[i],
@@ -82,7 +85,7 @@ class CVProcessor {
           rotMat.delete();
 
           if (highlight) {
-            cv.drawAxis(rbgFrame, this.calibration.cameraMatrix, this.calibration.distCoeffs, rvec, tvec, ARUCO_SIZE);
+            this.cv.drawAxis(rbgFrame, this.calibration.cameraMatrix, this.calibration.distCoeffs, rvec, tvec, ARUCO_SIZE);
           }
 
           rvec.delete();
@@ -108,19 +111,19 @@ class CVProcessor {
   }
 
   findChessBoardCorners(data, highlight = false) {
-    const frame = cv.matFromImageData(data.image);
-    const corners = new cv.Mat();
-    const size = new cv.Size(CHESSBOARD_WIDTH, CHESSBOARD_HEIGHT);
-    const success = cv.findChessboardCorners(frame, size, corners, cv.CALIB_CB_ADAPTIVE_THRESH + cv.CALIB_CB_NORMALIZE_IMAGE);
+    const frame = this.cv.matFromImageData(data.image);
+    const corners = new this.cv.Mat();
+    const size = new this.cv.Size(CHESSBOARD_WIDTH, CHESSBOARD_HEIGHT);
+    const success = this.cv.findChessboardCorners(frame, size, corners, this.cv.CALIB_CB_ADAPTIVE_THRESH + this.cv.CALIB_CB_NORMALIZE_IMAGE);
 
     if (success) {
       if (highlight) {
         for (let i = 0; i < corners.size().height; i++) {
           const x = corners.floatAt(i, 0);
           const y = corners.floatAt(i, 1);
-          const point = new cv.Point(x, y);
+          const point = new this.cv.Point(x, y);
 
-          cv.circle(frame, point, 4, new cv.Scalar(192, 0, 255, 192), 4)
+          this.cv.circle(frame, point, 4, new this.cv.Scalar(192, 0, 255, 192), 4)
         }
       }
 
@@ -159,30 +162,30 @@ class CVProcessor {
         this.calibrationImagePoints.get(i).delete();
       }
       this.calibrationImagePoints.delete();
-      this.calibrationImagePoints = new cv.MatVector();
+      this.calibrationImagePoints = new this.cv.MatVector();
     }
 
     if (this.calibrationObjectPoints) {
       this.calibrationObjectPoints.delete();
-      this.calibrationObjectPoints = new cv.MatVector();
+      this.calibrationObjectPoints = new this.cv.MatVector();
     }
   }
 
   calibrate(data) {
-    const cameraMatrix = new cv.Mat();
-    const distCoeffs = new cv.Mat();
+    const cameraMatrix = new this.cv.Mat();
+    const distCoeffs = new this.cv.Mat();
 
-    const rvecs = new cv.MatVector();
-    const tvecs = new cv.MatVector();
+    const rvecs = new this.cv.MatVector();
+    const tvecs = new this.cv.MatVector();
 
-    const stdDeviationsIntrinsics = new cv.Mat();
-    const stdDeviationsExtrinsics = new cv.Mat();
+    const stdDeviationsIntrinsics = new this.cv.Mat();
+    const stdDeviationsExtrinsics = new this.cv.Mat();
 
-    const perViewErrors = new cv.Mat();
-    cv.calibrateCameraExtended(
+    const perViewErrors = new this.cv.Mat();
+    this.cv.calibrateCameraExtended(
       this.calibrationObjectPoints,
       this.calibrationImagePoints,
-      new cv.Size(data.width, data.height),
+      new this.cv.Size(data.width, data.height),
       cameraMatrix,
       distCoeffs,
       rvecs,

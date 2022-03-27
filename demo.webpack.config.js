@@ -67,10 +67,10 @@ module.exports = {
   plugins: [
     //new CleanWebpackPlugin(),
     new VueLoaderPlugin(),
-    new CopyPlugin({
-      patterns: [
-      { from: './vendor/opencv_js.wasm', to: './opencv_js.wasm' },
-      ]
-    }),
+    // new CopyPlugin({
+    //   patterns: [
+    //   { from: './vendor/opencv_js.wasm', to: './opencv_js.wasm' },
+    //   ]
+    // }),
   ]
 };
