@@ -2,8 +2,8 @@
   <div class="ar-view-wrapper" ref="wrapper">
     <div class="ar-view">
       <canvas class="ar-canvas" ref="canvas"></canvas>
-      <div class="elements" ref="elements">
-        <slot v-if="this.status && this.status.calibration.calibrated"></slot>
+      <div :style="{opacity: this.status && this.status.initialized && this.status.calibration.calibrated ? 1.0 : 0.0}" class="elements" ref="elements">
+        <slot></slot>
       </div>
     </div>
     <div @click="this.openSetup" class="setup-button">
