@@ -1,6 +1,5 @@
 const path = require('path');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = [
   {
@@ -9,20 +8,23 @@ module.exports = [
       vuexr: './src/vuexr.ts',
     },
     resolve:  {
-      extensions: ['.ts', '.js', '.json', '.png']
+      extensions: ['.ts', '.js', '.json', '.png'],
     },
     externals: {
       vue: 'vue',
     },
     devtool: 'source-map',
+    experiments: {
+      outputModule: true,
+    },
     output: {
-      library: '[name]',
-      libraryTarget: 'umd',
+      library: {
+        // do not specify a `name` here
+        type: 'module',
+      },
       filename: '[name].js',
       path: path.resolve(__dirname, './dist'),
-    },
-    node: {
-      fs: 'empty'
+      environment: { module: true },
     },
     module: {
       rules: [
@@ -73,7 +75,8 @@ module.exports = [
       worker: './src/worker.js'
     },
     resolve:  {
-      extensions: ['.ts', '.js', '.json']
+      extensions: ['.ts', '.js', '.json'],
+      fallback: {fs: false, path: false, crypto: false}
     },
     externals: {
       vue: 'vue',
@@ -82,9 +85,6 @@ module.exports = [
     output: {
       filename: '[name].js',
       path: path.resolve(__dirname, './dist'),
-    },
-    node: {
-      fs: 'empty'
     },
     module: {
       rules: [

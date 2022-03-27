@@ -3,16 +3,14 @@
 </template>
 
 <script>
-  import Vue from "vue";
-
+  import { defineComponent } from "vue";
   import pattern from '../src/Vision/chessboard'
 
-  const ARChessboard = Vue.extend({
+  export default defineComponent({
     data: function () {
       return {
         pattern: pattern
       }
     }
   });
-  export default ARChessboard;
 </script>

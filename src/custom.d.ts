@@ -1,14 +1,15 @@
-import {VueXR} from "./vuexr";
-import Vue from "vue";
+import {VueXRManager} from "./vuexr";
 
 declare module "*.svg" {
   const content: any;
   export default content;
 }
 
-declare module 'vue/types/vue' {
-  interface Vue {
-    $vuexr: VueXR
+declare module "@vue/runtime-core" {
+  //Bind to `this` keyword
+  interface ComponentCustomProperties {
+    $vuexr: VueXRManager;
   }
 }
+
 

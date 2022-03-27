@@ -1,3 +1,2 @@
-import Vue from 'vue';
-declare const app: import("vue/types/vue").CombinedVueInstance<Vue, object, object, object, Record<never, any>>;
+declare const app: import("vue").App<Element>;
 export default app;

@@ -1,26 +1,13 @@
-import _Vue from "vue";
-
 import ARView from '../components/ARView.vue';
 import ARElement from "../components/ARElement.vue";
 import ARChessboard from "../components/ARChessboard.vue";
 import Session from "./Vision/Session";
 
-export class VueXR {
+import { App, Plugin } from 'vue';
+import { defineComponent } from "vue";
+
+export class VueXRManager {
   private sessions: { [x: string]: any; };
-  static install (Vue: typeof _Vue, options?: any) {
-    Vue.component('ar-view', ARView);
-    Vue.component('ar-element', ARElement);
-    Vue.component('ar-chessboard', ARChessboard);
-    const vuexr = new VueXR();
-    Vue.prototype.$vuexr = vuexr;
-    Object.defineProperties(Vue.prototype, {
-      $vuexr: {
-        get() {
-          return vuexr
-        }
-      },
-    })
-  }
 
   constructor() {
     this.sessions = {}
@@ -70,7 +57,11 @@ export class VueXR {
   }
 }
 
-// Automatic installation if Vue has been added to the global scope.
-if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(VueXR)
-}
+export const VueXR: Plugin = {
+  install(app: App, options?: any) {
+    app.component('ar-view', ARView);
+    app.component('ar-element', ARElement);
+    app.component('ar-chessboard', ARChessboard);
+    app.config.globalProperties.$vuexr = new VueXRManager();
+  }
+};

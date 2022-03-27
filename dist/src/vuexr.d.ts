@@ -1,7 +1,6 @@
-import _Vue from "vue";
-export declare class VueXR {
+import { Plugin } from 'vue';
+export declare class VueXRManager {
     private sessions;
-    static install(Vue: typeof _Vue, options?: any): void;
     constructor();
     requestSession(name?: string): any;
     removeSession(name?: string): void;
@@ -13,3 +12,4 @@ export declare class VueXR {
         error: string;
     }>;
 }
+export declare const VueXR: Plugin;

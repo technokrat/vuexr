@@ -9,7 +9,7 @@
       </span>
     </header>
     <div class="lead">
-      <img src="../../doc/vuexr_illustration_website.svg" style="width: 500px; max-width: 100%;">
+      <img src="../../doc/vuexr_illustration_website.svg" style="width: 500px; max-width: 100%;" alt="Vue XR on a smart toaster.">
       <h1 class="main-title">Vue<strong>XR</strong></h1>
       <h2 class="description">Vue-powered Augmented Reality DOM rendering</h2>
       <p class="action">
@@ -38,7 +38,7 @@
                   <h1 class="title">Vue<strong>XR</strong> says hello!</h1>
                   <p>Embed <strong>any</strong> DOM element in augmented reality.</p>
                   <div style="position: absolute; bottom: 0; right: 10px;">
-                    <p><small>Powered by <img src="../assets/technokrat_banner.svg" style="height: 9px; display: inline-block; vertical-align: middle;"></small></p>
+                    <p><small>Powered by <img src="../assets/technokrat_banner.svg" style="height: 9px; display: inline-block; vertical-align: middle;" alt="Technokrat Logo"></small></p>
                   </div>
                 </div>
               </ar-element>
@@ -75,9 +75,7 @@
 </template>
 
 <script>
-  import Vue from "vue";
-
-  const App = Vue.extend({
+  export default {
     data () {
       return {
         supported: false,
@@ -98,9 +96,7 @@
         this.supported = false;
       })
     }
-  });
-
-  export default App;
+  };
 </script>
 
 <style>
@@ -352,6 +348,5 @@
     font-weight: 300;
 
   }
-
 
 </style>

@@ -22,11 +22,12 @@
 </template>
 
 <script>
-  import Vue from "vue";
   import ARSetup from "./ARSetup.vue";
   import ARControls from "./ARControls.vue";
 
-  const ARView = Vue.extend({
+  import {defineComponent} from "vue";
+
+  export default defineComponent({
     data() {
       return {
         session: null,
@@ -92,19 +93,17 @@
       }
     },
     beforeMount() {
-      this.session = this.$vuexr.requestSession(this.name)
+      this.session = this.$vuexr.requestSession(this.name);
     },
-    mounted () {
-      this.session.init(this.$refs.canvas, (event) => {
+    async mounted () {
+      await this.session.init(this.$refs.canvas, (event) => {
         this.sessionCallback(event)
-      }).then(() => {
-        this.session.run().then(() => {
-          this.resizeCanvas()
-        })
       });
+      await this.session.run();
+      await this.resizeCanvas();
 
       window.addEventListener('resize', () => {
-        this.resizeCanvas()
+        this.resizeCanvas();
       })
     },
     destroyed() {
@@ -125,7 +124,6 @@
       ARControls
     }
   });
-  export default ARView;
 </script>
 
 <style scoped>

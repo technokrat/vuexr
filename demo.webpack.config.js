@@ -1,5 +1,5 @@
 const path = require('path');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const { VueLoaderPlugin } = require('vue-loader');
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
@@ -9,18 +9,16 @@ module.exports = {
     worker: './src/worker.js'
   },
   resolve:  {
-    extensions: ['.ts', '.js', '.json', '.png']
+    extensions: ['.ts', '.js', '.json', '.png'],
+    fallback: {fs: false, path: false, crypto: false}
   },
   output: {
     filename: '[name].js',
     path: path.resolve(__dirname, './demo/dist'),
   },
-  node: {
-    fs: 'empty'
-  },
   devtool: 'inline-source-map',
   devServer: {
-    contentBase: path.join(__dirname, './demo/dist'),
+    static: path.join(__dirname, './demo/dist'),
     compress: true,
     port: 9000,
   },
@@ -69,8 +67,10 @@ module.exports = {
   plugins: [
     //new CleanWebpackPlugin(),
     new VueLoaderPlugin(),
-    new CopyPlugin([
+    new CopyPlugin({
+      patterns: [
       { from: './vendor/opencv_js.wasm', to: './opencv_js.wasm' },
-    ]),
+      ]
+    }),
   ]
 };

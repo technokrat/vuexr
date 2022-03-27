@@ -1,6 +1,5 @@
 <template>
-  <div class="controls">
-      <div v-if="this.status">
+  <div class="controls" v-if="this.status">
         <button v-if="!this.status.calibration.calibrated" :disabled="!this.status.calibration.captureReady" class="capture-image" v-on:click="captureCalibrationPoints">Capture</button>
         <button v-if="!this.status.calibration.calibrated" :disabled="this.status.calibration.captures < 5" v-on:click="calibrate">
           <span v-if="!this.status.calibration.calibrated">Calibrate</span>
@@ -10,14 +9,13 @@
         <span v-if="!this.status.calibration.calibrated" class="hint-text">{{this.status.calibration.captures}}&nbsp;Captures</span>
         <span v-else class="hint-text">Calibrated</span>
       </div>
-  </div>
 </template>
 
 <script>
-  import Vue from "vue";
   import Session from "../src/Vision/Session";
+  import {defineComponent} from "vue";
 
-  const ARControls = Vue.extend({
+  export default defineComponent({
     data () {
       return {
 
@@ -42,10 +40,15 @@
       },
     }
   });
-  export default ARControls;
 </script>
 
 <style scoped>
+  .controls {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+  }
+
   button {
     background-color: rgba(255,255,255,0.8);
     border-radius: 2px;

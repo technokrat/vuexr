@@ -66,10 +66,10 @@
 </template>
 
 <script>
-  import Vue from "vue";
   import Session from "../src/Vision/Session";
+  import {defineComponent} from "vue";
 
-  const ARSetup = Vue.extend({
+  export default defineComponent({
     data () {
       return {
         selected: null,
@@ -103,7 +103,6 @@
       this.selected = this.session.feed.feedStatus.selected;
     }
   });
-  export default ARSetup;
 </script>
 
 <style scoped>
