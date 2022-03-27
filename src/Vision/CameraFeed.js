@@ -136,10 +136,8 @@ export default class CameraFeed {
             this.videoElement.play();
             this.session.canvas.width = this.videoElement.videoWidth;
             this.session.canvas.height = this.videoElement.videoHeight;
-
+            this.loop();
             resolve();
-
-            this.loop()
           };
         })
       }
@@ -148,20 +146,21 @@ export default class CameraFeed {
       }
   }
 
-  loop() {
+  async loop() {
     if (this.imageCapture) {
-      this.imageCapture.grabFrame()
-        .then(imageBitmap => {
-          drawVideoFrameToCanvas(this.session.canvas, imageBitmap);
-          this.session.process();
-          if (!this.paused) {
-            this.animationFrameRequest = window.requestAnimationFrame(() => {
-              this.loop();
-            });
-          }
-        }).catch(() => {
-
-      });
+      try {
+        const bitmap = await this.imageCapture.grabFrame()
+        drawVideoFrameToCanvas(this.session.canvas, bitmap);
+        this.session.process();
+      } catch (e) {
+        console.log(e);
+      } finally {
+        if (!this.paused) {
+          this.animationFrameRequest = window.requestAnimationFrame(() => {
+            this.loop();
+          });
+        }
+      }
     }
   }
 }

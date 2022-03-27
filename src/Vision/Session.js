@@ -17,8 +17,9 @@ export default class Session {
     this.workerStatus = {error: null, initialized: false};
     this.eventCallback = null;
 
-    this.focusEventRegistration = () => {
-      this.feed.run().then(() => this.motion.run());
+    this.focusEventRegistration = async () => {
+      await this.feed.run();
+      await this.motion.run();
     };
 
     this.blurEventRegistration = () => {
@@ -111,12 +112,11 @@ export default class Session {
   }
 
   pause () {
-    this.feed.stop();
-    this.motion.stop();
-
     window.removeEventListener('focus', this.focusEventRegistration);
     window.removeEventListener('blur', this.blurEventRegistration);
 
+    this.feed.stop();
+    this.motion.stop();
   }
 
   calibrate() {
