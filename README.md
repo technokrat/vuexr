@@ -173,7 +173,7 @@ If you need to determine dynamically whether your client supports VueXR before a
       }
     },
     mounted () {
-      this.$vuexr.check().then(({supported, _}) => {
+      this.$vuexr.check().then(({supported}) => {
         this.supported = supported;
       }).catch(() => {
         this.supported = false;
