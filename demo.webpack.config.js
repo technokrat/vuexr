@@ -1,6 +1,5 @@
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
-const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -65,12 +64,6 @@ module.exports = {
     ]
   },
   plugins: [
-    //new CleanWebpackPlugin(),
     new VueLoaderPlugin(),
-    // new CopyPlugin({
-    //   patterns: [
-    //   { from: './vendor/opencv_js.wasm', to: './opencv_js.wasm' },
-    //   ]
-    // }),
   ]
 };

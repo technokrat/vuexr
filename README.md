@@ -7,7 +7,7 @@
 
 VueXR is a Vue plugin that let's you project regular DOM components onto **augmented reality** (AR) markers in real-time.
 
-Works on Chrome 79+
+Works on Chrome 99+
 
 See the official demo at [vuexr.technokrat.ch](https://vuexr.technokrat.ch). It is just as easy as:
 
@@ -31,7 +31,7 @@ or at https://technokrat.ch
 
 ##### TLDR
 1. Install `vuexr` package
-2. `Vue.use(VueXR)`
+2. `app.use(VueXR)`
 3.
 ```
 <ar-view>
@@ -40,7 +40,7 @@ or at https://technokrat.ch
   </ar-element>
 </ar-view>
 ```
-4. **Copy the [opencv_js.wasm](./vendor/opencv_js.wasm) and [worker.js](./dist/worker.js) file to your static/public server folder (where your deployed *index.html* is located).**
+4. **Copy the [worker.js](./dist/worker.js) file to your static/public server folder (where your deployed *index.html* is located).**
 5. **Access your application in a [secure context](https://w3c.github.io/webappsec-secure-contexts/) via HTTPS or `localhost` (e.g. doing port-forwarding)**
 
 ##### Elaborate
@@ -57,19 +57,14 @@ npm install vuexr
 Then add `VueXR` to your index.js (or index.ts)
 
 ```javascript
-import Vue from 'vue';
+import {createApp, } from 'vue';
 
-// Import the VueXR plugin
-import { VueXR } from 'vuexr';
-// or const Vuexr = require('vuexr');
+import {VueXR} from '../../src/vuexr';
+import App from '../components/App.vue';
 
-// Install the VueXR plugin
-Vue.use(VueXR);
-
-// Initialize your application
-const app = new Vue({
-    // …
-});
+const app = createApp(App);
+app.use(VueXR);
+app.mount('#app');
 ```
 
 Add the following inside your preferred component (e.g. *App.vue*)
@@ -84,13 +79,9 @@ Add the following inside your preferred component (e.g. *App.vue*)
 </template>
 
 <script>
-  import Vue from 'vue'
-
-  const App = Vue.extend({
-    name: 'app',
-  });
-
-  export default App;
+  export default {
+    name: 'App',
+  }
 </script>
 
 <style>
@@ -106,7 +97,7 @@ Add the following inside your preferred component (e.g. *App.vue*)
 </style>
 ```
 
-Last but not least, **you need to copy the [opencv_js.wasm](./vendor/opencv_js.wasm) and [worker.js](./dist/worker.js) file to your static/public server folder (where your deployed *index.html* is located).**
+Last but not least, **you need to copy the [worker.js](./dist/worker.js) file to your static/public server folder (where your deployed *index.html* is located).**
 
 The following is an excerpt of how to do this automatically with `vue.config.js` based on Webpack:
 
@@ -119,16 +110,12 @@ module.exports = {
   // ...
   configureWebpack: {
     plugins: [
-      new CopyWebpackPlugin([
-        {
-          from: path.join(__dirname, 'node_modules/vuexr/vendor/opencv_js.wasm'),
-          to: 'opencv_js.wasm'
-        },
-        {
-          from: path.join(__dirname, 'node_modules/vuexr/dist/worker.js'),
-          to: 'worker.js'
-        }
-      ])
+      new CopyWebpackPlugin({
+        rules: [{
+            from: path.join(__dirname, 'node_modules/vuexr/dist/worker.js'),
+            to: 'worker.js'
+        }]
+      })
     ]
   }
   // ...
@@ -150,7 +137,7 @@ points. Press the red *Capture Frame* button, and repeat this around eight times
 ## Usage
 
 ### Performance
-You have to use a state of the smartphone device, such as a Xiaomi 20K / 9T Pro with MIUI 11, as computer vision takes it's fair share of processing power.
+You have to use a state of the a smartphone device, such as a Xiaomi 20K / 9T Pro with MIUI 11, as computer vision takes it's fair share of processing power.
 
 ### General
 In general, you only require two new components to use VueXR
@@ -186,7 +173,7 @@ If you need to determine dynamically whether your client supports VueXR before a
       }
     },
     mounted () {
-      this.$vuexr.check().then(({supported, error}) => {
+      this.$vuexr.check().then(({supported, _}) => {
         this.supported = supported;
       }).catch(() => {
         this.supported = false;
@@ -272,7 +259,6 @@ onto the AruCo marker with ID `42`.
 
 ## Contribution
 ### Future Work
-* Compile OpenCV.js with WebAssembly SIMD support
 * Rewrite JS to TypeScript and cleanup code
 * Elaborate documentation on website
 * More responsive position tracking
