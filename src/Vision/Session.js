@@ -75,7 +75,7 @@ export default class Session {
 
   async initWorker () {
     return new Promise((resolve, reject) => {
-      this.worker = new Worker("worker.js");
+      this.worker = new Worker(new URL("../worker.js", import.meta.url));
       this.worker.onmessage = msg => {
         if (msg.data.operation === 'WORKER_READY') {
           this.initialized = true;

@@ -11,9 +11,9 @@ class CVProcessor {
   constructor() {
     this.initialized = false;
 
-    cv_lib.then((cv) => {
+    cv_lib.then(async (cv) => {
       this.cv = cv;
-      console.log(this.cv);
+      await this.cv.ready;
       this.dict = new this.cv.aruco_Dictionary(this.cv.DICT_6X6_250);
 
       this.constructChessboardCoordinates();

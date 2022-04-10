@@ -5,7 +5,6 @@ module.exports = {
   mode: 'development',
   entry: {
     main: './demo/src/main.ts',
-    worker: './src/worker.js'
   },
   resolve:  {
     extensions: ['.ts', '.js', '.json', '.png'],

@@ -69,40 +69,4 @@ module.exports = [
       new VueLoaderPlugin(),
     ],
   },
-  {
-    mode: 'production',
-    entry: {
-      worker: './src/worker.js'
-    },
-    resolve:  {
-      extensions: ['.ts', '.js', '.json'],
-      fallback: {fs: false, path: false, crypto: false}
-    },
-    externals: {
-      vue: 'vue',
-    },
-    devtool: 'source-map',
-    output: {
-      filename: '[name].js',
-      path: path.resolve(__dirname, './dist'),
-    },
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          use: 'ts-loader',
-          exclude: /node_modules/,
-        },
-        // this will apply to both plain `.js` files
-        // AND `<script>` blocks in `.vue` files
-        {
-          test: /\.js$/,
-          exclude: /(node_modules|bower_components|vendor)/,
-          use: {
-            loader: 'babel-loader',
-          }
-        },
-      ]
-    },
-  },
 ];

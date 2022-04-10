@@ -7,7 +7,7 @@
 
 VueXR is a Vue plugin that let's you project regular DOM components onto **augmented reality** (AR) markers in real-time.
 
-Works on Chrome 99+
+Supports Chrome 79+
 
 See the official demo at [vuexr.technokrat.ch](https://vuexr.technokrat.ch). It is just as easy as:
 
@@ -40,8 +40,8 @@ or at https://technokrat.ch
   </ar-element>
 </ar-view>
 ```
-4. **Copy the [worker.js](./dist/worker.js) file to your static/public server folder (where your deployed *index.html* is located).**
-5. **Access your application in a [secure context](https://w3c.github.io/webappsec-secure-contexts/) via HTTPS or `localhost` (e.g. doing port-forwarding)**
+
+**Access your application in a [secure context](https://w3c.github.io/webappsec-secure-contexts/) via HTTPS or `localhost` (e.g. doing port-forwarding)**
 
 ##### Elaborate
 
@@ -96,33 +96,6 @@ Add the following inside your preferred component (e.g. *App.vue*)
   }
 </style>
 ```
-
-Last but not least, **you need to copy the [worker.js](./dist/worker.js) file to your static/public server folder (where your deployed *index.html* is located).**
-
-The following is an excerpt of how to do this automatically with `vue.config.js` based on Webpack:
-
-```javascript
-// vue.config.js
-const path = require('path')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-
-module.exports = {
-  // ...
-  configureWebpack: {
-    plugins: [
-      new CopyWebpackPlugin({
-        rules: [{
-            from: path.join(__dirname, 'node_modules/vuexr/dist/worker.js'),
-            to: 'worker.js'
-        }]
-      })
-    ]
-  }
-  // ...
-}
-```
-
-See the [demo.webpack.config.js](./demo.webpack.config.js) for further inspiration.
 
 You are now ready to test the application with a smartphone. **Remember that you have to connect in a [secure context](https://w3c.github.io/webappsec-secure-contexts/) via `HTTPS` or
 `localhost` (e.g. by using the `chrome://inspect` port-forwarding feature) for VueXR to work. Accept the camera's permission request.
