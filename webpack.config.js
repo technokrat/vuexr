@@ -9,6 +9,7 @@ module.exports = [
     },
     resolve:  {
       extensions: ['.ts', '.js', '.json', '.png'],
+      fallback: {fs: false, path: false, crypto: false}
     },
     externals: {
       vue: 'vue',
