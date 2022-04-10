@@ -30,6 +30,8 @@ export default class Session {
     this.setup = {
       show: true
     }
+
+    this.calibration.loadCameraCalibration();
   }
 
   loadSetup () {

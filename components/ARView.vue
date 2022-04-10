@@ -9,7 +9,7 @@
     <div @click="this.openSetup" class="setup-button">
       ⚙
     </div>
-    <div v-if="this.status && this.status.initialized && !this.status.calibration.calibrated" class="controls-container">
+    <div v-if="this.status && this.status.initialized && this.status.feed.selected && !this.status.calibration.calibrated" class="controls-container">
       <ARControls :session="this.session" :status="this.status"></ARControls>
     </div>
     <div v-if="this.status && this.status.initialized" class="setup-container">

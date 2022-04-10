@@ -27,6 +27,8 @@ export default class Detector {
 
   detectionFinished(data) {
     this.detectionOngoing = false;
-    this.session.poser.setMarkers(data.result.markers);
+    if (this.session.calibration.calibrationStatus.calibrated) {
+      this.session.poser.setMarkers(data.result.markers);
+    }
   }
 }

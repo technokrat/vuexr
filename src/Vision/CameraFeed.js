@@ -28,23 +28,7 @@ export default class CameraFeed {
   }
 
   async init () {
-    if (navigator.mediaDevices && ImageCapture) {
-      try {
-        const available = await this.listAvailable();
-        const selected = this.loadCamera();
-        this.feedStatus = {
-          error: null,
-          available,
-          selected
-        }
-      } catch (e) {
-        this.feedStatus = {
-          error: e,
-          available: [],
-          selected: null
-        }
-      }
-    } else {
+    if (!navigator.mediaDevices || !ImageCapture) {
       this.feedStatus = {
         error: 'mediaDevices and/or ImageCapture API not supported!',
         available: [],
@@ -123,9 +107,9 @@ export default class CameraFeed {
           selected
         }
 
-        this.session.eventCallback({name: 'statusChanged'});
-
         this.session.calibration.loadCameraCalibration();
+
+        this.session.eventCallback({name: 'statusChanged'});
 
         this.imageCapture = new ImageCapture(this.track);  // https://developer.mozilla.org/en-US/docs/Web/API/ImageCapture
 
