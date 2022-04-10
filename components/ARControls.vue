@@ -54,7 +54,6 @@
     border-radius: 2px;
     border: none;
     padding: 5px 10px;
-    margin-bottom: 5px;
   }
 
   button:disabled {

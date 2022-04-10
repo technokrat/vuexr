@@ -256,8 +256,8 @@
 
   .demo > .view > .supported > .back-button {
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 8px;
+    left: 8px;
     background: rgba(255,255,255,0.8);
     padding: 8px;
     border-radius: 2px;

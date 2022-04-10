@@ -17,7 +17,7 @@
         </div>
       </div>
       <div v-else>
-        <h2 class="title">AR Status</h2>
+        <h2 class="title">AR Setup</h2>
         <div class="status-line">
           Video
           <span v-if="this.status.feed.error" class="status-value" :title="this.status.feed.error">✗</span>

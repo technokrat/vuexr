@@ -153,8 +153,8 @@
   .setup-button {
     position: absolute;
     z-index: 2;
-    top: 5px;
-    right: 5px;
+    top: 8px;
+    right: 8px;
     color: white;
     text-shadow: 0 1px 1px rgba(0,0,0,0.5);
     cursor: pointer;
@@ -172,8 +172,8 @@
   .controls-container {
     position: absolute;
     z-index: 1;
-    bottom: 0;
-    left: 5px;
+    bottom: 8px;
+    left: 8px;
   }
 
   .loading-text {
