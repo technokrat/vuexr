@@ -1,6 +1,6 @@
 {
   "name": "vuexr",
-  "version": "0.3.15",
+  "version": "0.3.16",
   "description": "VueXR is a Vue plugin that let's you project regular DOM components onto augmented reality (AR) markers in real-time.",
   "engines": {
     "yarn": "^1.22.19",
@@ -26,7 +26,7 @@
       "require": "./dist/vuexr.umd.js"
     },
     "./src/index": "./src/index.ts",
-    "./dist/worker.7d65f39e": "./dist/worker.7d65f39e.js"
+    "./dist/assets/worker.7d65f39e": "./dist/worker.7d65f39e.js"
   },
   "scripts": {
     "dev": "vite --config vite.demo.config.js",
