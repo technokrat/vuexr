@@ -1,12 +1,19 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ESNext",
+    "jsx": "preserve",
+    "rootDir": "./src",
+    "baseUrl": "./src",
     "strict": true,
-    "module": "ES6",
+    "module": "ESNext",
     "moduleResolution": "node",
     "allowJs": true,
     "outDir": "./dist",
     "sourceMap": true,
-    "declaration": true
-  }
+    "declaration": true,
+    "lib": ["ES6", "DOM", "WebWorker"],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+  },
 }

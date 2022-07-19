@@ -1,4 +1,4 @@
-import cv_lib from '../vendor/opencv/build_simd/opencv';
+import cv from './opencv/build_simd/opencv';
 
 const ARUCO_SIZE = 50; // mm
 
@@ -11,7 +11,7 @@ class CVProcessor {
   constructor() {
     this.initialized = false;
 
-    cv_lib.then(async (cv) => {
+    cv.then(async (cv) => {
       this.cv = cv;
       await this.cv.ready;
       this.dict = new this.cv.aruco_Dictionary(this.cv.DICT_6X6_250);

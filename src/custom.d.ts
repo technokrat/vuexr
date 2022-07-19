@@ -1,7 +1,6 @@
-import {VueXRManager} from "./vuexr";
+import {VueXRManager} from "./VueXRManager"
 
 declare module "*.svg" {
-  const content: any;
   export default content;
 }
 
