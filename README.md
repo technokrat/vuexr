@@ -40,6 +40,10 @@ or at https://technokrat.ch
   </ar-element>
 </ar-view>
 ```
+4. Include `vuexr` styles:
+```css
+  @import 'vuexr';
+```
 
 **Access your application in a [secure context](https://w3c.github.io/webappsec-secure-contexts/) via HTTPS or `localhost` (e.g. doing port-forwarding)**
 
@@ -85,6 +89,8 @@ Add the following inside your preferred component (e.g. *App.vue*)
 </script>
 
 <style>
+  @import 'vuexr';
+
   .hello {
     position: absolute;
     box-sizing: border-box;
