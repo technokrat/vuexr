@@ -10,22 +10,23 @@ class CVProcessor {
 
   constructor() {
     this.initialized = false;
+    this.cv = cv;
+    this.init();
+  }
 
-    cv.then(async (cv) => {
-      this.cv = cv;
-      await this.cv.ready;
-      this.dict = new this.cv.aruco_Dictionary(this.cv.DICT_6X6_250);
+  async init() {
+    await this.cv.ready;
+    this.dict = new this.cv.aruco_Dictionary(this.cv.DICT_6X6_250);
 
-      this.constructChessboardCoordinates();
-      this.calibrationImagePoints = new this.cv.MatVector();
-      this.calibrationObjectPoints = new this.cv.MatVector();
+    this.constructChessboardCoordinates();
+    this.calibrationImagePoints = new this.cv.MatVector();
+    this.calibrationObjectPoints = new this.cv.MatVector();
 
-      this.initialized = true;
-      console.log("Initialized OpenCV inside worker.js");
+    this.initialized = true;
+    console.log("Initialized OpenCV inside worker.js");
 
-      postMessage({
-        operation: 'WORKER_READY',
-      });
+    postMessage({
+      operation: 'WORKER_READY',
     });
   }
 

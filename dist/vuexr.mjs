@@ -1114,7 +1114,7 @@ class nA {
   }
   async initWorker() {
     return new Promise((A, r) => {
-      this.worker = new Worker("/assets/worker.8b4b3a63.js"), this.worker.onmessage = (c) => {
+      this.worker = new Worker("/assets/worker.7d65f39e.js", { type: "module" }), this.worker.onmessage = (c) => {
         c.data.operation === "WORKER_READY" ? (this.initialized = !0, this.workerStatus = { error: null, initialized: !0 }, A()) : c.data.operation === "WORKER_FAILED" ? (this.workerStatus = { error: "WorkerFailed", initialized: !1 }, A()) : this.workerHandler(c);
       };
     });
