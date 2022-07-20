@@ -3,7 +3,8 @@
     <div class="ar-view">
       <canvas class="ar-canvas" ref="canvas"></canvas>
       <div :style="{opacity: this.status && this.status.initialized && this.status.calibration.calibrated ? 1.0 : 0.0}" class="elements" ref="elements">
-        <slot></slot>
+        <slot :trackedMarkers="trackedMarkers">
+        </slot>
       </div>
     </div>
     <div @click="this.openSetup" class="setup-button">
@@ -32,6 +33,7 @@
       return {
         session: null,
         status: null,
+        trackedMarkers: [],
       };
     },
     props: {
@@ -99,6 +101,11 @@
       await this.session.init(this.$refs.canvas, (event) => {
         this.sessionCallback(event)
       });
+
+      this.session.poser.registerView(this, (trackedMarkers) => {
+        this.trackedMarkers = trackedMarkers;
+      });
+
       await this.session.run();
       await this.resizeCanvas();
 
@@ -116,6 +123,8 @@
       });
 
       window.removeEventListener('resize', this.resizeCanvas);
+
+      this.session.poser.unregisterView(this);
 
       this.session.pause();
     },
@@ -144,10 +153,6 @@
     max-width: 100%;
     max-height: 100%;
     overflow: hidden;
-  }
-
-  .ar-canvas {
-
   }
 
   .setup-button {

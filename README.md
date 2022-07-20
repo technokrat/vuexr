@@ -5,11 +5,9 @@
 
 ![VueXR Illustration](./doc/vuexr_illustration.svg)
 
-VueXR is a Vue plugin that let's you project regular DOM components onto **augmented reality** (AR) markers in real-time.
+VueXR is a Vue plugin that let's you **project regular DOM components onto augmented reality (AR) markers in real-time**. It supports Chrome 99+ based browsers.
 
-Supports Chrome 79+
-
-See the official demo at [vuexr.technokrat.ch](https://vuexr.technokrat.ch). It is just as easy as:
+Please the official demo at [vuexr.technokrat.ch](https://vuexr.technokrat.ch). It is just as easy as:
 
 ```html
 <ar-view>
@@ -20,7 +18,7 @@ See the official demo at [vuexr.technokrat.ch](https://vuexr.technokrat.ch). It 
 ```
 
 With VueXR, you are able to build an AR-Prototype in minutes using your existing 2D web-application.
-There is no need for you to dive into complex and hard to understand computer graphic topics – **just use your web development
+There is no need for you to dive into complex and hard to understand topics such a computer graphics and computer vision – **just use your web development
 skills!**
 
 To achieve such functionality, VueXR uses *OpenCV.js*, *CSS-Transforms*, *Sensor API* and *Web Workers API* on a picture
@@ -29,106 +27,189 @@ or at https://technokrat.ch
 
 ## Getting Started
 
-##### TLDR
+### TLDR
 1. Install `vuexr` package
 2. `app.use(VueXR)`
-3.
-```
-<ar-view>
-  <ar-element :id="23">
-    <div class="hello">Hello World!</div>
-  </ar-element>
-</ar-view>
-```
-4. Include `vuexr` styles:
-```css
-  @import 'vuexr';
-```
-
-**Access your application in a [secure context](https://w3c.github.io/webappsec-secure-contexts/) via HTTPS or `localhost` (e.g. doing port-forwarding)**
-
-##### Elaborate
-
-First install the `vuexr` npm package.
-
-```sh
-npm install vuexr
-
-# or
-# yarn add vuexr
-```
-
-Then add `VueXR` to your index.js (or index.ts)
-
-```javascript
-import {createApp, } from 'vue';
-
-import {VueXR} from '../../src/vuexr';
-import App from '../components/App.vue';
-
-const app = createApp(App);
-app.use(VueXR);
-app.mount('#app');
-```
-
-Add the following inside your preferred component (e.g. *App.vue*)
-
-```vue
-<template>
+3. Setup VueXR's built in components
+  ```vue
+  <template>
     <ar-view>
       <ar-element :id="23">
         <div class="hello">Hello World!</div>
       </ar-element>
     </ar-view>
-</template>
-
-<script>
-  export default {
-    name: 'App',
-  }
-</script>
-
-<style>
+  </template>
+  ```
+4. Include `vuexr` CSS-styles in your top package:
+  ```css
   @import 'vuexr';
+  ```
+5. Copy the `worker.*.js` file within the `node_modules/vuexr/assets/` folder into your public path under `/assets/`. Example for Vite:
+  ```js
+  import {defineConfig} from 'vite'
+  import vue from '@vitejs/plugin-vue'
+  import path from 'path'
+  import {viteStaticCopy } from 'vite-plugin-static-copy'
 
-  .hello {
-    position: absolute;
-    box-sizing: border-box;
-    width: 50px;
-    height: 50px;
-    background: rgba(255,255,255,0.9);
-    padding: 10px;
-    font-size: 10px;
+  export default defineConfig({
+    plugins: [vue(), viteStaticCopy({
+      targets: [
+        {
+          src: 'node_modules/vuexr/dist/assets/*.js',
+          dest: 'assets'
+        }
+      ]
+    })],
+  })
+  ```
+
+ You can now access your application in a [secure context](https://w3c.github.io/webappsec-secure-contexts/) via HTTPS or `localhost` (e.g. doing port-forwarding)**
+
+### Elaborate
+
+1. First install the `vuexr` npm package.
+
+  ```sh
+  npm install vuexr
+
+  # or
+  
+  yarn add vuexr
+  ```
+
+2. Then add VueXR to your index.js (or index.ts)
+
+  ```javascript
+  import {createApp, } from 'vue';
+
+  import {VueXR} from '../../src/vuexr';
+  import App from '../components/App.vue';
+
+  const app = createApp(App);
+  app.use(VueXR);
+  app.mount('#app');
+  ```
+
+3. Add the following inside your preferred component (e.g. *App.vue*)
+
+  ```vue
+  <template>
+      <ar-view>
+        <ar-element :id="23">
+          <div class="hello">Hello World!</div>
+        </ar-element>
+      </ar-view>
+  </template>
+
+  <script>
+    export default {
+      name: 'App',
+    }
+  </script>
+
+  <style>
+    @import 'vuexr';
+
+    .hello {
+      position: absolute;
+      box-sizing: border-box;
+      width: 50px;
+      height: 50px;
+      background: rgba(255,255,255,0.9);
+      padding: 10px;
+      font-size: 10px;
+    }
+  </style>
+  ```
+
+4. Finally you have to copy the WebWorker module `worker.*.js` (e.g. `worker.7d65f39e.js`) file within the `node_modules/vuexr/assets/` folder into your public path under `/assets/`. 
+  The WebWorker can be thought of a script that is run in parallel in the background (to relieve the main thread). It contains a WebAssembly 
+  version of the computer vision library `OpenCV` (roughly 11 MB) which is loaded as soon as `<ar-view>` is shown the first time. As the WebWorker is run in parallel, 
+  the computer vision processing should not impact the overall app performance and responsivity.
+  The WebWorker is imported by VueXR using 
+
+  ```js
+  const worker = new Worker(new URL("../worker.js", import.meta.url), {type: 'module'});
+  ```
+
+  which leads to a HTTP request similar to `http://localhost:1234/assets/worker.7d65f39e.js` when using VueXR as a library.
+
+  As there is no mechanism (yet) for the major bundle systems (Vite, Rollup, webpack, etc.) to include or resolve the `worker.*.js` file within the public `/assets` directory, it has to be copied in a separate step.
+  Luckily, there are many plugins for that (such as `vite-plugin-static-copy` for Vite or `CopyWebpackPlugin` for webpack), which not only copy the file for production, but also present it in memory when running a development server.
+
+  #### Example for Vite:
+
+  ```js
+  // vite.config.js
+  import {defineConfig} from 'vite'
+  import vue from '@vitejs/plugin-vue'
+  import path from 'path'
+  import {viteStaticCopy } from 'vite-plugin-static-copy'
+
+  export default defineConfig({
+    plugins: [vue(), viteStaticCopy({
+      targets: [
+        {
+          src: 'node_modules/vuexr/dist/assets/*.js',
+          dest: 'assets'
+        }
+      ]
+    })],
+  })
+  ```
+
+  #### Example for Vue CLI (using webpack)
+
+  ```js
+  // vue.config.js
+  const path = require('path')
+  const CopyWebpackPlugin = require('copy-webpack-plugin')
+
+  module.exports = {
+    // ...
+    configureWebpack: {
+      plugins: [
+        new CopyWebpackPlugin([
+          {
+            from: path.join(__dirname, 'node_modules/vuexr/dist/assets/worker.*.js'),
+            to: 'assets/'
+          },
+        ])
+      ]
+    }
+    // ...
   }
-</style>
-```
+  ```
 
-You are now ready to test the application with a smartphone. **Remember that you have to connect in a [secure context](https://w3c.github.io/webappsec-secure-contexts/) via `HTTPS` or
-`localhost` (e.g. by using the `chrome://inspect` port-forwarding feature) for VueXR to work. Accept the camera's permission request.
+5. You are now ready to test the application with a smartphone. **Remember that you have to connect in a [secure context](https://w3c.github.io/webappsec-secure-contexts/) via `HTTPS` or
+  `localhost` (e.g. by using the `chrome://inspect` port-forwarding feature) for VueXR to work. Accept the camera's permission request.
 
-#### Calibration
+## Usage
+
+### Calibration
 For each new device we first need to calibrate the camera (i.e. automatically calculate the focal length), to project our
 DOM elements with the correct perspective. Just display [this chessboard pattern](./vendor/pattern.png) on a different
 screen, and try to fit all chessboard fields into the camera's view. VueXR will highlight the chessboard's intersection
 points. Press the red *Capture Frame* button, and repeat this around eight times for different perspectives. Press the
 *Calibrate* button when you are finished. You are now ready to detect the ArUco markers.
 
-## Usage
-
 ### Performance
-You have to use a state of the a smartphone device, such as a Xiaomi 20K / 9T Pro with MIUI 11, as computer vision takes it's fair share of processing power.
+You have to use a modern smartphone device, such as a Xiaomi 20K / 9T Pro with MIUI 11, as computer vision takes it's fair share of processing power.
+Sadly, iOS is not supported due to the limited feature set of Safari.
 
 ### General
 In general, you only require two new components to use VueXR
 
 * `<ar-view>` is our wrapper around the AR-session. It does initialize all required components for computer vision, camera,
-and position tracking. It can contain arbitrarily many `<ar-element>`'s
+  and position tracking. It can contain arbitrarily many `<ar-element>`'s
+  * The `v-slot="{trackedMarkers}"` slot property gives you the current tracked AruCo tags as an `Array<string>`. This is useful in case you do not know the AR-tag numbers in advance, and want to instantiate the `<ar-element>` in a dynamic way.
 * `<ar-element>` is the container around the content rendered onto a ArUco marker.
-    * The `id` attribute (of type `Number`) is required and assigns a unique ArUco identifier.
-    * The `timeout` attribute (of type `Number` in milliseconds, default `1000`) sets the time, a `<ar-element>` vanishes
-    after it is not detected by the camera anymore
-    * **(NOT SUPPORTED)** The `markerSize` attribute (of type `Number` in millimeters, default `50`) sets the size of the respective ArUco
-    marker for accurate projection sizing.
+  * The `id` attribute (of type `Number`) is required and assigns a unique ArUco identifier.
+  * The `timeout` attribute (of type `Number` in milliseconds, default `1000`) sets the time, a `<ar-element>` vanishes
+  after it is not detected by the camera anymore
+  * **(NOT SUPPORTED)** The `markerSize` attribute (of type `Number` in millimeters, default `50`) sets the size of the respective ArUco
+  marker for accurate projection sizing.
+  * The `v-slot="{tracked}"` slot property indicates whether the respective AruCo tag is currently tracked by the camera.
 
 #### Check support
 
@@ -177,10 +258,10 @@ set the CSS attribute `transform-style` to `preserve-3d` for all nested elements
 
 ### Tracking State & Animations
 By default, if a `<ar-element>` times out due to not being tracked anymore, it will fade out and it's content removed from the DOM.
-See (https://vuejs.org/v2/guide/transitions.html#Transitioning-Single-Elements-Components).
+See (https://vuejs.org/guide/built-ins/transition.html).
 
 If you want to handle things yourself, VueXR offers you a way to check if an `<ar-element>` is tracked from inside your
-`<ar-element>`'s content using [Scoped Slots](https://vuejs.org/v2/guide/components-slots.html#Scoped-Slots)
+`<ar-element>`'s content using [Scoped Slots](https://vuejs.org/guide/components/slots.html)
 
 Just use the following pattern to access the `tracked` property for a given `<ar-element>`:
 
@@ -222,7 +303,6 @@ One *millimeter* (*mm*) in real-world matches one *pixel* (*`px`*) in your `<ar-
 Display [this chessboard pattern](./vendor/pattern.png) manually on a different screen, or use the `<ar-chessboard>`
 component inside your Vue application. It will show an embedded image of the chessboard pattern.
 
-
 ## Demo
 See the official demo at [vuexr.technokrat.ch](https://vuexr.technokrat.ch)
 
@@ -230,11 +310,28 @@ Or clone this repository and run
 
 ```sh
 yarn install
-yarn run demo:serve
+yarn run dev
 ```
 
-You can now access a demo application of VueXR under `http://localhost:9000`. To see some AR-content point your camera
-onto the AruCo marker with ID `42`.
+You can now access a demo application of VueXR. To see some AR-content point your camera
+onto the AruCo marker with ID `42`. Use this [generator webpage](http://chev.me/arucogen/) to print out a marker or show it on a second screen.
+
+## Misc
+### opencv.js
+If you just need a web-based ESModule version of OpenCV for your project, you are in luck. The VueXR library is exposing a version of WebAssembly 
+version with SIMD support under `src/opencv/build_simd/opencv.js`. You can import it quite easily:
+
+```js
+import cv from 'vuexr/opencv';
+
+async init() {
+  await cv.ready;
+
+  // Your code goes here.
+}
+
+init();
+```
 
 ## Contribution
 ### Future Work

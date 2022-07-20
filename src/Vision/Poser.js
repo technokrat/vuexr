@@ -4,8 +4,17 @@ import {computeProjMat} from "./helpers";
 export default class Poser {
   constructor(session) {
     this.session = session;
-    this.elements = {}
+    this.elements = {};
+    this.views = [];
   };
+
+  registerView(component, callback) {
+    this.views.push({component, callback});
+  }
+
+  unregisterView(component) {
+    this.views = this.views.filter((element) => element.component !== component);
+  }
 
   registerElement(id, element, markerSize, callback) {
     this.elements[id] = {
@@ -56,6 +65,9 @@ export default class Poser {
     if (this.session.motion.motionStatus.acceleration.error || this.session.motion.motionStatus.gyro.error) {
       this.readjustElements()
     }
+
+    this.trackedMarkers = markerIds;
+    this.views.forEach((element) => element.callback(this.trackedMarkers));
   }
 
   readjustElements() {

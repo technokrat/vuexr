@@ -22,7 +22,7 @@
         <div class="selection" v-if="this.step === 'selection'">
           <h1>Demo</h1>
           <p>Open an AR view on one device with a camera, and display the guide on another one (preferably a notebook or desktop computer).</p>
-          <p><small>Supports Chrome 79+</small></p>
+          <p><small>Supports Chrome 99+</small></p>
           <div class="actions">
             <a class="open-view action-button" href="" @click.prevent="step = 'view'">Open AR View</a>
             <span class="or">or</span>
