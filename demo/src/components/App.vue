@@ -56,7 +56,7 @@
           <h2>Calibration</h2>
           <p>Follow the calibration procedure on your AR device. Use the chessboard pattern below for calibration.</p>
           <a class="back-button action-button" href="" @click.prevent="step = 'selection'">Back</a><a class="ready-button action-button" href="" @click.prevent="step = 'detection'">Calibrated</a>
-          <div class="chessboard">
+          <div class="chessboard" style="max-height: 60vh;">
             <ar-chessboard />
           </div></div>
         <div class="detection" v-else-if="this.step === 'detection'">

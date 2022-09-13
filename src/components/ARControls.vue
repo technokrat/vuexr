@@ -42,41 +42,42 @@
   });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .controls {
+    color-scheme: light;
     display: flex;
     gap: 2px;
     align-items: center;
-  }
 
-  button {
-    background-color: rgba(255,255,255,0.8);
-    border-radius: 2px;
-    border: none;
-    padding: 5px 10px;
-  }
+    button {
+      background-color: rgba(255,255,255,0.8);
+      border-radius: 2px;
+      border: none;
+      padding: 5px 10px;
+    }
 
-  button:disabled {
-    background-color: rgba(255,255,255,0.8);
-  }
+    button:disabled {
+      background-color: rgba(255,255,255,0.8);
+    }
 
-  .capture-image {
-    background-color: rgba(255,0,0,0.8);
-    color: white;
-    box-shadow: 0 0 4px rgba(255,64,64,1);
-  }
+    .capture-image {
+      background-color: rgba(255,0,0,0.8);
+      color: white;
+      box-shadow: 0 0 4px rgba(255,64,64,1);
+    }
 
-  .capture-image:disabled {
-    background-color: rgba(128, 0, 0, 0.6);
-    border: none; /* some kind of blue border */
-    box-shadow: none;
-    color: #ccc;
-  }
+    .capture-image:disabled {
+      background-color: rgba(128, 0, 0, 0.6);
+      border: none; /* some kind of blue border */
+      box-shadow: none;
+      color: #ccc;
+    }
 
-  .hint-text {
-    font-size: 0.8rem;
-    color: white;
-    margin-left: 10px;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+    .hint-text {
+      font-size: 0.8rem;
+      color: white;
+      margin-left: 10px;
+      text-shadow: 0 1px 1px rgba(0,0,0,0.5);
+    }
   }
 </style>

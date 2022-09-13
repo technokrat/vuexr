@@ -1,5 +1,5 @@
 <template>
-  <img :src="pattern" style="max-width: 100%; max-height: 60vh">
+  <img alt="Chessboard pattern for camera calibration" :src="pattern" style="max-width: 100%; max-height: 100%">
 </template>
 
 <script>

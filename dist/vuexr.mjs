@@ -226,16 +226,111 @@ var tA = vA, mA = OA;
 })();
 function HA(t, A) {
   let r = Math.min(t.width / A.width, t.height / A.height), c = (t.width - A.width * r) / 2, h = (t.height - A.height * r) / 2;
-  t.getContext("2d").drawImage(A, 0, 0, A.width, A.height, c, h, A.width * r, A.height * r);
+  t.getContext("2d").drawImage(
+    A,
+    0,
+    0,
+    A.width,
+    A.height,
+    c,
+    h,
+    A.width * r,
+    A.height * r
+  );
 }
 function jA(t, A, r, c, h) {
-  const d = J(), f = j(1, 0, 0, 0, 0, -1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1), o = j(r[0], r[3], r[6], 0, r[1], r[4], r[7], 0, r[2], r[5], r[8], 0, 0, 0, 0, 1);
+  const d = J(), f = j(
+    1,
+    0,
+    0,
+    0,
+    0,
+    -1,
+    0,
+    0,
+    0,
+    0,
+    -1,
+    0,
+    0,
+    0,
+    0,
+    1
+  ), o = j(
+    r[0],
+    r[3],
+    r[6],
+    0,
+    r[1],
+    r[4],
+    r[7],
+    0,
+    r[2],
+    r[5],
+    r[8],
+    0,
+    0,
+    0,
+    0,
+    1
+  );
   N(d, o, f);
-  const I = j(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, c[0], c[1], c[2], 1);
+  const I = j(
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    c[0],
+    c[1],
+    c[2],
+    1
+  );
   N(d, I, d), N(d, h, d);
-  const s = A[0], e = j(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1 / s, 0, 0, 0, 0);
+  const s = A[0], e = j(
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    1 / s,
+    0,
+    0,
+    0,
+    0
+  );
   N(d, e, d);
-  const a = j(t, 0, 0, 0, 0, t, 0, 0, 0, 0, t, 0, A[2] * t, A[5] * t, 0, 1);
+  const a = j(
+    t,
+    0,
+    0,
+    0,
+    0,
+    t,
+    0,
+    0,
+    0,
+    0,
+    t,
+    0,
+    A[2] * t,
+    A[5] * t,
+    0,
+    1
+  );
   return N(d, a, d), d;
 }
 const NA = {
@@ -1006,7 +1101,12 @@ class LA {
   readingHandler(A) {
     const r = vA(this.accelerometer.x, -this.accelerometer.z, this.accelerometer.y, 1);
     this.orientation = Array.from(this.orientationSensor.quaternion);
-    const c = tA(this.orientationSensor.quaternion[0], this.orientationSensor.quaternion[1], this.orientationSensor.quaternion[2], this.orientationSensor.quaternion[3]);
+    const c = tA(
+      this.orientationSensor.quaternion[0],
+      this.orientationSensor.quaternion[1],
+      this.orientationSensor.quaternion[2],
+      this.orientationSensor.quaternion[3]
+    );
     GA(r, r, c), r[0] = this.iirFilter.x.singleStep(r[0]), r[1] = this.iirFilter.y.singleStep(r[1]), r[2] = this.iirFilter.z.singleStep(r[2]), this.velocity.x += r[0] / O, this.velocity.y += r[1] / O, this.velocity.z += r[2] / O, this.position.x += this.velocity.x / O * 1e3, this.position.y += this.velocity.y / O * 1e3, this.position.z += this.velocity.z / O * 1e3, this.velocity.x *= sA, this.velocity.y *= sA, this.velocity.z *= sA, this.position.x *= aA, this.position.y *= aA, this.position.z *= aA, this.session.eventCallback({ name: "acceleration", acceleration: r }), this.session.eventCallback({ name: "velocity", velocity: this.velocity }), this.session.eventCallback({ name: "position", position: this.position }), this.session.poser.readjustElements();
   }
   async init() {
@@ -1069,10 +1169,36 @@ class LA {
   }
   getOffsetMatrix(A) {
     if (!this.motionStatus.acceleration.error && !this.motionStatus.gyro.error) {
-      const r = tA(A.orientation[0], -A.orientation[1], -A.orientation[2], A.orientation[3]), c = J();
-      lA(c, r), cA(c, c, _(A.position.x, A.position.y, A.position.z));
-      const h = tA(this.orientation[0], -this.orientation[1], -this.orientation[2], this.orientation[3]), d = J();
-      lA(d, h), cA(d, d, _(this.position.x, this.position.y, this.position.z)), XA(d, d);
+      const r = tA(
+        A.orientation[0],
+        -A.orientation[1],
+        -A.orientation[2],
+        A.orientation[3]
+      ), c = J();
+      lA(c, r), cA(
+        c,
+        c,
+        _(
+          A.position.x,
+          A.position.y,
+          A.position.z
+        )
+      );
+      const h = tA(
+        this.orientation[0],
+        -this.orientation[1],
+        -this.orientation[2],
+        this.orientation[3]
+      ), d = J();
+      lA(d, h), cA(
+        d,
+        d,
+        _(
+          this.position.x,
+          this.position.y,
+          this.position.z
+        )
+      ), XA(d, d);
       const f = J();
       return pA(f, d, c), f;
     } else
@@ -1182,7 +1308,7 @@ const L = (t, A) => {
   updated() {
     this.selected = this.session.feed.feedStatus.selected;
   }
-}), H = (t) => (BA("data-v-8ad087a4"), t = t(), kA(), t), WA = { class: "setup" }, _A = { key: 0 }, $A = { key: 0 }, Ae = /* @__PURE__ */ bA('<h2 class="title" data-v-8ad087a4>Camera Calibration</h2><p data-v-8ad087a4>To make VueXR know how to project virtual elements to the real world, we have to calibrate your camera first.</p><ol data-v-8ad087a4><li data-v-8ad087a4>Print or display this <a href="https://docs.opencv.org/master/pattern.png" target="_blank" data-v-8ad087a4>chessboard pattern</a> on another device.</li><li data-v-8ad087a4>Take a steady aim at the pattern with your camera.</li><li data-v-8ad087a4>Press the <strong data-v-8ad087a4>Capture</strong> button below.</li><li data-v-8ad087a4>Repeat for at least 4 other different perspectives.</li><li data-v-8ad087a4>Press the <b data-v-8ad087a4>Calibrate</b> button.</li></ol>', 3), ee = { style: { "margin-top": "20px", "text-align": "center" } }, te = { key: 1 }, se = /* @__PURE__ */ H(() => /* @__PURE__ */ X("h2", { class: "title" }, "AR Setup", -1)), ae = { class: "status-line" }, ie = /* @__PURE__ */ T(" Video "), ne = ["title"], re = {
+}), H = (t) => (BA("data-v-65ffd245"), t = t(), kA(), t), WA = { class: "setup" }, _A = { key: 0 }, $A = { key: 0 }, Ae = /* @__PURE__ */ bA('<h2 class="title" data-v-65ffd245>Camera Calibration</h2><p data-v-65ffd245>To make VueXR know how to project virtual elements to the real world, we have to calibrate your camera first.</p><ol data-v-65ffd245><li data-v-65ffd245>Print or display this <a href="https://docs.opencv.org/master/pattern.png" target="_blank" data-v-65ffd245>chessboard pattern</a> on another device.</li><li data-v-65ffd245>Take a steady aim at the pattern with your camera.</li><li data-v-65ffd245>Press the <strong data-v-65ffd245>Capture</strong> button below.</li><li data-v-65ffd245>Repeat for at least 4 other different perspectives.</li><li data-v-65ffd245>Press the <b data-v-65ffd245>Calibrate</b> button.</li></ol>', 3), ee = { style: { "margin-top": "20px", "text-align": "center" } }, te = { key: 1 }, se = /* @__PURE__ */ H(() => /* @__PURE__ */ X("h2", { class: "title" }, "AR Setup", -1)), ae = { class: "status-line" }, ie = /* @__PURE__ */ T(" Video "), ne = ["title"], re = {
   key: 1,
   class: "status-value"
 }, oe = /* @__PURE__ */ H(() => /* @__PURE__ */ X("option", {
@@ -1296,7 +1422,7 @@ function Xe(t, A, r, c, h, d) {
     ])) : G("", !0)
   ]);
 }
-const ze = /* @__PURE__ */ L(YA, [["render", Xe], ["__scopeId", "data-v-8ad087a4"]]);
+const ze = /* @__PURE__ */ L(YA, [["render", Xe], ["__scopeId", "data-v-65ffd245"]]);
 const Ke = q({
   data() {
     return {};
@@ -1350,7 +1476,7 @@ function je(t, A, r, c, h, d) {
     this.status.calibration.calibrated ? (E(), D("span", He, "Calibrated")) : (E(), D("span", Je, iA(this.status.calibration.captures) + "\xA0Captures", 1))
   ])) : G("", !0);
 }
-const Ne = /* @__PURE__ */ L(Ke, [["render", je], ["__scopeId", "data-v-73018252"]]);
+const Ne = /* @__PURE__ */ L(Ke, [["render", je], ["__scopeId", "data-v-ce2831ef"]]);
 const qe = q({
   data() {
     return {
@@ -1368,7 +1494,10 @@ const qe = q({
   methods: {
     updateElements() {
       this.$slots.default.forEach((t) => {
-        t.componentOptions && t.componentOptions.tag === "ar-element" && this.session.poser.registerElement(t.componentOptions.propsData.id, t.elm);
+        t.componentOptions && t.componentOptions.tag === "ar-element" && this.session.poser.registerElement(
+          t.componentOptions.propsData.id,
+          t.elm
+        );
       });
     },
     closeSetup() {
@@ -1412,7 +1541,9 @@ const qe = q({
   },
   destroyed() {
     this.$slots.default.forEach((t) => {
-      t.componentOptions && t.componentOptions.tag === "ar-element" && this.session.poser.unregisterElement(t.componentOptions.propsData.id);
+      t.componentOptions && t.componentOptions.tag === "ar-element" && this.session.poser.unregisterElement(
+        t.componentOptions.propsData.id
+      );
     }), window.removeEventListener("resize", this.resizeCanvas), this.session.poser.unregisterView(this), this.session.pause();
   },
   components: {
@@ -1524,7 +1655,7 @@ const nt = /* @__PURE__ */ L(tt, [["render", it], ["__scopeId", "data-v-6daf52e2
 function lt(t, A, r, c, h, d) {
   return E(), D("img", {
     src: t.pattern,
-    style: { "max-width": "100%", "max-height": "60vh" }
+    style: { "max-width": "100%", "max-height": "100%" }
   }, null, 8, ct);
 }
 const ut = /* @__PURE__ */ L(ot, [["render", lt]]);

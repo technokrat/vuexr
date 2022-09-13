@@ -105,8 +105,9 @@
   });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .setup {
+    color-scheme: light;
     position: relative;
     box-sizing: border-box;
     max-width: 100%;
@@ -118,47 +119,49 @@
     backdrop-filter: blur(5px);
     border-radius: 4px;
     font-size: 0.8rem;
-  }
 
-  .close-button {
-    position: absolute;
-    top: 6px;
-    right: 10px;
-    font-size: 1.5rem;
-    line-height: 1.5rem;
-    cursor: pointer;
-  }
+    .close-button {
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      font-size: 1.5rem;
+      line-height: 1.5rem;
+      cursor: pointer;
+    }
 
-  .camera-selection {
-    width: 100%;
-  }
+    .camera-selection {
+      width: 100%;
+    }
 
-  .status-value {
-    float: right;
-  }
+    .status-value {
+      float: right;
+    }
 
-  .title {
-    font-weight: lighter;
-    text-align: center;
-  }
+    .title {
+      font-weight: lighter;
+      text-align: center;
+    }
 
-  button {
-    background-color: rgba(32,32,32,0.8);
-    color: white;
-    border-radius: 30px;
-    padding: 10px 15px;
-    margin-bottom: 5px;
-    cursor: pointer;
-    border: none;
-  }
+    button {
+      background-color: rgba(32,32,32,0.8);
+      color: white;
+      border-radius: 30px;
+      padding: 10px 15px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      border: none;
+    }
 
-  button:focus {
-    border: none;
-    outline: none;
-  }
+    button:focus {
+      border: none;
+      outline: none;
+    }
 
-  hr {
-    border: none;
-    border-top: 1px solid rgba(0,0,0,0.4);
+    hr {
+      margin-block-start: 0.5em;
+      margin-block-end: 0.5em;
+      border: none;
+      border-top: 1px solid rgba(0,0,0,0.4);
+    }
   }
 </style>

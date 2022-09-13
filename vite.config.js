@@ -7,8 +7,9 @@ export default defineConfig({
   plugins: [vue()],
   build: {
     lib: {
-      entry: './src/index.ts',
+      entry: resolve(__dirname, 'src/index.ts'),
       name: 'VueXR',
+      fileName: 'vuexr'
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
