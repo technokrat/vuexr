@@ -44,7 +44,7 @@
     },
     methods: {
       updateElements () {
-        this.$slots.default.forEach(vnode => {
+        this.$slots.default().forEach(vnode => {
           if (vnode.componentOptions && vnode.componentOptions.tag === 'ar-element') {
             this.session.poser.registerElement(
               vnode.componentOptions.propsData.id,
@@ -113,8 +113,8 @@
         this.resizeCanvas();
       })
     },
-    destroyed() {
-      this.$slots.default.forEach(vnode => {
+    unmounted() {
+      this.$slots.default().forEach(vnode => {
         if (vnode.componentOptions && vnode.componentOptions.tag === 'ar-element') {
           this.session.poser.unregisterElement(
             vnode.componentOptions.propsData.id

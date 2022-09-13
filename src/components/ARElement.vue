@@ -45,7 +45,7 @@ export default defineComponent({
         }
       })
     },
-    destroyed () {
+    unmounted () {
       this.$parent.$data.session.poser.unregisterElement(this.id)
     }
   });
