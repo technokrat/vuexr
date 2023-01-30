@@ -1,5 +1,8 @@
-import { defineComponent as q, openBlock as E, createElementBlock as D, createElementVNode as X, withDirectives as CA, Fragment as IA, renderList as QA, toDisplayString as iA, vModelSelect as wA, createCommentVNode as G, createStaticVNode as bA, createTextVNode as T, pushScopeId as BA, popScopeId as kA, resolveComponent as oA, normalizeStyle as MA, renderSlot as hA, createVNode as fA, createBlock as yA, Transition as FA, withCtx as EA } from "vue";
-class DA {
+var CA = Object.defineProperty;
+var IA = (e, A, r) => A in e ? CA(e, A, { enumerable: !0, configurable: !0, writable: !0, value: r }) : e[A] = r;
+var oA = (e, A, r) => (IA(e, typeof A != "symbol" ? A + "" : A, r), r);
+import { defineComponent as L, openBlock as E, createElementBlock as D, createElementVNode as X, createTextVNode as N, withDirectives as QA, Fragment as wA, renderList as bA, toDisplayString as iA, vModelSelect as BA, createCommentVNode as G, createStaticVNode as kA, pushScopeId as MA, popScopeId as yA, resolveComponent as cA, normalizeStyle as FA, renderSlot as fA, createVNode as pA, createBlock as EA, Transition as DA, withCtx as VA } from "vue";
+class RA {
   constructor(A) {
     this.session = A, this.findChessboardOngoing = !1, this.calibrationOngoing = !1, this.captureNextCalibrationPoints = !1, this.cameraMatrix = null, this.distCoeffs = null, this.calibrationStatus = {
       captureReady: !1,
@@ -60,7 +63,7 @@ class DA {
     this.calibrationOngoing = !1, this.cameraMatrix = A.result.calibration.cameraMatrix, this.distCoeffs = A.result.calibration.distCoeffs, this.storeCameraCalibration(), this.calibrationStatus.calibrated = !0, this.session.eventCallback({ name: "statusChanged" });
   }
 }
-class VA {
+class SA {
   constructor(A) {
     this.session = A, this.detectionOngoing = !1;
   }
@@ -86,147 +89,147 @@ class VA {
     this.detectionOngoing = !1, this.session.calibration.calibrationStatus.calibrated && this.session.poser.setMarkers(A.result.markers);
   }
 }
-var RA = 1e-6, U = typeof Float32Array < "u" ? Float32Array : Array;
+var XA = 1e-6, U = typeof Float32Array < "u" ? Float32Array : Array;
 Math.hypot || (Math.hypot = function() {
-  for (var t = 0, A = arguments.length; A--; )
-    t += arguments[A] * arguments[A];
-  return Math.sqrt(t);
+  for (var e = 0, A = arguments.length; A--; )
+    e += arguments[A] * arguments[A];
+  return Math.sqrt(e);
 });
-function SA() {
-  var t = new U(9);
-  return U != Float32Array && (t[1] = 0, t[2] = 0, t[3] = 0, t[5] = 0, t[6] = 0, t[7] = 0), t[0] = 1, t[4] = 1, t[8] = 1, t;
+function zA() {
+  var e = new U(9);
+  return U != Float32Array && (e[1] = 0, e[2] = 0, e[3] = 0, e[5] = 0, e[6] = 0, e[7] = 0), e[0] = 1, e[4] = 1, e[8] = 1, e;
 }
 function J() {
-  var t = new U(16);
-  return U != Float32Array && (t[1] = 0, t[2] = 0, t[3] = 0, t[4] = 0, t[6] = 0, t[7] = 0, t[8] = 0, t[9] = 0, t[11] = 0, t[12] = 0, t[13] = 0, t[14] = 0), t[0] = 1, t[5] = 1, t[10] = 1, t[15] = 1, t;
+  var e = new U(16);
+  return U != Float32Array && (e[1] = 0, e[2] = 0, e[3] = 0, e[4] = 0, e[6] = 0, e[7] = 0, e[8] = 0, e[9] = 0, e[11] = 0, e[12] = 0, e[13] = 0, e[14] = 0), e[0] = 1, e[5] = 1, e[10] = 1, e[15] = 1, e;
 }
-function j(t, A, r, c, h, d, f, o, I, s, e, a, m, u, n, C) {
+function q(e, A, r, c, h, d, f, o, I, s, t, a, m, u, n, C) {
   var g = new U(16);
-  return g[0] = t, g[1] = A, g[2] = r, g[3] = c, g[4] = h, g[5] = d, g[6] = f, g[7] = o, g[8] = I, g[9] = s, g[10] = e, g[11] = a, g[12] = m, g[13] = u, g[14] = n, g[15] = C, g;
+  return g[0] = e, g[1] = A, g[2] = r, g[3] = c, g[4] = h, g[5] = d, g[6] = f, g[7] = o, g[8] = I, g[9] = s, g[10] = t, g[11] = a, g[12] = m, g[13] = u, g[14] = n, g[15] = C, g;
 }
-function XA(t, A) {
-  var r = A[0], c = A[1], h = A[2], d = A[3], f = A[4], o = A[5], I = A[6], s = A[7], e = A[8], a = A[9], m = A[10], u = A[11], n = A[12], C = A[13], g = A[14], l = A[15], V = r * o - c * f, F = r * I - h * f, B = r * s - d * f, Q = c * I - h * o, M = c * s - d * o, p = h * s - d * I, v = e * C - a * n, i = e * g - m * n, R = e * l - u * n, w = a * g - m * C, b = a * l - u * C, k = m * l - u * g, y = V * k - F * b + B * w + Q * R - M * i + p * v;
-  return y ? (y = 1 / y, t[0] = (o * k - I * b + s * w) * y, t[1] = (h * b - c * k - d * w) * y, t[2] = (C * p - g * M + l * Q) * y, t[3] = (m * M - a * p - u * Q) * y, t[4] = (I * R - f * k - s * i) * y, t[5] = (r * k - h * R + d * i) * y, t[6] = (g * B - n * p - l * F) * y, t[7] = (e * p - m * B + u * F) * y, t[8] = (f * b - o * R + s * v) * y, t[9] = (c * R - r * b - d * v) * y, t[10] = (n * M - C * B + l * V) * y, t[11] = (a * B - e * M - u * V) * y, t[12] = (o * i - f * w - I * v) * y, t[13] = (r * w - c * i + h * v) * y, t[14] = (C * F - n * Q - g * V) * y, t[15] = (e * Q - a * F + m * V) * y, t) : null;
+function KA(e, A) {
+  var r = A[0], c = A[1], h = A[2], d = A[3], f = A[4], o = A[5], I = A[6], s = A[7], t = A[8], a = A[9], m = A[10], u = A[11], n = A[12], C = A[13], g = A[14], l = A[15], V = r * o - c * f, F = r * I - h * f, B = r * s - d * f, Q = c * I - h * o, M = c * s - d * o, p = h * s - d * I, v = t * C - a * n, i = t * g - m * n, R = t * l - u * n, w = a * g - m * C, b = a * l - u * C, k = m * l - u * g, y = V * k - F * b + B * w + Q * R - M * i + p * v;
+  return y ? (y = 1 / y, e[0] = (o * k - I * b + s * w) * y, e[1] = (h * b - c * k - d * w) * y, e[2] = (C * p - g * M + l * Q) * y, e[3] = (m * M - a * p - u * Q) * y, e[4] = (I * R - f * k - s * i) * y, e[5] = (r * k - h * R + d * i) * y, e[6] = (g * B - n * p - l * F) * y, e[7] = (t * p - m * B + u * F) * y, e[8] = (f * b - o * R + s * v) * y, e[9] = (c * R - r * b - d * v) * y, e[10] = (n * M - C * B + l * V) * y, e[11] = (a * B - t * M - u * V) * y, e[12] = (o * i - f * w - I * v) * y, e[13] = (r * w - c * i + h * v) * y, e[14] = (C * F - n * Q - g * V) * y, e[15] = (t * Q - a * F + m * V) * y, e) : null;
 }
-function pA(t, A, r) {
-  var c = A[0], h = A[1], d = A[2], f = A[3], o = A[4], I = A[5], s = A[6], e = A[7], a = A[8], m = A[9], u = A[10], n = A[11], C = A[12], g = A[13], l = A[14], V = A[15], F = r[0], B = r[1], Q = r[2], M = r[3];
-  return t[0] = F * c + B * o + Q * a + M * C, t[1] = F * h + B * I + Q * m + M * g, t[2] = F * d + B * s + Q * u + M * l, t[3] = F * f + B * e + Q * n + M * V, F = r[4], B = r[5], Q = r[6], M = r[7], t[4] = F * c + B * o + Q * a + M * C, t[5] = F * h + B * I + Q * m + M * g, t[6] = F * d + B * s + Q * u + M * l, t[7] = F * f + B * e + Q * n + M * V, F = r[8], B = r[9], Q = r[10], M = r[11], t[8] = F * c + B * o + Q * a + M * C, t[9] = F * h + B * I + Q * m + M * g, t[10] = F * d + B * s + Q * u + M * l, t[11] = F * f + B * e + Q * n + M * V, F = r[12], B = r[13], Q = r[14], M = r[15], t[12] = F * c + B * o + Q * a + M * C, t[13] = F * h + B * I + Q * m + M * g, t[14] = F * d + B * s + Q * u + M * l, t[15] = F * f + B * e + Q * n + M * V, t;
+function dA(e, A, r) {
+  var c = A[0], h = A[1], d = A[2], f = A[3], o = A[4], I = A[5], s = A[6], t = A[7], a = A[8], m = A[9], u = A[10], n = A[11], C = A[12], g = A[13], l = A[14], V = A[15], F = r[0], B = r[1], Q = r[2], M = r[3];
+  return e[0] = F * c + B * o + Q * a + M * C, e[1] = F * h + B * I + Q * m + M * g, e[2] = F * d + B * s + Q * u + M * l, e[3] = F * f + B * t + Q * n + M * V, F = r[4], B = r[5], Q = r[6], M = r[7], e[4] = F * c + B * o + Q * a + M * C, e[5] = F * h + B * I + Q * m + M * g, e[6] = F * d + B * s + Q * u + M * l, e[7] = F * f + B * t + Q * n + M * V, F = r[8], B = r[9], Q = r[10], M = r[11], e[8] = F * c + B * o + Q * a + M * C, e[9] = F * h + B * I + Q * m + M * g, e[10] = F * d + B * s + Q * u + M * l, e[11] = F * f + B * t + Q * n + M * V, F = r[12], B = r[13], Q = r[14], M = r[15], e[12] = F * c + B * o + Q * a + M * C, e[13] = F * h + B * I + Q * m + M * g, e[14] = F * d + B * s + Q * u + M * l, e[15] = F * f + B * t + Q * n + M * V, e;
 }
-function cA(t, A, r) {
-  var c = r[0], h = r[1], d = r[2], f, o, I, s, e, a, m, u, n, C, g, l;
-  return A === t ? (t[12] = A[0] * c + A[4] * h + A[8] * d + A[12], t[13] = A[1] * c + A[5] * h + A[9] * d + A[13], t[14] = A[2] * c + A[6] * h + A[10] * d + A[14], t[15] = A[3] * c + A[7] * h + A[11] * d + A[15]) : (f = A[0], o = A[1], I = A[2], s = A[3], e = A[4], a = A[5], m = A[6], u = A[7], n = A[8], C = A[9], g = A[10], l = A[11], t[0] = f, t[1] = o, t[2] = I, t[3] = s, t[4] = e, t[5] = a, t[6] = m, t[7] = u, t[8] = n, t[9] = C, t[10] = g, t[11] = l, t[12] = f * c + e * h + n * d + A[12], t[13] = o * c + a * h + C * d + A[13], t[14] = I * c + m * h + g * d + A[14], t[15] = s * c + u * h + l * d + A[15]), t;
+function lA(e, A, r) {
+  var c = r[0], h = r[1], d = r[2], f, o, I, s, t, a, m, u, n, C, g, l;
+  return A === e ? (e[12] = A[0] * c + A[4] * h + A[8] * d + A[12], e[13] = A[1] * c + A[5] * h + A[9] * d + A[13], e[14] = A[2] * c + A[6] * h + A[10] * d + A[14], e[15] = A[3] * c + A[7] * h + A[11] * d + A[15]) : (f = A[0], o = A[1], I = A[2], s = A[3], t = A[4], a = A[5], m = A[6], u = A[7], n = A[8], C = A[9], g = A[10], l = A[11], e[0] = f, e[1] = o, e[2] = I, e[3] = s, e[4] = t, e[5] = a, e[6] = m, e[7] = u, e[8] = n, e[9] = C, e[10] = g, e[11] = l, e[12] = f * c + t * h + n * d + A[12], e[13] = o * c + a * h + C * d + A[13], e[14] = I * c + m * h + g * d + A[14], e[15] = s * c + u * h + l * d + A[15]), e;
 }
-function lA(t, A) {
-  var r = A[0], c = A[1], h = A[2], d = A[3], f = r + r, o = c + c, I = h + h, s = r * f, e = c * f, a = c * o, m = h * f, u = h * o, n = h * I, C = d * f, g = d * o, l = d * I;
-  return t[0] = 1 - a - n, t[1] = e + l, t[2] = m - g, t[3] = 0, t[4] = e - l, t[5] = 1 - s - n, t[6] = u + C, t[7] = 0, t[8] = m + g, t[9] = u - C, t[10] = 1 - s - a, t[11] = 0, t[12] = 0, t[13] = 0, t[14] = 0, t[15] = 1, t;
+function uA(e, A) {
+  var r = A[0], c = A[1], h = A[2], d = A[3], f = r + r, o = c + c, I = h + h, s = r * f, t = c * f, a = c * o, m = h * f, u = h * o, n = h * I, C = d * f, g = d * o, l = d * I;
+  return e[0] = 1 - a - n, e[1] = t + l, e[2] = m - g, e[3] = 0, e[4] = t - l, e[5] = 1 - s - n, e[6] = u + C, e[7] = 0, e[8] = m + g, e[9] = u - C, e[10] = 1 - s - a, e[11] = 0, e[12] = 0, e[13] = 0, e[14] = 0, e[15] = 1, e;
 }
-var N = pA;
-function dA() {
-  var t = new U(3);
-  return U != Float32Array && (t[0] = 0, t[1] = 0, t[2] = 0), t;
+var T = dA;
+function vA() {
+  var e = new U(3);
+  return U != Float32Array && (e[0] = 0, e[1] = 0, e[2] = 0), e;
 }
-function zA(t) {
-  var A = t[0], r = t[1], c = t[2];
+function UA(e) {
+  var A = e[0], r = e[1], c = e[2];
   return Math.hypot(A, r, c);
 }
-function _(t, A, r) {
+function _(e, A, r) {
   var c = new U(3);
-  return c[0] = t, c[1] = A, c[2] = r, c;
+  return c[0] = e, c[1] = A, c[2] = r, c;
 }
-function KA(t, A) {
+function ZA(e, A) {
   var r = A[0], c = A[1], h = A[2], d = r * r + c * c + h * h;
-  return d > 0 && (d = 1 / Math.sqrt(d)), t[0] = A[0] * d, t[1] = A[1] * d, t[2] = A[2] * d, t;
+  return d > 0 && (d = 1 / Math.sqrt(d)), e[0] = A[0] * d, e[1] = A[1] * d, e[2] = A[2] * d, e;
 }
-function UA(t, A) {
-  return t[0] * A[0] + t[1] * A[1] + t[2] * A[2];
+function xA(e, A) {
+  return e[0] * A[0] + e[1] * A[1] + e[2] * A[2];
 }
-function AA(t, A, r) {
+function AA(e, A, r) {
   var c = A[0], h = A[1], d = A[2], f = r[0], o = r[1], I = r[2];
-  return t[0] = h * I - d * o, t[1] = d * f - c * I, t[2] = c * o - h * f, t;
+  return e[0] = h * I - d * o, e[1] = d * f - c * I, e[2] = c * o - h * f, e;
 }
-var ZA = zA;
+var OA = UA;
 (function() {
-  var t = dA();
+  var e = vA();
   return function(A, r, c, h, d, f) {
     var o, I;
     for (r || (r = 3), c || (c = 0), h ? I = Math.min(h * r + c, A.length) : I = A.length, o = c; o < I; o += r)
-      t[0] = A[o], t[1] = A[o + 1], t[2] = A[o + 2], d(t, t, f), A[o] = t[0], A[o + 1] = t[1], A[o + 2] = t[2];
+      e[0] = A[o], e[1] = A[o + 1], e[2] = A[o + 2], d(e, e, f), A[o] = e[0], A[o + 1] = e[1], A[o + 2] = e[2];
     return A;
   };
 })();
-function xA() {
-  var t = new U(4);
-  return U != Float32Array && (t[0] = 0, t[1] = 0, t[2] = 0, t[3] = 0), t;
+function GA() {
+  var e = new U(4);
+  return U != Float32Array && (e[0] = 0, e[1] = 0, e[2] = 0, e[3] = 0), e;
 }
-function vA(t, A, r, c) {
+function mA(e, A, r, c) {
   var h = new U(4);
-  return h[0] = t, h[1] = A, h[2] = r, h[3] = c, h;
+  return h[0] = e, h[1] = A, h[2] = r, h[3] = c, h;
 }
-function OA(t, A) {
+function PA(e, A) {
   var r = A[0], c = A[1], h = A[2], d = A[3], f = r * r + c * c + h * h + d * d;
-  return f > 0 && (f = 1 / Math.sqrt(f)), t[0] = r * f, t[1] = c * f, t[2] = h * f, t[3] = d * f, t;
+  return f > 0 && (f = 1 / Math.sqrt(f)), e[0] = r * f, e[1] = c * f, e[2] = h * f, e[3] = d * f, e;
 }
-function GA(t, A, r) {
-  var c = A[0], h = A[1], d = A[2], f = r[0], o = r[1], I = r[2], s = r[3], e = s * c + o * d - I * h, a = s * h + I * c - f * d, m = s * d + f * h - o * c, u = -f * c - o * h - I * d;
-  return t[0] = e * s + u * -f + a * -I - m * -o, t[1] = a * s + u * -o + m * -f - e * -I, t[2] = m * s + u * -I + e * -o - a * -f, t[3] = A[3], t;
+function JA(e, A, r) {
+  var c = A[0], h = A[1], d = A[2], f = r[0], o = r[1], I = r[2], s = r[3], t = s * c + o * d - I * h, a = s * h + I * c - f * d, m = s * d + f * h - o * c, u = -f * c - o * h - I * d;
+  return e[0] = t * s + u * -f + a * -I - m * -o, e[1] = a * s + u * -o + m * -f - t * -I, e[2] = m * s + u * -I + t * -o - a * -f, e[3] = A[3], e;
 }
 (function() {
-  var t = xA();
+  var e = GA();
   return function(A, r, c, h, d, f) {
     var o, I;
     for (r || (r = 4), c || (c = 0), h ? I = Math.min(h * r + c, A.length) : I = A.length, o = c; o < I; o += r)
-      t[0] = A[o], t[1] = A[o + 1], t[2] = A[o + 2], t[3] = A[o + 3], d(t, t, f), A[o] = t[0], A[o + 1] = t[1], A[o + 2] = t[2], A[o + 3] = t[3];
+      e[0] = A[o], e[1] = A[o + 1], e[2] = A[o + 2], e[3] = A[o + 3], d(e, e, f), A[o] = e[0], A[o + 1] = e[1], A[o + 2] = e[2], A[o + 3] = e[3];
     return A;
   };
 })();
-function uA() {
-  var t = new U(4);
-  return U != Float32Array && (t[0] = 0, t[1] = 0, t[2] = 0), t[3] = 1, t;
+function hA() {
+  var e = new U(4);
+  return U != Float32Array && (e[0] = 0, e[1] = 0, e[2] = 0), e[3] = 1, e;
 }
-function PA(t, A, r) {
+function HA(e, A, r) {
   r = r * 0.5;
   var c = Math.sin(r);
-  return t[0] = c * A[0], t[1] = c * A[1], t[2] = c * A[2], t[3] = Math.cos(r), t;
+  return e[0] = c * A[0], e[1] = c * A[1], e[2] = c * A[2], e[3] = Math.cos(r), e;
 }
-function eA(t, A, r, c) {
-  var h = A[0], d = A[1], f = A[2], o = A[3], I = r[0], s = r[1], e = r[2], a = r[3], m, u, n, C, g;
-  return u = h * I + d * s + f * e + o * a, u < 0 && (u = -u, I = -I, s = -s, e = -e, a = -a), 1 - u > RA ? (m = Math.acos(u), n = Math.sin(m), C = Math.sin((1 - c) * m) / n, g = Math.sin(c * m) / n) : (C = 1 - c, g = c), t[0] = C * h + g * I, t[1] = C * d + g * s, t[2] = C * f + g * e, t[3] = C * o + g * a, t;
+function eA(e, A, r, c) {
+  var h = A[0], d = A[1], f = A[2], o = A[3], I = r[0], s = r[1], t = r[2], a = r[3], m, u, n, C, g;
+  return u = h * I + d * s + f * t + o * a, u < 0 && (u = -u, I = -I, s = -s, t = -t, a = -a), 1 - u > XA ? (m = Math.acos(u), n = Math.sin(m), C = Math.sin((1 - c) * m) / n, g = Math.sin(c * m) / n) : (C = 1 - c, g = c), e[0] = C * h + g * I, e[1] = C * d + g * s, e[2] = C * f + g * t, e[3] = C * o + g * a, e;
 }
-function JA(t, A) {
+function jA(e, A) {
   var r = A[0] + A[4] + A[8], c;
   if (r > 0)
-    c = Math.sqrt(r + 1), t[3] = 0.5 * c, c = 0.5 / c, t[0] = (A[5] - A[7]) * c, t[1] = (A[6] - A[2]) * c, t[2] = (A[1] - A[3]) * c;
+    c = Math.sqrt(r + 1), e[3] = 0.5 * c, c = 0.5 / c, e[0] = (A[5] - A[7]) * c, e[1] = (A[6] - A[2]) * c, e[2] = (A[1] - A[3]) * c;
   else {
     var h = 0;
     A[4] > A[0] && (h = 1), A[8] > A[h * 3 + h] && (h = 2);
     var d = (h + 1) % 3, f = (h + 2) % 3;
-    c = Math.sqrt(A[h * 3 + h] - A[d * 3 + d] - A[f * 3 + f] + 1), t[h] = 0.5 * c, c = 0.5 / c, t[3] = (A[d * 3 + f] - A[f * 3 + d]) * c, t[d] = (A[d * 3 + h] + A[h * 3 + d]) * c, t[f] = (A[f * 3 + h] + A[h * 3 + f]) * c;
+    c = Math.sqrt(A[h * 3 + h] - A[d * 3 + d] - A[f * 3 + f] + 1), e[h] = 0.5 * c, c = 0.5 / c, e[3] = (A[d * 3 + f] - A[f * 3 + d]) * c, e[d] = (A[d * 3 + h] + A[h * 3 + d]) * c, e[f] = (A[f * 3 + h] + A[h * 3 + f]) * c;
   }
-  return t;
+  return e;
 }
-var tA = vA, mA = OA;
+var tA = mA, gA = PA;
 (function() {
-  var t = dA(), A = _(1, 0, 0), r = _(0, 1, 0);
+  var e = vA(), A = _(1, 0, 0), r = _(0, 1, 0);
   return function(c, h, d) {
-    var f = UA(h, d);
-    return f < -0.999999 ? (AA(t, A, h), ZA(t) < 1e-6 && AA(t, r, h), KA(t, t), PA(c, t, Math.PI), c) : f > 0.999999 ? (c[0] = 0, c[1] = 0, c[2] = 0, c[3] = 1, c) : (AA(t, h, d), c[0] = t[0], c[1] = t[1], c[2] = t[2], c[3] = 1 + f, mA(c, c));
+    var f = xA(h, d);
+    return f < -0.999999 ? (AA(e, A, h), OA(e) < 1e-6 && AA(e, r, h), ZA(e, e), HA(c, e, Math.PI), c) : f > 0.999999 ? (c[0] = 0, c[1] = 0, c[2] = 0, c[3] = 1, c) : (AA(e, h, d), c[0] = e[0], c[1] = e[1], c[2] = e[2], c[3] = 1 + f, gA(c, c));
   };
 })();
 (function() {
-  var t = uA(), A = uA();
+  var e = hA(), A = hA();
   return function(r, c, h, d, f, o) {
-    return eA(t, c, f, o), eA(A, h, d, o), eA(r, t, A, 2 * o * (1 - o)), r;
+    return eA(e, c, f, o), eA(A, h, d, o), eA(r, e, A, 2 * o * (1 - o)), r;
   };
 })();
 (function() {
-  var t = SA();
+  var e = zA();
   return function(A, r, c, h) {
-    return t[0] = c[0], t[3] = c[1], t[6] = c[2], t[1] = h[0], t[4] = h[1], t[7] = h[2], t[2] = -r[0], t[5] = -r[1], t[8] = -r[2], mA(A, JA(A, t));
+    return e[0] = c[0], e[3] = c[1], e[6] = c[2], e[1] = h[0], e[4] = h[1], e[7] = h[2], e[2] = -r[0], e[5] = -r[1], e[8] = -r[2], gA(A, jA(A, e));
   };
 })();
-function HA(t, A) {
-  let r = Math.min(t.width / A.width, t.height / A.height), c = (t.width - A.width * r) / 2, h = (t.height - A.height * r) / 2;
-  t.getContext("2d").drawImage(
+function NA(e, A) {
+  let r = Math.min(e.width / A.width, e.height / A.height), c = (e.width - A.width * r) / 2, h = (e.height - A.height * r) / 2;
+  e.getContext("2d").drawImage(
     A,
     0,
     0,
@@ -238,8 +241,8 @@ function HA(t, A) {
     A.height * r
   );
 }
-function jA(t, A, r, c, h) {
-  const d = J(), f = j(
+function qA(e, A, r, c, h) {
+  const d = J(), f = q(
     1,
     0,
     0,
@@ -256,7 +259,7 @@ function jA(t, A, r, c, h) {
     0,
     0,
     1
-  ), o = j(
+  ), o = q(
     r[0],
     r[3],
     r[6],
@@ -274,8 +277,8 @@ function jA(t, A, r, c, h) {
     0,
     1
   );
-  N(d, o, f);
-  const I = j(
+  T(d, o, f);
+  const I = q(
     1,
     0,
     0,
@@ -293,8 +296,8 @@ function jA(t, A, r, c, h) {
     c[2],
     1
   );
-  N(d, I, d), N(d, h, d);
-  const s = A[0], e = j(
+  T(d, I, d), T(d, h, d);
+  const s = A[0], t = q(
     1,
     0,
     0,
@@ -312,36 +315,36 @@ function jA(t, A, r, c, h) {
     0,
     0
   );
-  N(d, e, d);
-  const a = j(
-    t,
+  T(d, t, d);
+  const a = q(
+    e,
     0,
     0,
     0,
     0,
-    t,
+    e,
     0,
     0,
     0,
     0,
-    t,
+    e,
     0,
-    A[2] * t,
-    A[5] * t,
+    A[2] * e,
+    A[5] * e,
     0,
     1
   );
-  return N(d, a, d), d;
+  return T(d, a, d), d;
 }
-const NA = {
+const TA = {
   constraints: {
     audio: !1,
     video: { facingMode: "environment" }
   }
 };
-class qA {
+class LA {
   constructor(A, r) {
-    this.session = A, this.options = { ...NA, options: r }, this.paused = !1, this.mediaStream = null, this.track = null, this.camera = null, this.videoElement = document.createElement("video"), this.imageCapture = null, this.feedStatus = {
+    this.session = A, this.options = { ...TA, options: r }, this.paused = !1, this.mediaStream = null, this.track = null, this.camera = null, this.videoElement = document.createElement("video"), this.imageCapture = null, this.feedStatus = {
       error: null,
       available: [],
       selected: null
@@ -391,7 +394,7 @@ class qA {
     if (this.imageCapture)
       try {
         const A = await this.imageCapture.grabFrame();
-        HA(this.session.canvas, A), this.session.process();
+        NA(this.session.canvas, A), this.session.process();
       } catch (A) {
         console.log(A);
       } finally {
@@ -401,7 +404,7 @@ class qA {
       }
   }
 }
-class TA {
+class YA {
   constructor(A) {
     this.session = A, this.elements = {}, this.views = [];
   }
@@ -439,7 +442,7 @@ class TA {
     const r = getComputedStyle(this.session.canvas).width.split("px")[0] / this.session.canvas.width, c = Object.keys(this.elements).map((h) => this.elements[h]);
     for (const h of c)
       if (h.lastTransform) {
-        const d = this.session.motion.getOffsetMatrix(h.lastTransform), f = jA(r, this.session.calibration.cameraMatrix, h.lastRMat, h.lastTVec, d);
+        const d = this.session.motion.getOffsetMatrix(h.lastTransform), f = qA(r, this.session.calibration.cameraMatrix, h.lastRMat, h.lastTVec, d);
         this.projectElement(h.id, Array.from(f));
       }
   }
@@ -447,26 +450,33 @@ class TA {
     r = r.map((c) => c.toFixed(5)), this.elements[A].element.style.transform = `matrix3d(${r.join(",")})`;
   }
 }
-function Y(t) {
-  throw new Error('Could not dynamically require "' + t + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
+function W(e) {
+  throw new Error('Could not dynamically require "' + e + '". Please configure the dynamicRequireTargets or/and ignoreDynamicRequires option of @rollup/plugin-commonjs appropriately for this require call to work.');
 }
-var gA = { exports: {} };
+var H = {}, WA = {
+  get exports() {
+    return H;
+  },
+  set exports(e) {
+    H = e;
+  }
+};
 /**
  * @name    fili
  * @version 2.0.3 | December 13th 2018
  * @author  Florian Markert
  * @license MIT
  */
-(function(t, A) {
+(function(e, A) {
   (function(r) {
-    t.exports = r();
+    e.exports = r();
   })(function() {
     return function r(c, h, d) {
-      function f(s, e) {
+      function f(s, t) {
         if (!h[s]) {
           if (!c[s]) {
-            var a = typeof Y == "function" && Y;
-            if (!e && a)
+            var a = typeof W == "function" && W;
+            if (!t && a)
               return a(s, !0);
             if (o)
               return o(s, !0);
@@ -481,7 +491,7 @@ var gA = { exports: {} };
         }
         return h[s].exports;
       }
-      for (var o = typeof Y == "function" && Y, I = 0; I < d.length; I++)
+      for (var o = typeof W == "function" && W, I = 0; I < d.length; I++)
         f(d[I]);
       return f;
     }({ 1: [function(r, c, h) {
@@ -498,14 +508,14 @@ var gA = { exports: {} };
           for (g = 0; g < u.length; g++)
             C.push(f[n](u[g]));
         return C;
-      }, e = function(u) {
+      }, t = function(u) {
         return function(n) {
           return s(n, u);
         };
       }, a = {}, m = function() {
         var u = [];
         for (var n in f)
-          a[n] = e(n), u.push(n);
+          a[n] = t(n), u.push(n);
         return a.available = function() {
           return u;
         }, a;
@@ -522,8 +532,8 @@ var gA = { exports: {} };
         var I = 2 * Math.PI, s = Math.floor(Math.log(f) / Math.LN2);
         for (a = o.sinTable.length; a--; )
           o.sinTable[a] = Math.sin(I * (a / f)), o.cosTable[a] = Math.cos(I * (a / f));
-        for (var e = f >> 1, a = 0, m = 0; o.twiddle[a] = m, !(++a >= f); ) {
-          for (s = e; s <= m; )
+        for (var t = f >> 1, a = 0, m = 0; o.twiddle[a] = m, !(++a >= f); ) {
+          for (s = t; s <= m; )
             m -= s, s >>= 1;
           m += s;
         }
@@ -687,8 +697,8 @@ var gA = { exports: {} };
       c.exports = d;
     }, {}], 4: [function(r, c, h) {
       var d = function() {
-        var f = function(e) {
-          var a = e.Fs, m = e.Fa, u = e.Fb, n = e.order || 51, C = e.Att || 100, g = function(p) {
+        var f = function(t) {
+          var a = t.Fs, m = t.Fa, u = t.Fb, n = t.order || 51, C = t.Att || 100, g = function(p) {
             for (var v = 0, i = 1, R = 1; i > 1e-6 * R; )
               v += 2, i *= p * p / (v * v), R += i;
             return R;
@@ -702,40 +712,40 @@ var gA = { exports: {} };
           for (Q = 0; Q < V; Q++)
             M[Q] = M[n - 1 - Q];
           return M;
-        }, o = function(e) {
-          var a = e.Fs, m = e.Fc, u = e.order, n = 2 * Math.PI * m / a, C = 0, g = 0, l = [];
+        }, o = function(t) {
+          var a = t.Fs, m = t.Fc, u = t.order, n = 2 * Math.PI * m / a, C = 0, g = 0, l = [];
           for (C = 0; C <= u; C++)
             C - u / 2 == 0 ? l[C] = n : (l[C] = Math.sin(n * (C - u / 2)) / (C - u / 2), l[C] *= 0.54 - 0.46 * Math.cos(2 * Math.PI * C / u)), g += l[C];
           for (C = 0; C <= u; C++)
             l[C] /= g;
           return l;
-        }, I = function(e) {
+        }, I = function(t) {
           var a;
-          for (a = 0; a < e.length; a++)
-            e[a] = -e[a];
-          return e[(e.length - 1) / 2]++, e;
-        }, s = function(e) {
-          for (var a = o({ order: e.order, Fs: e.Fs, Fc: e.F2 }), m = I(o({ order: e.order, Fs: e.Fs, Fc: e.F1 })), u = [], n = 0; n < a.length; n++)
+          for (a = 0; a < t.length; a++)
+            t[a] = -t[a];
+          return t[(t.length - 1) / 2]++, t;
+        }, s = function(t) {
+          for (var a = o({ order: t.order, Fs: t.Fs, Fc: t.F2 }), m = I(o({ order: t.order, Fs: t.Fs, Fc: t.F1 })), u = [], n = 0; n < a.length; n++)
             u.push(a[n] + m[n]);
           return u;
         };
-        return { lowpass: function(e) {
-          return o(e);
-        }, highpass: function(e) {
-          return I(o(e));
-        }, bandstop: function(e) {
-          return s(e);
-        }, bandpass: function(e) {
-          return I(s(e));
-        }, kbFilter: function(e) {
-          return f(e);
+        return { lowpass: function(t) {
+          return o(t);
+        }, highpass: function(t) {
+          return I(o(t));
+        }, bandstop: function(t) {
+          return s(t);
+        }, bandpass: function(t) {
+          return I(s(t));
+        }, kbFilter: function(t) {
+          return f(t);
         }, available: function() {
           return ["lowpass", "highpass", "bandstop", "bandpass", "kbFilter"];
         } };
       };
       c.exports = d;
     }, {}], 5: [function(r, c, h) {
-      var d = r("./utils"), f = d.runMultiFilter, o = d.runMultiFilterReverse, I = d.complex, s = d.evaluatePhase, e = function(a) {
+      var d = r("./utils"), f = d.runMultiFilter, o = d.runMultiFilterReverse, I = d.complex, s = d.evaluatePhase, t = function(a) {
         var m = a, u = [], n = 0;
         for (n = 0; n < m.length; n++)
           u[n] = { re: m[n], im: 0 };
@@ -779,84 +789,84 @@ var gA = { exports: {} };
           g = C(m.length - 1);
         } };
       };
-      c.exports = e;
+      c.exports = t;
     }, { "./utils": 9 }], 6: [function(r, c, h) {
       var d = function() {
-        var f = function(s, e) {
+        var f = function(s, t) {
           var a = s.Q, m = s.Fc, u = s.Fs, n = {}, C = 2 * Math.PI * m / u;
-          return s.BW ? n.alpha = Math.sin(C) * Math.sinh(Math.log(2) / 2 * s.BW * C / Math.sin(C)) : n.alpha = Math.sin(C) / (2 * a), n.cw = Math.cos(C), n.a0 = 1 + n.alpha, e.a0 = n.a0, e.a.push(-2 * n.cw / n.a0), e.k = 1, e.a.push((1 - n.alpha) / n.a0), n;
+          return s.BW ? n.alpha = Math.sin(C) * Math.sinh(Math.log(2) / 2 * s.BW * C / Math.sin(C)) : n.alpha = Math.sin(C) / (2 * a), n.cw = Math.cos(C), n.a0 = 1 + n.alpha, t.a0 = n.a0, t.a.push(-2 * n.cw / n.a0), t.k = 1, t.a.push((1 - n.alpha) / n.a0), n;
         }, o = function(s) {
-          var e = s.Q, a = s.Fc, m = s.Fs, u = {}, n = 2 * Math.PI * a / m;
-          return u.alpha = Math.sin(n) / (2 * e), u.cw = Math.cos(n), u.A = Math.pow(10, s.gain / 40), u;
+          var t = s.Q, a = s.Fc, m = s.Fs, u = {}, n = 2 * Math.PI * a / m;
+          return u.alpha = Math.sin(n) / (2 * t), u.cw = Math.cos(n), u.A = Math.pow(10, s.gain / 40), u;
         }, I = function() {
           var s = {};
           return s.z = [0, 0], s.a = [], s.b = [], s;
         };
         return { fromPZ: function(s) {
-          var e = I();
-          return e.a0 = 1, e.b.push(1), e.b.push(-s.z0.re - s.z1.re), e.b.push(s.z0.re * s.z1.re - s.z0.im * s.z1.im), e.a.push(-s.p0.re - s.p1.re), e.a.push(s.p0.re * s.p1.re - s.p0.im * s.p1.im), s.type === "lowpass" ? e.k = (1 + e.a[0] + e.a[1]) / (1 + e.b[1] + e.b[2]) : e.k = (1 - e.a[0] + e.a[1]) / (1 - e.b[1] + e.b[2]), e;
+          var t = I();
+          return t.a0 = 1, t.b.push(1), t.b.push(-s.z0.re - s.z1.re), t.b.push(s.z0.re * s.z1.re - s.z0.im * s.z1.im), t.a.push(-s.p0.re - s.p1.re), t.a.push(s.p0.re * s.p1.re - s.p0.im * s.p1.im), s.type === "lowpass" ? t.k = (1 + t.a[0] + t.a[1]) / (1 + t.b[1] + t.b[2]) : t.k = (1 - t.a[0] + t.a[1]) / (1 - t.b[1] + t.b[2]), t;
         }, lowpassMZ: function(s) {
-          var e = I();
-          e.a0 = 1;
+          var t = I();
+          t.a0 = 1;
           var a = s.as, m = s.bs, u = 2 * Math.PI * s.Fc / s.Fs, n = -a / (2 * m);
-          return e.a.push(2 * -Math.pow(Math.E, n * u) * Math.cos(-u * Math.sqrt(Math.abs(Math.pow(a, 2) / (4 * Math.pow(m, 2)) - 1 / m)))), e.a.push(Math.pow(Math.E, 2 * n * u)), s.preGain ? (e.b.push(1), e.k = e.a0 + e.a[0] + e.a[1]) : (e.b.push(e.a0 + e.a[0] + e.a[1]), e.k = 1), e.b.push(0), e.b.push(0), e;
+          return t.a.push(2 * -Math.pow(Math.E, n * u) * Math.cos(-u * Math.sqrt(Math.abs(Math.pow(a, 2) / (4 * Math.pow(m, 2)) - 1 / m)))), t.a.push(Math.pow(Math.E, 2 * n * u)), s.preGain ? (t.b.push(1), t.k = t.a0 + t.a[0] + t.a[1]) : (t.b.push(t.a0 + t.a[0] + t.a[1]), t.k = 1), t.b.push(0), t.b.push(0), t;
         }, lowpassBT: function(s) {
-          var e = I();
-          return s.Q = 1, e.wp = Math.tan(2 * Math.PI * s.Fc / (2 * s.Fs)), e.wp2 = e.wp * e.wp, s.BW && delete s.BW, e.k = 1, e.a0 = 3 * e.wp + 3 * e.wp2 + 1, e.b.push(3 * e.wp2 * s.Q / e.a0), e.b.push(2 * e.b[0]), e.b.push(e.b[0]), e.a.push((6 * e.wp2 - 2) / e.a0), e.a.push((3 * e.wp2 - 3 * e.wp + 1) / e.a0), e;
+          var t = I();
+          return s.Q = 1, t.wp = Math.tan(2 * Math.PI * s.Fc / (2 * s.Fs)), t.wp2 = t.wp * t.wp, s.BW && delete s.BW, t.k = 1, t.a0 = 3 * t.wp + 3 * t.wp2 + 1, t.b.push(3 * t.wp2 * s.Q / t.a0), t.b.push(2 * t.b[0]), t.b.push(t.b[0]), t.a.push((6 * t.wp2 - 2) / t.a0), t.a.push((3 * t.wp2 - 3 * t.wp + 1) / t.a0), t;
         }, highpassBT: function(s) {
-          var e = I();
-          return s.Q = 1, e.wp = Math.tan(2 * Math.PI * s.Fc / (2 * s.Fs)), e.wp2 = e.wp * e.wp, s.BW && delete s.BW, e.k = 1, e.a0 = e.wp + e.wp2 + 3, e.b.push(3 * s.Q / e.a0), e.b.push(2 * e.b[0]), e.b.push(e.b[0]), e.a.push((2 * e.wp2 - 6) / e.a0), e.a.push((e.wp2 - e.wp + 3) / e.a0), e;
+          var t = I();
+          return s.Q = 1, t.wp = Math.tan(2 * Math.PI * s.Fc / (2 * s.Fs)), t.wp2 = t.wp * t.wp, s.BW && delete s.BW, t.k = 1, t.a0 = t.wp + t.wp2 + 3, t.b.push(3 * s.Q / t.a0), t.b.push(2 * t.b[0]), t.b.push(t.b[0]), t.a.push((2 * t.wp2 - 6) / t.a0), t.a.push((t.wp2 - t.wp + 3) / t.a0), t;
         }, lowpass: function(s) {
-          var e = I();
+          var t = I();
           s.BW && delete s.BW;
-          var a = f(s, e);
-          return s.preGain ? (e.k = 0.5 * (1 - a.cw), e.b.push(1 / a.a0)) : (e.k = 1, e.b.push((1 - a.cw) / (2 * a.a0))), e.b.push(2 * e.b[0]), e.b.push(e.b[0]), e;
+          var a = f(s, t);
+          return s.preGain ? (t.k = 0.5 * (1 - a.cw), t.b.push(1 / a.a0)) : (t.k = 1, t.b.push((1 - a.cw) / (2 * a.a0))), t.b.push(2 * t.b[0]), t.b.push(t.b[0]), t;
         }, highpass: function(s) {
-          var e = I();
+          var t = I();
           s.BW && delete s.BW;
-          var a = f(s, e);
-          return s.preGain ? (e.k = 0.5 * (1 + a.cw), e.b.push(1 / a.a0)) : (e.k = 1, e.b.push((1 + a.cw) / (2 * a.a0))), e.b.push(-2 * e.b[0]), e.b.push(e.b[0]), e;
+          var a = f(s, t);
+          return s.preGain ? (t.k = 0.5 * (1 + a.cw), t.b.push(1 / a.a0)) : (t.k = 1, t.b.push((1 + a.cw) / (2 * a.a0))), t.b.push(-2 * t.b[0]), t.b.push(t.b[0]), t;
         }, allpass: function(s) {
-          var e = I();
+          var t = I();
           s.BW && delete s.BW;
-          var a = f(s, e);
-          return e.k = 1, e.b.push((1 - a.alpha) / a.a0), e.b.push(-2 * a.cw / a.a0), e.b.push((1 + a.alpha) / a.a0), e;
+          var a = f(s, t);
+          return t.k = 1, t.b.push((1 - a.alpha) / a.a0), t.b.push(-2 * a.cw / a.a0), t.b.push((1 + a.alpha) / a.a0), t;
         }, bandpassQ: function(s) {
-          var e = I(), a = f(s, e);
-          return e.k = 1, e.b.push(a.alpha * s.Q / a.a0), e.b.push(0), e.b.push(-e.b[0]), e;
+          var t = I(), a = f(s, t);
+          return t.k = 1, t.b.push(a.alpha * s.Q / a.a0), t.b.push(0), t.b.push(-t.b[0]), t;
         }, bandpass: function(s) {
-          var e = I(), a = f(s, e);
-          return e.k = 1, e.b.push(a.alpha / a.a0), e.b.push(0), e.b.push(-e.b[0]), e;
+          var t = I(), a = f(s, t);
+          return t.k = 1, t.b.push(a.alpha / a.a0), t.b.push(0), t.b.push(-t.b[0]), t;
         }, bandstop: function(s) {
-          var e = I(), a = f(s, e);
-          return e.k = 1, e.b.push(1 / a.a0), e.b.push(-2 * a.cw / a.a0), e.b.push(e.b[0]), e;
+          var t = I(), a = f(s, t);
+          return t.k = 1, t.b.push(1 / a.a0), t.b.push(-2 * a.cw / a.a0), t.b.push(t.b[0]), t;
         }, peak: function(s) {
-          var e = I(), a = o(s);
-          return e.k = 1, e.a0 = 1 + a.alpha / a.A, e.a.push(-2 * a.cw / e.a0), e.a.push((1 - a.alpha / a.A) / e.a0), e.b.push((1 + a.alpha * a.A) / e.a0), e.b.push(-2 * a.cw / e.a0), e.b.push((1 - a.alpha * a.A) / e.a0), e;
+          var t = I(), a = o(s);
+          return t.k = 1, t.a0 = 1 + a.alpha / a.A, t.a.push(-2 * a.cw / t.a0), t.a.push((1 - a.alpha / a.A) / t.a0), t.b.push((1 + a.alpha * a.A) / t.a0), t.b.push(-2 * a.cw / t.a0), t.b.push((1 - a.alpha * a.A) / t.a0), t;
         }, lowshelf: function(s) {
-          var e = I();
+          var t = I();
           s.BW && delete s.BW;
           var a = o(s);
-          e.k = 1;
+          t.k = 1;
           var m = 2 * Math.sqrt(a.A) * a.alpha;
-          return e.a0 = a.A + 1 + (a.A - 1) * a.cw + m, e.a.push(-2 * (a.A - 1 + (a.A + 1) * a.cw) / e.a0), e.a.push((a.A + 1 + (a.A - 1) * a.cw - m) / e.a0), e.b.push(a.A * (a.A + 1 - (a.A - 1) * a.cw + m) / e.a0), e.b.push(2 * a.A * (a.A - 1 - (a.A + 1) * a.cw) / e.a0), e.b.push(a.A * (a.A + 1 - (a.A - 1) * a.cw - m) / e.a0), e;
+          return t.a0 = a.A + 1 + (a.A - 1) * a.cw + m, t.a.push(-2 * (a.A - 1 + (a.A + 1) * a.cw) / t.a0), t.a.push((a.A + 1 + (a.A - 1) * a.cw - m) / t.a0), t.b.push(a.A * (a.A + 1 - (a.A - 1) * a.cw + m) / t.a0), t.b.push(2 * a.A * (a.A - 1 - (a.A + 1) * a.cw) / t.a0), t.b.push(a.A * (a.A + 1 - (a.A - 1) * a.cw - m) / t.a0), t;
         }, highshelf: function(s) {
-          var e = I();
+          var t = I();
           s.BW && delete s.BW;
           var a = o(s);
-          e.k = 1;
+          t.k = 1;
           var m = 2 * Math.sqrt(a.A) * a.alpha;
-          return e.a0 = a.A + 1 - (a.A - 1) * a.cw + m, e.a.push(2 * (a.A - 1 - (a.A + 1) * a.cw) / e.a0), e.a.push((a.A + 1 - (a.A - 1) * a.cw - m) / e.a0), e.b.push(a.A * (a.A + 1 + (a.A - 1) * a.cw + m) / e.a0), e.b.push(-2 * a.A * (a.A - 1 + (a.A + 1) * a.cw) / e.a0), e.b.push(a.A * (a.A + 1 + (a.A - 1) * a.cw - m) / e.a0), e;
+          return t.a0 = a.A + 1 - (a.A - 1) * a.cw + m, t.a.push(2 * (a.A - 1 - (a.A + 1) * a.cw) / t.a0), t.a.push((a.A + 1 - (a.A - 1) * a.cw - m) / t.a0), t.b.push(a.A * (a.A + 1 + (a.A - 1) * a.cw + m) / t.a0), t.b.push(-2 * a.A * (a.A - 1 + (a.A + 1) * a.cw) / t.a0), t.b.push(a.A * (a.A + 1 + (a.A - 1) * a.cw - m) / t.a0), t;
         }, aweighting: function(s) {
-          var e = I();
-          e.k = 1;
+          var t = I();
+          t.k = 1;
           var a = 2 * Math.PI * s.Fc / s.Fs, m = 2 * Math.tan(a / 2), u = s.Q, n = Math.pow(m, 2);
-          return e.a0 = 4 * u + n * u + 2 * m, e.a.push(2 * n * u - 8 * u), e.a.push(4 * u + n * u - 2 * m), e.b.push(n * u), e.b.push(2 * n * u), e.b.push(n * u), e;
+          return t.a0 = 4 * u + n * u + 2 * m, t.a.push(2 * n * u - 8 * u), t.a.push(4 * u + n * u - 2 * m), t.b.push(n * u), t.b.push(2 * n * u), t.b.push(n * u), t;
         } };
       };
       c.exports = d;
     }, {}], 7: [function(r, c, h) {
-      var d = r("./utils"), f = d.complex, o = d.runMultiFilter, I = d.runMultiFilterReverse, s = d.evaluatePhase, e = function(a) {
+      var d = r("./utils"), f = d.complex, o = d.runMultiFilter, I = d.runMultiFilterReverse, s = d.evaluatePhase, t = function(a) {
         for (var m = a, u = { re: 1, im: 0 }, n = [], C = [], g = 0; g < m.length; g++) {
           n[g] = {};
           var l = m[g];
@@ -938,10 +948,10 @@ var gA = { exports: {} };
             n[g].z = [0, 0];
         } };
       };
-      c.exports = e;
+      c.exports = t;
     }, { "./utils": 9 }], 8: [function(r, c, h) {
       var d = function(f) {
-        var o, I = f, s = [], e = function(n) {
+        var o, I = f, s = [], t = function(n) {
           for (o = 0; o < n.steps; o++)
             s.push(I.singleStep((Math.random() - 0.5) * n.pp + n.offset));
         }, a = function(n) {
@@ -958,7 +968,7 @@ var gA = { exports: {} };
             o % 200 < 100 ? l += V : l -= V, s.push(I.singleStep(l));
         };
         return { randomStability: function(n) {
-          for (I.reinit(), s.length = 0, e(n), o = n.setup; o < s.length; o++)
+          for (I.reinit(), s.length = 0, t(n), o = n.setup; o < s.length; o++)
             if (s[o] > n.maxStable || s[o] < n.minStable)
               return s[o];
           return !0;
@@ -967,9 +977,9 @@ var gA = { exports: {} };
           var C;
           for (C = 0; C < n.tests; C++) {
             var g = Math.random();
-            g < 0.25 ? e(n) : g < 0.5 ? a(n) : g < 0.75 ? m(n) : u(n);
+            g < 0.25 ? t(n) : g < 0.5 ? a(n) : g < 0.75 ? m(n) : u(n);
           }
-          for (e(n), o = n.setup; o < s.length; o++)
+          for (t(n), o = n.setup; o < s.length; o++)
             if (s[o] > n.maxStable || s[o] < n.minStable)
               return s[o];
           return !0;
@@ -979,80 +989,80 @@ var gA = { exports: {} };
       c.exports = d;
     }, {}], 9: [function(r, c, h) {
       h.evaluatePhase = function(s) {
-        var e = 0, a = 0, m = Math.PI, u = 2 * m, n = [];
+        var t = 0, a = 0, m = Math.PI, u = 2 * m, n = [];
         for (a = 0; a < s.length; a++)
           n.push(s[a].phase);
         for (s[0].unwrappedPhase = s[0].phase, s[0].groupDelay = 0, a = 1; a < n.length; a++) {
           var C = n[a] - n[a - 1];
           if (C > m)
-            for (e = a; e < n.length; e++)
-              n[e] -= u;
+            for (t = a; t < n.length; t++)
+              n[t] -= u;
           else if (C < -m)
-            for (e = a; e < n.length; e++)
-              n[e] += u;
+            for (t = a; t < n.length; t++)
+              n[t] += u;
           n[a] < 0 ? s[a].unwrappedPhase = -n[a] : s[a].unwrappedPhase = n[a], s[a].phaseDelay = s[a].unwrappedPhase / (a / s.length), s[a].groupDelay = (s[a].unwrappedPhase - s[a - 1].unwrappedPhase) / (m / s.length), s[a].groupDelay < 0 && (s[a].groupDelay = -s[a].groupDelay);
         }
         s[0].magnitude !== 0 ? (s[0].phaseDelay = s[1].phaseDelay, s[0].groupDelay = s[1].groupDelay) : (s[0].phaseDelay = s[2].phaseDelay, s[0].groupDelay = s[2].groupDelay, s[1].phaseDelay = s[2].phaseDelay, s[1].groupDelay = s[2].groupDelay);
-      }, h.runMultiFilter = function(s, e, a, m) {
+      }, h.runMultiFilter = function(s, t, a, m) {
         var u = [];
         m && (u = s);
         var n;
         for (n = 0; n < s.length; n++)
-          u[n] = a(s[n], e);
+          u[n] = a(s[n], t);
         return u;
-      }, h.runMultiFilterReverse = function(s, e, a, m) {
+      }, h.runMultiFilterReverse = function(s, t, a, m) {
         var u = [];
         m && (u = s);
         var n;
         for (n = s.length - 1; n >= 0; n--)
-          u[n] = a(s[n], e);
+          u[n] = a(s[n], t);
         return u;
       };
-      var d = function(s, e) {
+      var d = function(s, t) {
         for (var a = !0; a; ) {
-          var m = s, u = e;
+          var m = s, u = t;
           if (a = !1, u || (u = 1), m !== Math.floor(m) || u !== Math.floor(u))
             return 1;
           if (m === 0 || m === 1)
             return u;
-          s = m - 1, e = u * m, a = !0;
+          s = m - 1, t = u * m, a = !0;
         }
       };
       h.besselFactors = function(s) {
-        for (var e = [], a = 0; a < s + 1; a++) {
+        for (var t = [], a = 0; a < s + 1; a++) {
           var m = d(2 * s - a), u = Math.pow(2, s - a) * d(a) * d(s - a);
-          e.unshift(Math.floor(m / u));
+          t.unshift(Math.floor(m / u));
         }
-        return e;
+        return t;
       };
-      var f = function(s, e) {
-        for (var a = 0, m = 0; m < e; m++) {
+      var f = function(s, t) {
+        for (var a = 0, m = 0; m < t; m++) {
           var u = 1 / Math.pow(2, m + 1);
           s > u && (s -= u, a += u);
         }
         return a;
-      }, o = function(s, e) {
-        return s & Math.pow(2, e);
-      }, I = function(s, e, a) {
+      }, o = function(s, t) {
+        return s & Math.pow(2, t);
+      }, I = function(s, t, a) {
         var m = Math.abs(s), u = s - m;
-        return { number: o(m, e).toString(), fraction: f(u, a).toString(), numberBits: e, fractionBits: a };
+        return { number: o(m, t).toString(), fraction: f(u, a).toString(), numberBits: t, fractionBits: a };
       };
-      h.fixedPoint = { convert: function(s, e, a) {
-        return I(s, e, a);
-      }, add: function(s, e) {
-      }, sub: function(s, e) {
-      }, mul: function(s, e) {
-      }, div: function(s, e) {
-      } }, h.complex = { div: function(s, e) {
-        var a = s.re, m = s.im, u = e.re, n = e.im, C = u * u + n * n;
+      h.fixedPoint = { convert: function(s, t, a) {
+        return I(s, t, a);
+      }, add: function(s, t) {
+      }, sub: function(s, t) {
+      }, mul: function(s, t) {
+      }, div: function(s, t) {
+      } }, h.complex = { div: function(s, t) {
+        var a = s.re, m = s.im, u = t.re, n = t.im, C = u * u + n * n;
         return { re: (a * u + m * n) / C, im: (m * u - a * n) / C };
-      }, mul: function(s, e) {
-        var a = s.re, m = s.im, u = e.re, n = e.im;
+      }, mul: function(s, t) {
+        var a = s.re, m = s.im, u = t.re, n = t.im;
         return { re: a * u - m * n, im: (a + m) * (u + n) - a * u - m * n };
-      }, add: function(s, e) {
-        return { re: s.re + e.re, im: s.im + e.im };
-      }, sub: function(s, e) {
-        return { re: s.re - e.re, im: s.im - e.im };
+      }, add: function(s, t) {
+        return { re: s.re + t.re, im: s.im + t.im };
+      }, sub: function(s, t) {
+        return { re: s.re - t.re, im: s.im - t.im };
       }, phase: function(s) {
         return Math.atan2(s.im, s.re);
       }, magnitude: function(s) {
@@ -1060,12 +1070,12 @@ var gA = { exports: {} };
       } };
     }, {}] }, {}, [1])(1);
   });
-})(gA);
-const W = gA.exports, O = 60, sA = 0.95, aA = 0.995;
-class LA {
+})(WA);
+const O = 60, sA = 0.95, aA = 0.995;
+class _A {
   constructor(A) {
     this.session = A;
-    const c = new W.CalcCascades().lowpass({
+    const c = new H.CalcCascades().lowpass({
       order: 3,
       characteristic: "butterworth",
       Fs: O,
@@ -1074,9 +1084,9 @@ class LA {
       preGain: !1
     });
     this.iirFilter = {
-      x: new W.IirFilter(c),
-      y: new W.IirFilter(c),
-      z: new W.IirFilter(c)
+      x: new H.IirFilter(c),
+      y: new H.IirFilter(c),
+      z: new H.IirFilter(c)
     }, this.accelerometerDrift = {
       x: 0,
       y: 0,
@@ -1099,7 +1109,7 @@ class LA {
     };
   }
   readingHandler(A) {
-    const r = vA(this.accelerometer.x, -this.accelerometer.z, this.accelerometer.y, 1);
+    const r = mA(this.accelerometer.x, -this.accelerometer.z, this.accelerometer.y, 1);
     this.orientation = Array.from(this.orientationSensor.quaternion);
     const c = tA(
       this.orientationSensor.quaternion[0],
@@ -1107,7 +1117,7 @@ class LA {
       this.orientationSensor.quaternion[2],
       this.orientationSensor.quaternion[3]
     );
-    GA(r, r, c), r[0] = this.iirFilter.x.singleStep(r[0]), r[1] = this.iirFilter.y.singleStep(r[1]), r[2] = this.iirFilter.z.singleStep(r[2]), this.velocity.x += r[0] / O, this.velocity.y += r[1] / O, this.velocity.z += r[2] / O, this.position.x += this.velocity.x / O * 1e3, this.position.y += this.velocity.y / O * 1e3, this.position.z += this.velocity.z / O * 1e3, this.velocity.x *= sA, this.velocity.y *= sA, this.velocity.z *= sA, this.position.x *= aA, this.position.y *= aA, this.position.z *= aA, this.session.eventCallback({ name: "acceleration", acceleration: r }), this.session.eventCallback({ name: "velocity", velocity: this.velocity }), this.session.eventCallback({ name: "position", position: this.position }), this.session.poser.readjustElements();
+    JA(r, r, c), r[0] = this.iirFilter.x.singleStep(r[0]), r[1] = this.iirFilter.y.singleStep(r[1]), r[2] = this.iirFilter.z.singleStep(r[2]), this.velocity.x += r[0] / O, this.velocity.y += r[1] / O, this.velocity.z += r[2] / O, this.position.x += this.velocity.x / O * 1e3, this.position.y += this.velocity.y / O * 1e3, this.position.z += this.velocity.z / O * 1e3, this.velocity.x *= sA, this.velocity.y *= sA, this.velocity.z *= sA, this.position.x *= aA, this.position.y *= aA, this.position.z *= aA, this.session.eventCallback({ name: "acceleration", acceleration: r }), this.session.eventCallback({ name: "velocity", velocity: this.velocity }), this.session.eventCallback({ name: "position", position: this.position }), this.session.poser.readjustElements();
   }
   async init() {
     if (window.LinearAccelerationSensor && window.RelativeOrientationSensor)
@@ -1175,7 +1185,7 @@ class LA {
         -A.orientation[2],
         A.orientation[3]
       ), c = J();
-      lA(c, r), cA(
+      uA(c, r), lA(
         c,
         c,
         _(
@@ -1190,7 +1200,7 @@ class LA {
         -this.orientation[2],
         this.orientation[3]
       ), d = J();
-      lA(d, h), cA(
+      uA(d, h), lA(
         d,
         d,
         _(
@@ -1198,9 +1208,9 @@ class LA {
           this.position.y,
           this.position.z
         )
-      ), XA(d, d);
+      ), KA(d, d);
       const f = J();
-      return pA(f, d, c), f;
+      return dA(f, d, c), f;
     } else
       return J();
   }
@@ -1217,7 +1227,7 @@ class LA {
 }
 class nA {
   constructor(A = "default") {
-    this.initialized = !1, this.name = A, this.state = "CALIBRATION", this.feed = new qA(this), this.poser = new TA(this), this.motion = new LA(this), this.calibration = new DA(this), this.detector = new VA(this), this.workerStatus = { error: null, initialized: !1 }, this.eventCallback = null, this.focusEventRegistration = async () => {
+    this.initialized = !1, this.name = A, this.state = "CALIBRATION", this.feed = new LA(this), this.poser = new YA(this), this.motion = new _A(this), this.calibration = new RA(this), this.detector = new SA(this), this.workerStatus = { error: null, initialized: !1 }, this.eventCallback = null, this.focusEventRegistration = async () => {
       await this.feed.run(), await this.motion.run();
     }, this.blurEventRegistration = () => {
       this.feed.stop(), this.motion.stop();
@@ -1246,7 +1256,7 @@ class nA {
   }
   async initWorker() {
     return new Promise((A, r) => {
-      this.worker = new Worker("/assets/worker.7d65f39e.js", { type: "module" }), this.worker.onmessage = (c) => {
+      this.worker = new Worker(new URL("/assets/worker-4d36a704.js", self.location), { type: "module" }), this.worker.onmessage = (c) => {
         c.data.operation === "WORKER_READY" ? (this.initialized = !0, this.workerStatus = { error: null, initialized: !0 }, A()) : c.data.operation === "WORKER_FAILED" ? (this.workerStatus = { error: "WorkerFailed", initialized: !1 }, A()) : this.workerHandler(c);
       };
     });
@@ -1270,12 +1280,12 @@ class nA {
     this.initialized && (this.state === "CALIBRATION" ? this.calibration.findChessBoardCorners() : this.state === "DETECTION" && this.detector.detect());
   }
 }
-const L = (t, A) => {
-  const r = t.__vccOpts || t;
+const Y = (e, A) => {
+  const r = e.__vccOpts || e;
   for (const [c, h] of A)
     r[c] = h;
   return r;
-}, YA = q({
+}, $A = L({
   data() {
     return {
       selected: null,
@@ -1292,7 +1302,7 @@ const L = (t, A) => {
     status: Object
   },
   methods: {
-    selectCamera(t) {
+    selectCamera(e) {
       this.session.feed.selectCamera(this.selected);
     },
     reset() {
@@ -1308,122 +1318,122 @@ const L = (t, A) => {
   updated() {
     this.selected = this.session.feed.feedStatus.selected;
   }
-}), H = (t) => (BA("data-v-65ffd245"), t = t(), kA(), t), WA = { class: "setup" }, _A = { key: 0 }, $A = { key: 0 }, Ae = /* @__PURE__ */ bA('<h2 class="title" data-v-65ffd245>Camera Calibration</h2><p data-v-65ffd245>To make VueXR know how to project virtual elements to the real world, we have to calibrate your camera first.</p><ol data-v-65ffd245><li data-v-65ffd245>Print or display this <a href="https://docs.opencv.org/master/pattern.png" target="_blank" data-v-65ffd245>chessboard pattern</a> on another device.</li><li data-v-65ffd245>Take a steady aim at the pattern with your camera.</li><li data-v-65ffd245>Press the <strong data-v-65ffd245>Capture</strong> button below.</li><li data-v-65ffd245>Repeat for at least 4 other different perspectives.</li><li data-v-65ffd245>Press the <b data-v-65ffd245>Calibrate</b> button.</li></ol>', 3), ee = { style: { "margin-top": "20px", "text-align": "center" } }, te = { key: 1 }, se = /* @__PURE__ */ H(() => /* @__PURE__ */ X("h2", { class: "title" }, "AR Setup", -1)), ae = { class: "status-line" }, ie = /* @__PURE__ */ T(" Video "), ne = ["title"], re = {
+}), j = (e) => (MA("data-v-608d97b9"), e = e(), yA(), e), Ae = { class: "setup" }, ee = { key: 0 }, te = { key: 0 }, se = /* @__PURE__ */ kA('<h2 class="title" data-v-608d97b9>Camera Calibration</h2><p data-v-608d97b9>To make VueXR know how to project virtual elements to the real world, we have to calibrate your camera first.</p><ol data-v-608d97b9><li data-v-608d97b9>Print or display this <a href="https://docs.opencv.org/master/pattern.png" target="_blank" data-v-608d97b9>chessboard pattern</a> on another device.</li><li data-v-608d97b9>Take a steady aim at the pattern with your camera.</li><li data-v-608d97b9>Press the <strong data-v-608d97b9>Capture</strong> button below.</li><li data-v-608d97b9>Repeat for at least 4 other different perspectives.</li><li data-v-608d97b9>Press the <b data-v-608d97b9>Calibrate</b> button.</li></ol>', 3), ae = { style: { "margin-top": "20px", "text-align": "center" } }, ie = { key: 1 }, ne = /* @__PURE__ */ j(() => /* @__PURE__ */ X("h2", { class: "title" }, "AR Setup", -1)), re = { class: "status-line" }, oe = ["title"], ce = {
   key: 1,
   class: "status-value"
-}, oe = /* @__PURE__ */ H(() => /* @__PURE__ */ X("option", {
+}, le = /* @__PURE__ */ j(() => /* @__PURE__ */ X("option", {
   disabled: "",
   value: ""
-}, "Please select a Camera", -1)), ce = ["value"], le = { key: 0 }, ue = { key: 1 }, he = /* @__PURE__ */ H(() => /* @__PURE__ */ X("hr", null, null, -1)), fe = { class: "status-line" }, pe = /* @__PURE__ */ T(" Accelerometer "), de = ["title"], ve = {
+}, "Please select a Camera", -1)), ue = ["value"], he = { key: 0 }, fe = { key: 1 }, pe = /* @__PURE__ */ j(() => /* @__PURE__ */ X("hr", null, null, -1)), de = { class: "status-line" }, ve = ["title"], me = {
   key: 1,
   class: "status-value"
-}, me = /* @__PURE__ */ H(() => /* @__PURE__ */ X("hr", null, null, -1)), ge = { class: "status-line" }, Ce = /* @__PURE__ */ T(" Gyroscope "), Ie = ["title"], Qe = {
+}, ge = /* @__PURE__ */ j(() => /* @__PURE__ */ X("hr", null, null, -1)), Ce = { class: "status-line" }, Ie = ["title"], Qe = {
   key: 1,
   class: "status-value"
-}, we = /* @__PURE__ */ H(() => /* @__PURE__ */ X("hr", null, null, -1)), be = { class: "status-line" }, Be = /* @__PURE__ */ T(" Computer Vision "), ke = {
+}, we = /* @__PURE__ */ j(() => /* @__PURE__ */ X("hr", null, null, -1)), be = { class: "status-line" }, Be = {
   key: 0,
   class: "status-value"
-}, Me = {
+}, ke = {
   key: 1,
   class: "status-value"
-}, ye = /* @__PURE__ */ H(() => /* @__PURE__ */ X("hr", null, null, -1)), Fe = { class: "status-line" }, Ee = /* @__PURE__ */ T(" Calibration "), De = {
+}, Me = /* @__PURE__ */ j(() => /* @__PURE__ */ X("hr", null, null, -1)), ye = { class: "status-line" }, Fe = {
   key: 0,
   class: "status-value"
-}, Ve = {
+}, Ee = {
   key: 1,
   class: "status-value"
-}, Re = {
+}, De = {
   key: 0,
   style: { "margin-top": "20px", "text-align": "center" }
-}, Se = {
+}, Ve = {
   key: 1,
   style: { "margin-top": "20px", "text-align": "center" }
 };
-function Xe(t, A, r, c, h, d) {
-  return E(), D("div", WA, [
-    t.status ? (E(), D("div", _A, [
+function Re(e, A, r, c, h, d) {
+  return E(), D("div", Ae, [
+    e.status ? (E(), D("div", ee, [
       X("div", {
         class: "close-button",
-        onClick: A[0] || (A[0] = (...f) => t.close && t.close(...f))
-      }, "\xD7"),
-      t.showHowToCalibrate ? (E(), D("div", $A, [
-        Ae,
-        X("div", ee, [
-          X("button", {
-            class: "reset-button",
-            onClick: A[1] || (A[1] = (f) => t.showHowToCalibrate = !1)
-          }, "Back")
-        ])
-      ])) : (E(), D("div", te, [
+        onClick: A[0] || (A[0] = (...f) => e.close && e.close(...f))
+      }, "×"),
+      e.showHowToCalibrate ? (E(), D("div", te, [
         se,
         X("div", ae, [
-          ie,
+          X("button", {
+            class: "reset-button",
+            onClick: A[1] || (A[1] = (f) => e.showHowToCalibrate = !1)
+          }, "Back")
+        ])
+      ])) : (E(), D("div", ie, [
+        ne,
+        X("div", re, [
+          N(" Video "),
           this.status.feed.error ? (E(), D("span", {
             key: 0,
             class: "status-value",
             title: this.status.feed.error
-          }, "\u2717", 8, ne)) : (E(), D("span", re, "\u2713"))
+          }, "✗", 8, oe)) : (E(), D("span", ce, "✓"))
         ]),
-        CA(X("select", {
+        QA(X("select", {
           class: "camera-selection",
           style: { "margin-top": "5px" },
-          "onUpdate:modelValue": A[2] || (A[2] = (f) => t.selected = f),
+          "onUpdate:modelValue": A[2] || (A[2] = (f) => e.selected = f),
           onChange: A[3] || (A[3] = (...f) => this.selectCamera && this.selectCamera(...f))
         }, [
-          oe,
-          (E(!0), D(IA, null, QA(t.availableCameras, (f) => (E(), D("option", {
+          le,
+          (E(!0), D(wA, null, bA(e.availableCameras, (f) => (E(), D("option", {
             value: f.deviceId
           }, [
-            f.label ? (E(), D("span", le, iA(f.label), 1)) : (E(), D("span", ue, iA(f.deviceId), 1))
-          ], 8, ce))), 256))
+            f.label ? (E(), D("span", he, iA(f.label), 1)) : (E(), D("span", fe, iA(f.deviceId), 1))
+          ], 8, ue))), 256))
         ], 544), [
-          [wA, t.selected]
+          [BA, e.selected]
         ]),
-        he,
-        X("div", fe, [
-          pe,
+        pe,
+        X("div", de, [
+          N(" Accelerometer "),
           this.status.motion && this.status.motion.acceleration.error ? (E(), D("span", {
             key: 0,
             class: "status-value",
             title: this.status.motion.acceleration.error
-          }, "\u26A0", 8, de)) : (E(), D("span", ve, "\u2713"))
+          }, "⚠", 8, ve)) : (E(), D("span", me, "✓"))
         ]),
-        me,
-        X("div", ge, [
-          Ce,
+        ge,
+        X("div", Ce, [
+          N(" Gyroscope "),
           this.status.motion && this.status.motion.gyro.error ? (E(), D("span", {
             key: 0,
             class: "status-value",
             title: this.status.motion.gyro.error
-          }, "\u26A0", 8, Ie)) : (E(), D("span", Qe, "\u2713"))
+          }, "⚠", 8, Ie)) : (E(), D("span", Qe, "✓"))
         ]),
         we,
         X("div", be, [
-          Be,
-          this.status.worker.initialized ? (E(), D("span", Me, "\u2713")) : (E(), D("span", ke, "\u2717"))
+          N(" Computer Vision "),
+          this.status.worker.initialized ? (E(), D("span", ke, "✓")) : (E(), D("span", Be, "✗"))
         ]),
-        ye,
-        X("div", Fe, [
-          Ee,
-          this.status.calibration.calibrated ? (E(), D("span", Ve, "\u2713")) : (E(), D("span", De, "\u2717"))
+        Me,
+        X("div", ye, [
+          N(" Calibration "),
+          this.status.calibration.calibrated ? (E(), D("span", Ee, "✓")) : (E(), D("span", Fe, "✗"))
         ]),
-        this.status.calibration.calibrated ? (E(), D("div", Re, [
+        this.status.calibration.calibrated ? (E(), D("div", De, [
           X("button", {
             class: "reset-button",
             onClick: A[4] || (A[4] = (...f) => this.reset && this.reset(...f))
           }, "Reset Calibration")
-        ])) : !this.status.feed.error && this.status.worker.initialized ? (E(), D("div", Se, [
+        ])) : !this.status.feed.error && this.status.worker.initialized ? (E(), D("div", Ve, [
           X("button", {
             class: "reset-button",
-            onClick: A[5] || (A[5] = (f) => t.showHowToCalibrate = !0)
+            onClick: A[5] || (A[5] = (f) => e.showHowToCalibrate = !0)
           }, "How to calibrate")
         ])) : G("", !0)
       ]))
     ])) : G("", !0)
   ]);
 }
-const ze = /* @__PURE__ */ L(YA, [["render", Xe], ["__scopeId", "data-v-65ffd245"]]);
-const Ke = q({
+const Se = /* @__PURE__ */ Y($A, [["render", Re], ["__scopeId", "data-v-608d97b9"]]);
+const Xe = L({
   data() {
     return {};
   },
@@ -1444,40 +1454,40 @@ const Ke = q({
       this.session.resetCalibration();
     }
   }
-}), Ue = {
+}), ze = {
   key: 0,
   class: "controls"
-}, Ze = ["disabled"], xe = ["disabled"], Oe = { key: 0 }, Ge = { key: 1 }, Pe = ["disabled"], Je = {
+}, Ke = ["disabled"], Ue = ["disabled"], Ze = { key: 0 }, xe = { key: 1 }, Oe = ["disabled"], Ge = {
   key: 2,
   class: "hint-text"
-}, He = {
+}, Pe = {
   key: 3,
   class: "hint-text"
 };
-function je(t, A, r, c, h, d) {
-  return this.status ? (E(), D("div", Ue, [
+function Je(e, A, r, c, h, d) {
+  return this.status ? (E(), D("div", ze, [
     this.status.calibration.calibrated ? G("", !0) : (E(), D("button", {
       key: 0,
       disabled: !this.status.calibration.captureReady,
       class: "capture-image",
-      onClick: A[0] || (A[0] = (...f) => t.captureCalibrationPoints && t.captureCalibrationPoints(...f))
-    }, "Capture", 8, Ze)),
+      onClick: A[0] || (A[0] = (...f) => e.captureCalibrationPoints && e.captureCalibrationPoints(...f))
+    }, "Capture", 8, Ke)),
     this.status.calibration.calibrated ? G("", !0) : (E(), D("button", {
       key: 1,
       disabled: this.status.calibration.captures < 5,
-      onClick: A[1] || (A[1] = (...f) => t.calibrate && t.calibrate(...f))
+      onClick: A[1] || (A[1] = (...f) => e.calibrate && e.calibrate(...f))
     }, [
-      this.status.calibration.calibrated ? (E(), D("span", Ge, "Recalibrate")) : (E(), D("span", Oe, "Calibrate"))
-    ], 8, xe)),
+      this.status.calibration.calibrated ? (E(), D("span", xe, "Recalibrate")) : (E(), D("span", Ze, "Calibrate"))
+    ], 8, Ue)),
     X("button", {
       disabled: !this.status.calibration.captures && !this.status.calibration.calibrated,
-      onClick: A[2] || (A[2] = (...f) => t.reset && t.reset(...f))
-    }, "Reset", 8, Pe),
-    this.status.calibration.calibrated ? (E(), D("span", He, "Calibrated")) : (E(), D("span", Je, iA(this.status.calibration.captures) + "\xA0Captures", 1))
+      onClick: A[2] || (A[2] = (...f) => e.reset && e.reset(...f))
+    }, "Reset", 8, Oe),
+    this.status.calibration.calibrated ? (E(), D("span", Pe, "Calibrated")) : (E(), D("span", Ge, iA(this.status.calibration.captures) + " Captures", 1))
   ])) : G("", !0);
 }
-const Ne = /* @__PURE__ */ L(Ke, [["render", je], ["__scopeId", "data-v-ce2831ef"]]);
-const qe = q({
+const He = /* @__PURE__ */ Y(Xe, [["render", Je], ["__scopeId", "data-v-23aa3a1c"]]);
+const je = L({
   data() {
     return {
       session: null,
@@ -1493,10 +1503,10 @@ const qe = q({
   },
   methods: {
     updateElements() {
-      this.$slots.default().forEach((t) => {
-        t.componentOptions && t.componentOptions.tag === "ar-element" && this.session.poser.registerElement(
-          t.componentOptions.propsData.id,
-          t.elm
+      this.$slots.default().forEach((e) => {
+        e.componentOptions && e.componentOptions.tag === "ar-element" && this.session.poser.registerElement(
+          e.componentOptions.propsData.id,
+          e.elm
         );
       });
     },
@@ -1506,8 +1516,8 @@ const qe = q({
     openSetup() {
       this.session.showSetup(!0);
     },
-    sessionCallback(t) {
-      (t.name === "initialized" || t.name === "statusChanged") && (this.status = {
+    sessionCallback(e) {
+      (e.name === "initialized" || e.name === "statusChanged") && (this.status = {
         initialized: this.session.initialized,
         feed: this.session.feed.feedStatus,
         motion: this.session.motion.motionStatus,
@@ -1517,12 +1527,12 @@ const qe = q({
       });
     },
     resizeCanvas() {
-      const t = this.$refs.canvas.width / this.$refs.canvas.height, A = getComputedStyle(this.$refs.wrapper), r = A.width.split("px")[0], c = A.height.split("px")[0], h = r / c;
-      if (t >= h) {
-        const d = r, f = r / t;
+      const e = this.$refs.canvas.width / this.$refs.canvas.height, A = getComputedStyle(this.$refs.wrapper), r = A.width.split("px")[0], c = A.height.split("px")[0], h = r / c;
+      if (e >= h) {
+        const d = r, f = r / e;
         this.$refs.canvas.style.width = `${d}px`, this.$refs.canvas.style.height = `${f}px`;
       } else {
-        const d = c * t, f = c;
+        const d = c * e, f = c;
         this.$refs.canvas.style.width = `${d}px`, this.$refs.canvas.style.height = `${f}px`;
       }
     }
@@ -1531,76 +1541,76 @@ const qe = q({
     this.session = this.$vuexr.requestSession(this.name);
   },
   async mounted() {
-    await this.session.init(this.$refs.canvas, (t) => {
-      this.sessionCallback(t);
-    }), this.session.poser.registerView(this, (t) => {
-      this.trackedMarkers = t;
+    await this.session.init(this.$refs.canvas, (e) => {
+      this.sessionCallback(e);
+    }), this.session.poser.registerView(this, (e) => {
+      this.trackedMarkers = e;
     }), await this.session.run(), await this.resizeCanvas(), window.addEventListener("resize", () => {
       this.resizeCanvas();
     });
   },
   unmounted() {
-    this.$slots.default().forEach((t) => {
-      t.componentOptions && t.componentOptions.tag === "ar-element" && this.session.poser.unregisterElement(
-        t.componentOptions.propsData.id
+    this.$slots.default().forEach((e) => {
+      e.componentOptions && e.componentOptions.tag === "ar-element" && this.session.poser.unregisterElement(
+        e.componentOptions.propsData.id
       );
     }), window.removeEventListener("resize", this.resizeCanvas), this.session.poser.unregisterView(this), this.session.pause();
   },
   components: {
-    ARSetup: ze,
-    ARControls: Ne
+    ARSetup: Se,
+    ARControls: He
   }
-}), Te = {
+}), Ne = {
   class: "ar-view-wrapper",
   ref: "wrapper"
-}, Le = { class: "ar-view" }, Ye = {
+}, qe = { class: "ar-view" }, Te = {
   class: "ar-canvas",
   ref: "canvas"
-}, We = {
+}, Le = {
   key: 0,
   class: "controls-container"
-}, _e = {
+}, Ye = {
   key: 1,
   class: "setup-container"
-}, $e = {
+}, We = {
   key: 2,
   class: "loading-text"
 };
-function At(t, A, r, c, h, d) {
-  const f = oA("ARControls"), o = oA("ARSetup");
-  return E(), D("div", Te, [
-    X("div", Le, [
-      X("canvas", Ye, null, 512),
+function _e(e, A, r, c, h, d) {
+  const f = cA("ARControls"), o = cA("ARSetup");
+  return E(), D("div", Ne, [
+    X("div", qe, [
+      X("canvas", Te, null, 512),
       X("div", {
-        style: MA({ opacity: this.status && this.status.initialized && this.status.calibration.calibrated ? 1 : 0 }),
+        style: FA({ opacity: this.status && this.status.initialized && this.status.calibration.calibrated ? 1 : 0 }),
         class: "elements",
         ref: "elements"
       }, [
-        hA(t.$slots, "default", { trackedMarkers: t.trackedMarkers }, void 0, !0)
+        fA(e.$slots, "default", { trackedMarkers: e.trackedMarkers }, void 0, !0)
       ], 4)
     ]),
     X("div", {
       onClick: A[0] || (A[0] = (...I) => this.openSetup && this.openSetup(...I)),
       class: "setup-button"
-    }, " \u2699 "),
-    this.status && this.status.initialized && this.status.feed.selected && !this.status.calibration.calibrated ? (E(), D("div", We, [
-      fA(f, {
+    }, " ⚙ "),
+    this.status && this.status.initialized && this.status.feed.selected && !this.status.calibration.calibrated ? (E(), D("div", Le, [
+      pA(f, {
         session: this.session,
         status: this.status
       }, null, 8, ["session", "status"])
     ])) : G("", !0),
-    this.status && this.status.initialized ? (E(), D("div", _e, [
-      this.status.setup.show ? (E(), yA(o, {
+    this.status && this.status.initialized ? (E(), D("div", Ye, [
+      this.status.setup.show ? (E(), EA(o, {
         key: 0,
         session: this.session,
         status: this.status,
         onClose: this.closeSetup
       }, null, 8, ["session", "status", "onClose"])) : G("", !0)
-    ])) : (E(), D("div", $e, " Loading\u2026 "))
+    ])) : (E(), D("div", We, " Loading… "))
   ], 512);
 }
-const et = /* @__PURE__ */ L(qe, [["render", At], ["__scopeId", "data-v-4ee412e4"]]);
-const tt = q({
+const $e = /* @__PURE__ */ Y(je, [["render", _e], ["__scopeId", "data-v-84f87997"]]);
+const At = L({
   data() {
     return {
       show: !1,
@@ -1620,8 +1630,8 @@ const tt = q({
     }
   },
   mounted() {
-    this.$parent.$data.session.poser.registerElement(this.id, this.$refs.element, this.markerSize, (t) => {
-      this.tracked = t, t ? (this.show = !0, window.clearTimeout(this.timeoutHandler), this.timeoutHandler = null) : this.timeoutHandler = window.setTimeout(() => {
+    this.$parent.$data.session.poser.registerElement(this.id, this.$refs.element, this.markerSize, (e) => {
+      this.tracked = e, e ? (this.show = !0, window.clearTimeout(this.timeoutHandler), this.timeoutHandler = null) : this.timeoutHandler = window.setTimeout(() => {
         this.show = !1;
       }, this.timeout);
     });
@@ -1629,39 +1639,40 @@ const tt = q({
   unmounted() {
     this.$parent.$data.session.poser.unregisterElement(this.id);
   }
-}), st = {
+}), et = {
   class: "element",
   ref: "element"
-}, at = { key: 0 };
-function it(t, A, r, c, h, d) {
-  return E(), D("div", st, [
-    fA(FA, { name: "fade" }, {
-      default: EA(() => [
-        t.show ? (E(), D("div", at, [
-          hA(t.$slots, "default", { tracked: t.tracked }, void 0, !0)
+}, tt = { key: 0 };
+function st(e, A, r, c, h, d) {
+  return E(), D("div", et, [
+    pA(DA, { name: "fade" }, {
+      default: VA(() => [
+        e.show ? (E(), D("div", tt, [
+          fA(e.$slots, "default", { tracked: e.tracked }, void 0, !0)
         ])) : G("", !0)
       ]),
       _: 3
     })
   ], 512);
 }
-const nt = /* @__PURE__ */ L(tt, [["render", it], ["__scopeId", "data-v-2f06ece5"]]), rt = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAByYAAAUyCAIAAADEGwRQAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH2AkGFAQH++VSRAAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERlc2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAAAAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2zJa/AAAABnRFWHRUaXRsZQCo7tInAAABAElEQVR4nOzcsZGDWBRFweXXmIQh5R+QFMbYsDGM6qyQ9nX7VD2Di3EMtvM8/wEAAAAAoLCuPgAAAAAA4P9DcgUAAAAAyEiuAAAAAAAZyRUAAAAAICO5AgAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAAAAAICM5AoAAAAAkJFcAQAAAAAyPy88c7/fn89nfgqf7Ha7PR6Pq6/gfcx8GhsfyMynMfNpbHwgM5/GzKexcfgu23mef35m2/6LU/hwL7wqfC8zH8jGpzHzgcx8FBufycxHMfOBbBy+ocs1TAAAAQBJREFUiB8LAAAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAAAAAICM5AoAAAAAkJFcAQAAAAAykisAAAAAQEZyBQAAAADISK4AAAAAABnJFQAAAAAgI7kCAAAAAGQkVwAAAACAjOQKAAAAAJCRXAEAAAAAMpIrAAAAAEBGcgUAAAAAyEiuAAAAAAAZyRUAAAAAICO5AgAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAJf0XsMAAAEASURBVAAAAICM5AoAAAAAkJFcAQAAAAAykisAAAAAQEZyBQAAAADISK4AAAAAABnJFQAAAAAgI7kCAAAAAGQkVwAAAACAjOQKAAAAAJCRXAEAAAAAMpIrAAAAAEBGcgUAAAAAyEiuAAAAAAAZyRUAAAAAICO5AgAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAAAAAICM5AoAAAAAkJFcAQAAAAAykisAAAAAQEZyBQAAAADISK4AAAAAABnJFQAAAAAgI7kCAAAAAGQkVwAAAACAjOQKAAAAAJATQl4pAAABAElEQVSRXAEAAAAAMpIrAAAAAEBGcgUAAAAAyEiuAAAAAAAZyRUAAAAAICO5AgAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAAAAAICM5AoAAAAAkJFcAQAAAAAykisAAAAAQEZyBQAAAADISK4AAAAAABnJFQAAAAAgI7kCAAAAAGQkVwAAAACAjOQKAAAAAJCRXAEAAAAAMpIrAAAAAEBGcgUAAAAAyEiuAAAAAAAZyRUAAAAAICO5AgAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAZyIz5QAAAQBJREFUAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAAAAAICM5AoAAAAAkJFcAQAAAAAykisAAAAAQEZyBQAAAADISK4AAAAAABnJFQAAAAAgI7kCAAAAAGQkVwAAAACAjOQKAAAAAJCRXAEAAAAAMpIrAAAAAEBGcgUAAAAAyEiuAAAAAAAZyRUAAAAAICO5AgAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAAAAAICM5AoAAAAAkJFcAQAAAAAykisAAAAAQEZyBQAAAADISJcJGVcAAAEASURBVK4AAAAAABnJFQAAAAAgI7kCAAAAAGQkVwAAAACAjOQKAAAAAJCRXAEAAAAAMpIrAAAAAEBGcgUAAAAAyEiuAAAAAAAZyRUAAAAAICO5AgAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAAAAAICM5AoAAAAAkJFcAQAAAAAy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", ot = q({
+const at = /* @__PURE__ */ Y(At, [["render", st], ["__scopeId", "data-v-5ffdd0e0"]]), it = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAByYAAAUyCAIAAADEGwRQAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAB3RJTUUH2AkGFAQH++VSRAAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERlc2NyaXB0aW9uABMJISMAAAAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAAAAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+D6wAAAAh0RVh0Q29tbWVudAD2zJa/AAAABnRFWHRUaXRsZQCo7tInAAABAElEQVR4nOzcsZGDWBRFweXXmIQh5R+QFMbYsDGM6qyQ9nX7VD2Di3EMtvM8/wEAAAAAoLCuPgAAAAAA4P9DcgUAAAAAyEiuAAAAAAAZyRUAAAAAICO5AgAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAAAAAICM5AoAAAAAkJFcAQAAAAAyPy88c7/fn89nfgqf7Ha7PR6Pq6/gfcx8GhsfyMynMfNpbHwgM5/GzKexcfgu23mef35m2/6LU/hwL7wqfC8zH8jGpzHzgcx8FBufycxHMfOBbBy+ocs1TAAAAQBJREFUiB8LAAAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAAAAAICM5AoAAAAAkJFcAQAAAAAykisAAAAAQEZyBQAAAADISK4AAAAAABnJFQAAAAAgI7kCAAAAAGQkVwAAAACAjOQKAAAAAJCRXAEAAAAAMpIrAAAAAEBGcgUAAAAAyEiuAAAAAAAZyRUAAAAAICO5AgAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAJf0XsMAAAEASURBVAAAAICM5AoAAAAAkJFcAQAAAAAykisAAAAAQEZyBQAAAADISK4AAAAAABnJFQAAAAAgI7kCAAAAAGQkVwAAAACAjOQKAAAAAJCRXAEAAAAAMpIrAAAAAEBGcgUAAAAAyEiuAAAAAAAZyRUAAAAAICO5AgAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAAAAAICM5AoAAAAAkJFcAQAAAAAykisAAAAAQEZyBQAAAADISK4AAAAAABnJFQAAAAAgI7kCAAAAAGQkVwAAAACAjOQKAAAAAJATQl4pAAABAElEQVSRXAEAAAAAMpIrAAAAAEBGcgUAAAAAyEiuAAAAAAAZyRUAAAAAICO5AgAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAAAAAICM5AoAAAAAkJFcAQAAAAAykisAAAAAQEZyBQAAAADISK4AAAAAABnJFQAAAAAgI7kCAAAAAGQkVwAAAACAjOQKAAAAAJCRXAEAAAAAMpIrAAAAAEBGcgUAAAAAyEiuAAAAAAAZyRUAAAAAICO5AgAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAZyIz5QAAAQBJREFUAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAAAAAICM5AoAAAAAkJFcAQAAAAAykisAAAAAQEZyBQAAAADISK4AAAAAABnJFQAAAAAgI7kCAAAAAGQkVwAAAACAjOQKAAAAAJCRXAEAAAAAMpIrAAAAAEBGcgUAAAAAyEiuAAAAAAAZyRUAAAAAICO5AgAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAAAAAICM5AoAAAAAkJFcAQAAAAAykisAAAAAQEZyBQAAAADISJcJGVcAAAEASURBVK4AAAAAABnJFQAAAAAgI7kCAAAAAGQkVwAAAACAjOQKAAAAAJCRXAEAAAAAMpIrAAAAAEBGcgUAAAAAyEiuAAAAAAAZyRUAAAAAICO5AgAAAABkJFcAAAAAgIzkCgAAAACQkVwBAAAAADKSKwAAAABARnIFAAAAAMhIrgAAAAAAGckVAAAAACAjuQIAAAAAZCRXAAAAAICM5AoAAAAAkJFcAQAAAAAy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", nt = L({
   data: function() {
     return {
-      pattern: rt
+      pattern: it
     };
   }
-}), ct = ["src"];
-function lt(t, A, r, c, h, d) {
+}), rt = ["src"];
+function ot(e, A, r, c, h, d) {
   return E(), D("img", {
     alt: "Chessboard pattern for camera calibration",
-    src: t.pattern,
+    src: e.pattern,
     style: { "max-width": "100%", "max-height": "100%" }
-  }, null, 8, ct);
+  }, null, 8, rt);
 }
-const ut = /* @__PURE__ */ L(ot, [["render", lt]]);
-class ht {
+const ct = /* @__PURE__ */ Y(nt, [["render", ot]]);
+class lt {
   constructor() {
+    oA(this, "sessions");
     this.sessions = {};
   }
   requestSession(A = "default") {
@@ -1686,11 +1697,11 @@ class ht {
     };
   }
 }
-const pt = {
-  install(t, A) {
-    t.component("ar-view", et), t.component("ar-element", nt), t.component("ar-chessboard", ut), t.config.globalProperties.$vuexr = new ht();
+const ft = {
+  install(e, A) {
+    e.component("ar-view", $e), e.component("ar-element", at), e.component("ar-chessboard", ct), e.config.globalProperties.$vuexr = new lt();
   }
 };
 export {
-  pt as VueXR
+  ft as VueXR
 };
