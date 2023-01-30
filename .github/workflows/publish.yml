@@ -8,7 +8,7 @@ on:
     types: [created]
 
 jobs:
-  publish-npm:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -16,10 +16,8 @@ jobs:
         with:
           node-version: 19
           registry-url: https://registry.npmjs.org/
-      - name: Build the Javascript project
       - run: yarn install --frozen-lockfile
       - run: yarn publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}    
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag vuexr:$(date +%s) --tag vuexr:latest
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - run: docker build . --file Dockerfile --tag vuexr:$(date +%s) --tag vuexr:latest
