@@ -4,7 +4,7 @@
 
 <script>
   import { defineComponent } from "vue";
-  import pattern from '../vision/chessboard'
+  import pattern from '../vision/Chessboard'
 
   export default defineComponent({
     data: function () {
