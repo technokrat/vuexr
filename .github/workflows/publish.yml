@@ -17,8 +17,7 @@ jobs:
           node-version: 19
           registry-url: https://registry.npmjs.org/
           always-auth: true
-      - run: yarn install --frozen-lockfile
-      - run: yarn publish
+      - run: yarn install && yarn publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
       - run: docker build . --file Dockerfile --tag vuexr:$(date +%s) --tag vuexr:latest
