@@ -8,7 +8,7 @@ on:
     types: [created]
 
 jobs:
-  publish:
+  npm_publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,4 +20,12 @@ jobs:
       - run: yarn install && yarn publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+  docker_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 19
+      - run: yarn install && yarn build
       - run: docker build . --file Dockerfile --tag vuexr:$(date +%s) --tag vuexr:latest
