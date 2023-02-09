@@ -12,6 +12,7 @@
     "./dist/**/*.cjs",
     "./dist/**/*.d.ts",
     "./dist/**/*.css",
+    "./dist/**/*.html",
     "./src/opencv/build_simd/opencv.js"
   ],
   "main": "./dist/vuexr.umd.cjs",
