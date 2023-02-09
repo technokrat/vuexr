@@ -1,14 +1,28 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "jsx": "preserve",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "WebWorker"],
+    "allowJs": false,
+    "skipLibCheck": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "allowJs": true,
-    "outDir": "./dist",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
     "sourceMap": true,
     "declaration": true,
-    "lib": ["ES6", "DOM", "WebWorker"],
+    "declarationMap": true,
+    "outDir": "./dist",
+    "typeRoots": [
+      "node_modules/@types",
+    ],
   },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

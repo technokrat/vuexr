@@ -2,193 +2,186 @@
   <div class="ar-view-wrapper" ref="wrapper">
     <div class="ar-view">
       <canvas class="ar-canvas" ref="canvas"></canvas>
-      <div :style="{opacity: this.status && this.status.initialized && this.status.calibration.calibrated ? 1.0 : 0.0}" class="elements" ref="elements">
-        <slot :trackedMarkers="trackedMarkers">
-        </slot>
+      <div
+        :style="{
+          opacity:
+            state.status.initialized && state.status.calibration?.calibrated
+              ? 1.0
+              : 0.0,
+        }"
+        class="elements"
+        ref="elements"
+      >
+        <slot :trackedMarkers="state.trackedMarkers"> </slot>
       </div>
     </div>
-    <div @click="this.openSetup" class="setup-button">
-      ⚙
+    <div @click="openSetup" class="setup-button">⚙</div>
+    <div
+      v-if="
+        state.status.initialized &&
+        state.status.feed?.selected &&
+        !state.status.calibration?.calibrated
+      "
+      class="controls-container"
+    >
+      <ARControls :session="session" :status="state.status"></ARControls>
     </div>
-    <div v-if="this.status && this.status.initialized && this.status.feed.selected && !this.status.calibration.calibrated" class="controls-container">
-      <ARControls :session="this.session" :status="this.status"></ARControls>
+    <div v-if="state.status.initialized" class="setup-container">
+      <ARSetup
+        v-if="state.status.setup?.show"
+        :session="session"
+        :status="state.status"
+        @close="closeSetup"
+      ></ARSetup>
     </div>
-    <div v-if="this.status && this.status.initialized" class="setup-container">
-      <ARSetup v-if="this.status.setup.show" :session="this.session" :status="this.status" @close="this.closeSetup"></ARSetup>
-    </div>
-    <div v-else class="loading-text">
-      Loading&hellip;
-    </div>
+    <div v-else class="loading-text">Loading&hellip;</div>
   </div>
 </template>
 
-<script>
-  import ARSetup from "./ARSetup.vue";
-  import ARControls from "./ARControls.vue";
+<script lang="ts" setup>
+import ARSetup from "./ARSetup.vue";
+import ARControls from "./ARControls.vue";
 
-  import {defineComponent} from "vue";
+import { reactive, inject, ref, onMounted, onUnmounted, provide } from "vue";
+import Session, {
+  SessionCallbackArgs,
+  SessionCallbackType,
+} from "../vision/Session";
+import { VueXRManager } from "../VueXRManager";
+import { ARViewStatus } from "../types";
 
-  export default defineComponent({
-    data() {
-      return {
-        session: null,
-        status: null,
-        trackedMarkers: [],
-      };
-    },
-    props: {
-      name: {
-        type: String,
-        default: 'default'
-      }
-    },
-    methods: {
-      updateElements () {
-        this.$slots.default().forEach(vnode => {
-          if (vnode.componentOptions && vnode.componentOptions.tag === 'ar-element') {
-            this.session.poser.registerElement(
-              vnode.componentOptions.propsData.id,
-              vnode.elm
-            )
-          }
-        })
-      },
-      closeSetup () {
-        this.session.showSetup(false);
-      },
-      openSetup () {
-        this.session.showSetup(true);
-      },
-      sessionCallback (event) {
-        if (event.name === 'initialized' || event.name === 'statusChanged') {
-          this.status = {
-            initialized: this.session.initialized,
-            feed: this.session.feed.feedStatus,
-            motion: this.session.motion.motionStatus,
-            worker: this.session.workerStatus,
-            calibration: this.session.calibration.calibrationStatus,
-            setup: this.session.setup
-          }
-        }
-      },
-      resizeCanvas () {
-        const aspectRatio = this.$refs.canvas.width / this.$refs.canvas.height;
-        const computedStyle = getComputedStyle(this.$refs.wrapper);
-        const availableWidth = computedStyle.width.split('px')[0];
-        const availableHeight = computedStyle.height.split('px')[0];
+const props = defineProps<{ name?: string }>();
 
-        const availableAspectRatio = availableWidth / availableHeight;
+const vueXRManager: VueXRManager = inject("vuexr")!;
+const session: Session = vueXRManager.requestSession(props.name);
+provide("session", session);
 
-        if (aspectRatio >= availableAspectRatio) {
-          const width = availableWidth;
-          const height = availableWidth / aspectRatio;
+const state = reactive<{ status: ARViewStatus; trackedMarkers: string[] }>({
+  status: {},
+  trackedMarkers: [],
+});
+const canvas = ref<HTMLCanvasElement>();
+const wrapper = ref<HTMLDivElement>();
+const id = Symbol();
 
-          this.$refs.canvas.style.width = `${width}px`;
-          this.$refs.canvas.style.height = `${height}px`
-        } else {
-          const width = availableHeight * aspectRatio;
-          const height = availableHeight;
+function closeSetup() {
+  session.showSetup(false);
+}
+function openSetup() {
+  session.showSetup(true);
+}
 
-          this.$refs.canvas.style.width = `${width}px`;
-          this.$refs.canvas.style.height = `${height}px`
-        }
-      }
-    },
-    beforeMount() {
-      this.session = this.$vuexr.requestSession(this.name);
-    },
-    async mounted () {
-      await this.session.init(this.$refs.canvas, (event) => {
-        this.sessionCallback(event)
-      });
+function sessionCallback(event: SessionCallbackArgs) {
+  if (event.name === SessionCallbackType.statusChanged && event.status) {
+    state.status = event.status;
+  }
+}
 
-      this.session.poser.registerView(this, (trackedMarkers) => {
-        this.trackedMarkers = trackedMarkers;
-      });
+function resizeCanvas() {
+  const aspectRatio = (canvas.value?.width ?? 0) / (canvas.value?.height ?? 0);
+  const availableWidth = wrapper.value?.clientWidth ?? 0;
+  const availableHeight = wrapper.value?.clientHeight ?? 0;
+  const availableAspectRatio = availableWidth / availableHeight;
 
-      await this.session.run();
-      await this.resizeCanvas();
+  if (aspectRatio >= availableAspectRatio) {
+    const width = availableWidth;
+    const height = availableWidth / aspectRatio;
 
-      window.addEventListener('resize', () => {
-        this.resizeCanvas();
-      })
-    },
-    unmounted() {
-      this.$slots.default().forEach(vnode => {
-        if (vnode.componentOptions && vnode.componentOptions.tag === 'ar-element') {
-          this.session.poser.unregisterElement(
-            vnode.componentOptions.propsData.id
-          )
-        }
-      });
-
-      window.removeEventListener('resize', this.resizeCanvas);
-
-      this.session.poser.unregisterView(this);
-
-      this.session.pause();
-    },
-    components: {
-      ARSetup,
-      ARControls
+    if (canvas.value) {
+      canvas.value.style.width = `${width}px`;
+      canvas.value.style.height = `${height}px`;
     }
+  } else {
+    const width = availableHeight * aspectRatio;
+    const height = availableHeight;
+
+    if (canvas.value) {
+      canvas.value.style.width = `${width}px`;
+      canvas.value.style.height = `${height}px`;
+    }
+  }
+}
+
+const resizeCanvasCaller = () => {
+  resizeCanvas();
+};
+
+onMounted(async () => {
+  await session.init(canvas.value!, (event) => {
+    sessionCallback(event);
   });
+
+  session.poser.registerView(id, (tracked: string[]) => {
+    state.trackedMarkers = tracked;
+  });
+
+  await session.run();
+  await resizeCanvas();
+
+  window.addEventListener("resize", resizeCanvasCaller);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", resizeCanvasCaller);
+  session.poser.unregisterView(id);
+  session.pause();
+});
 </script>
 
 <style scoped>
-  .ar-view-wrapper {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    background: #333344;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  }
+.ar-view-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: #333344;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
 
-  .ar-view {
-    position: relative;
-    max-width: 100%;
-    max-height: 100%;
-    overflow: hidden;
-  }
+.ar-view {
+  position: relative;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
 
-  .setup-button {
-    position: absolute;
-    z-index: 2;
-    top: 8px;
-    right: 8px;
-    color: white;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
-    cursor: pointer;
-    font-size: 1.2rem;
-    line-height: 1.2rem;
-  }
+.setup-button {
+  position: absolute;
+  z-index: 2;
+  top: 8px;
+  right: 8px;
+  color: white;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1.2rem;
+}
 
-  .setup-container {
-    position: absolute;
-    z-index: 5;
-    top: max(calc(50% - 180px), 10px);
-    left: calc(50% - 150px);
-  }
+.setup-container {
+  position: absolute;
+  z-index: 5;
+  top: max(calc(50% - 180px), 10px);
+  left: calc(50% - 150px);
+}
 
-  .controls-container {
-    position: absolute;
-    z-index: 1;
-    bottom: 8px;
-    left: 8px;
-  }
+.controls-container {
+  position: absolute;
+  z-index: 1;
+  bottom: 8px;
+  left: 8px;
+}
 
-  .loading-text {
-    position: absolute;
-    top: calc(50% - 0.8rem);
-    text-align: center;
-    font-size: 0.8rem;
-    line-height: 0.8rem;
-    color: white;
-    margin-left: 10px;
-    text-shadow: 0 1px 1px rgba(0,0,0,0.5);
-  }
+.loading-text {
+  position: absolute;
+  top: calc(50% - 0.8rem);
+  text-align: center;
+  font-size: 0.8rem;
+  line-height: 0.8rem;
+  color: white;
+  margin-left: 10px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+}
 </style>

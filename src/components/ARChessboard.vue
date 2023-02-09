@@ -6,15 +6,6 @@
   />
 </template>
 
-<script>
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import pattern from "../vision/Chessboard";
-
-export default defineComponent({
-  data: function () {
-    return {
-      pattern: pattern,
-    };
-  },
-});
 </script>

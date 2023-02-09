@@ -2,3 +2,4 @@
 .cache/
 demo/dist/
 node_modules/
+yarn-error.log

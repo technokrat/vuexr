@@ -3,133 +3,197 @@
     <header>
       <span class="title">Vue<strong>XR</strong></span>
       <span class="links">
-      <a href="https://www.npmjs.com/package/vuexr" target="_blank">npm</a>
-      <a href="https://github.com/technokrat-llc/vuexr" target="_blank">GitHub</a>
-      <a href="https://technokrat.ch" target="_blank">Technokrat</a>
+        <a href="https://www.npmjs.com/package/vuexr" target="_blank">npm</a>
+        <a href="https://github.com/technokrat-llc/vuexr" target="_blank"
+          >GitHub</a
+        >
+        <a href="https://technokrat.ch" target="_blank">Technokrat</a>
       </span>
     </header>
     <div class="lead">
-      <img src="../../assets/vuexr_illustration_website.svg" style="width: 500px; max-width: 100%;"
-           alt="Vue XR on a smart toaster.">
+      <img
+        src="../../assets/vuexr_illustration_website.svg"
+        style="width: 500px; max-width: 100%"
+        alt="Vue XR on a smart toaster."
+      />
       <h1 class="main-title">Vue<strong>XR</strong></h1>
       <h2 class="description">Vue-powered Augmented Reality DOM rendering</h2>
       <p class="action">
-        <a class="getting-started action-button" href="https://github.com/technokrat-llc/vuexr#getting-started"
-           target="_blank">
+        <a
+          class="getting-started action-button"
+          href="https://github.com/technokrat-llc/vuexr#getting-started"
+          target="_blank"
+        >
           Get Started →
         </a>
       </p>
     </div>
     <div class="demo">
-      <div class="selection" v-if="this.step === 'selection'">
+      <div class="selection" v-if="step === 'selection'">
         <h1>Demo</h1>
-        <p>Open an AR view on one device with a camera, and display the guide on another one (preferably a notebook or
-          desktop computer).</p>
+        <p>
+          Open an AR view on one device with a camera, and display the guide on
+          another one (preferably a notebook or desktop computer).
+        </p>
         <p><small>Supports Chrome 99+</small></p>
         <div class="actions">
-          <a class="open-view action-button" href="" @click.prevent="step = 'view'">Open AR View</a>
+          <a
+            class="open-view action-button"
+            href=""
+            @click.prevent="step = 'view'"
+            >Open AR View</a
+          >
           <span class="or">or</span>
-          <a class="open-guide action-button" href="" @click.prevent="step = 'calibration'">Display Guide</a>
+          <a
+            class="open-guide action-button"
+            href=""
+            @click.prevent="step = 'calibration'"
+            >Display Guide</a
+          >
         </div>
       </div>
-      <div class="view" v-else-if="this.step === 'view'">
+      <div class="view" v-else-if="step === 'view'">
         <div v-if="supported" class="supported">
           <!-- The magic happens here! -->
           <ar-view>
-            <ar-element :id="42" v-slot:="{tracked}">
+            <ar-element :id="42" v-slot:="{ tracked }">
               <div class="hello">
                 <h1 class="title">Vue<strong>XR</strong> says hello!</h1>
-                <p>Embed <strong>any</strong> DOM element in augmented reality.</p>
-                <div style="position: absolute; bottom: 0; right: 10px;">
-                  <p><small>Powered by <img src="../../assets/technokrat_banner.svg"
-                                            style="height: 9px; display: inline-block; vertical-align: middle;"
-                                            alt="Technokrat Logo"></small></p>
+                <p>
+                  Embed <strong>any</strong> DOM element in augmented reality.
+                </p>
+                <div style="position: absolute; bottom: 0; right: 10px">
+                  <p>
+                    <small
+                      >Powered by
+                      <img
+                        src="../../assets/technokrat_banner.svg"
+                        style="
+                          height: 9px;
+                          display: inline-block;
+                          vertical-align: middle;
+                        "
+                        alt="Technokrat Logo"
+                    /></small>
+                  </p>
                 </div>
               </div>
             </ar-element>
           </ar-view>
-          <a class="back-button" href="" @click.prevent="step = 'selection'">Back</a>
+          <a class="back-button" href="" @click.prevent="step = 'selection'"
+            >Back</a
+          >
         </div>
         <div class="not-supported" v-else>
           <h2>Not supported!</h2>
-          <p>Augmented Reality is <strong>not</strong> supported on this device.</p>
-          <p v-if="this.supportError">{{ this.supportError }}</p>
-          <a class="action-button" href="" @click.prevent="step = 'selection'">Back</a>
+          <p>
+            Augmented Reality is <strong>not</strong> supported on this device.
+          </p>
+          <p v-if="supportError">{{ supportError }}</p>
+          <a class="action-button" href="" @click.prevent="step = 'selection'"
+            >Back</a
+          >
         </div>
       </div>
-      <div class="calibration" v-else-if="this.step === 'calibration'">
+      <div class="calibration" v-else-if="step === 'calibration'">
         <h2>Calibration</h2>
-        <p>Follow the calibration procedure on your AR device. Use the chessboard pattern below for calibration.</p>
-        <a class="back-button action-button" href="" @click.prevent="step = 'selection'">Back</a><a
-        class="ready-button action-button" href="" @click.prevent="step = 'detection'">Calibrated</a>
+        <p>
+          Follow the calibration procedure on your AR device. Use the chessboard
+          pattern below for calibration.
+        </p>
+        <a
+          class="back-button action-button"
+          href=""
+          @click.prevent="step = 'selection'"
+          >Back</a
+        ><a
+          class="ready-button action-button"
+          href=""
+          @click.prevent="step = 'detection'"
+          >Calibrated</a
+        >
         <div class="chessboard">
-          <ar-chessboard style="max-height: 60vh;"/>
+          <ar-chessboard style="max-height: 60vh" />
         </div>
       </div>
-      <div class="detection" v-else-if="this.step === 'detection'">
+      <div class="detection" v-else-if="step === 'detection'">
         <h2>Detection</h2>
         <div class="aruco-wrapper">
           <code>ID 42</code>
-          <img src="../../assets/6x6_1000-42.svg">
+          <img src="../../assets/6x6_1000-42.svg" />
         </div>
-        <a class="action-button" href="" @click.prevent="step = 'calibration'">Back</a>
+        <a class="action-button" href="" @click.prevent="step = 'calibration'"
+          >Back</a
+        >
       </div>
     </div>
     <footer>
-      MIT Licensed | Copyright © 2020-present Markus Wegmann, <a href="https://technokrat.ch" target="_blank">Technokrat
-      LLC</a>
+      MIT Licensed | Copyright © 2020-present Markus Wegmann,
+      <a href="https://technokrat.ch" target="_blank">Technokrat LLC</a>
     </footer>
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+export default defineComponent({
   data() {
     return {
       supported: false,
       supportError: null,
-      step: 'selection'
-    }
+      step: "selection",
+    };
   },
   methods: {
     toggle() {
       this.show = !this.show;
-    }
+    },
   },
   mounted() {
-    this.$vuexr.check().then(({supported, error}) => {
-      this.supported = supported;
-      this.supportError = error;
-    }).catch(() => {
-      this.supported = false;
-    })
-  }
-};
+    this.$vuexr
+      .check()
+      .then(({ supported, error }) => {
+        this.supported = supported;
+        this.supportError = error;
+      })
+      .catch(() => {
+        this.supported = false;
+      });
+  },
+});
 </script>
 
 <style lang="scss">
 @import "normalize.css/normalize.css";
 
 :root {
-  --blue-darkest: #131C25;
-  --blue-light: #169CFC;
-  --white: #E3E4E5;
+  --blue-darkest: #131c25;
+  --blue-light: #169cfc;
+  --white: #e3e4e5;
   --grey-light: #919191;
-  --yellow: #E3B044;
+  --yellow: #e3b044;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-weight: 400;
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600;
   line-height: 1.25;
 }
 
-ol, p, ul {
+ol,
+p,
+ul {
   line-height: 1.7;
 }
 
@@ -190,9 +254,9 @@ header a {
   font-size: 1.2rem;
   color: #fff;
   background-color: #3eaf7c;
-  padding: .8rem 1.6rem;
+  padding: 0.8rem 1.6rem;
   border-radius: 4px;
-  transition: background-color .1s ease;
+  transition: background-color 0.1s ease;
   box-sizing: border-box;
   border-bottom: 1px solid #389d70;
   font-weight: 500;
@@ -250,7 +314,8 @@ header a {
   text-align: center;
 }
 
-.demo > .view > .not-supported > p, .demo > .view > .not-supported > h2 {
+.demo > .view > .not-supported > p,
+.demo > .view > .not-supported > h2 {
   margin: 1.8rem auto;
   color: white;
   width: 24em;
@@ -279,14 +344,16 @@ header a {
   text-align: center;
 }
 
-.demo > .calibration > p, .demo > .calibration > h2 {
+.demo > .calibration > p,
+.demo > .calibration > h2 {
   margin: 1.8rem auto;
   color: white;
   width: 24em;
   max-width: 100%;
 }
 
-.demo > .calibration > p, .demo > .calibration > .action-button {
+.demo > .calibration > p,
+.demo > .calibration > .action-button {
   margin: 1.8rem auto;
 }
 
@@ -357,7 +424,5 @@ footer a {
 .hello > .title {
   margin-top: 10px;
   font-weight: 300;
-
 }
-
 </style>

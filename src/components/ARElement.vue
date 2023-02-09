@@ -1,70 +1,91 @@
 <template>
   <div class="element" ref="element">
     <transition name="fade">
-      <div v-if="show">
-        <slot v-bind:tracked="tracked"></slot>
+      <div v-if="state.show">
+        <slot v-bind:tracked="state.tracked"></slot>
       </div>
     </transition>
   </div>
 </template>
 
-<script>
-import {defineComponent} from "vue";
+<script lang="ts" setup>
+import {
+  reactive,
+  inject,
+  ref,
+  onMounted,
+  onUnmounted,
+} from "vue";
+import Session from "../vision/Session";
 
-export default defineComponent({
-    data () {
-      return {
-        show: false,
-        timeoutHandler: null,
-        tracked: false
-      }
-    },
-    props: {
-      id: Number,
-      timeout: {
-        type: Number,
-        default: 1000
-      },
-      markerSize: {
-        type: Number,
-        default: 50
-      }
-    },
-    mounted () {
-      this.$parent.$data.session.poser.registerElement(this.id, this.$refs.element, this.markerSize, (tracked) => {
-        this.tracked = tracked;
+interface State {
+  show: boolean;
+  timeoutHandler: number | null;
+  tracked: boolean;
+}
 
-        if (tracked) {
-          this.show = true;
-          window.clearTimeout(this.timeoutHandler);
-          this.timeoutHandler = null
-        } else {
-          this.timeoutHandler = window.setTimeout(() => {
-            this.show = false
-          }, this.timeout)
+const state = reactive<State>({
+  show: false,
+  timeoutHandler: null,
+  tracked: false,
+});
+
+const session = inject<Session>("session")!;
+const props = withDefaults(
+  defineProps<{
+    id: string | number;
+    timeout?: number;
+    markerSize?: number;
+  }>(),
+  { timeout: 1000, markerSize: 50 }
+);
+
+const element = ref(null);
+
+onMounted(() => {
+  (session as Session).poser.registerElement(
+    props.id.toString(),
+    element.value!,
+    props.markerSize,
+    (tracked) => {
+      state.tracked = tracked;
+
+      if (tracked) {
+        state.show = true;
+        if (state.timeoutHandler != null) {
+          window.clearTimeout(state.timeoutHandler);
+          state.timeoutHandler = null;
         }
-      })
-    },
-    unmounted () {
-      this.$parent.$data.session.poser.unregisterElement(this.id)
+      } else {
+        state.timeoutHandler = window.setTimeout(() => {
+          state.show = false;
+        }, props.timeout);
+      }
     }
-  });
+  );
+});
+
+onUnmounted(() => {
+  (session as Session).poser.unregisterElement(props.id.toString());
+});
 </script>
 
 <style scoped>
-  .element {
-    position: absolute;
-    top:0;
-    left: 0;
-    transform-style : preserve-3d;
-    transition: transform 0.05s;
-    transform-origin: 0 0 0;
-  }
+.element {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.05s;
+  transform-origin: 0 0 0;
+}
 
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s;
-  }
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
-  }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
 </style>

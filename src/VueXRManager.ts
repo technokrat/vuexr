@@ -1,13 +1,13 @@
 import Session from "./vision/Session";
 
 export class VueXRManager {
-  private sessions: { [x: string]: any; };
+  private sessions: { [x: string]: Session; };
 
   constructor() {
     this.sessions = {}
   }
 
-  requestSession(name = "default") : any {
+  requestSession(name = "default") : Session {
     if (!this.sessions[name]) {
       this.sessions[name] = new Session()
     }
