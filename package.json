@@ -1,25 +1,26 @@
 {
   "name": "vuexr",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "VueXR is a Vue plugin that let's you project regular DOM components onto augmented reality (AR) markers in real-time.",
   "engines": {
-    "yarn": "^1.22.19",
+    "yarn": ">=1.22.19",
     "node": ">=18.4.0"
   },
-  "main": "dist/vuexr.mjs",
-  "module": "dist/vuexr.mjs",
-  "style": "dist/style.css",
+  "type": "module",
   "files": [
-    "dist/**/*.mjs",
-    "dist/**/*.js",
-    "dist/**/*.d.ts",
-    "dist/**/*.css",
-    "src/opencv/build_simd/opencv.js"
+    "./dist/**/*.js",
+    "./dist/**/*.cjs",
+    "./dist/**/*.d.ts",
+    "./dist/**/*.css",
+    "./src/opencv/build_simd/opencv.js"
   ],
+  "main": "./dist/vuexr.umd.cjs",
+  "module": "./dist/vuexr.js",
+  "style": "./dist/style.css",
   "exports": {
     ".": {
-      "import": "./dist/vuexr.mjs",
-      "require": "./dist/vuexr.umd.js"
+      "import": "./dist/vuexr.js",
+      "require": "./dist/vuexr.umd.cjs"
     },
     "./opencv": "./src/opencv/build_simd/opencv.js"
   },
@@ -45,17 +46,17 @@
     "fili": "^2.0.3",
     "gl-matrix": "^3.4.3",
     "normalize.css": "^8.0.1",
-    "vue": "^3.2.39"
+    "vue": "^3.2.47"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-typescript": "^11.0.1",
-    "rollup": "^3.12.0",
+    "rollup": "^3.14.0",
     "rollup-plugin-clear": "^2.0.7",
     "rollup-plugin-typescript2": "^0.34.0",
     "rollup-plugin-vue": "^6.0.0",
-    "sass": "^1.54.9",
-    "typescript": "^4.8.3",
-    "vite": "^4.0.4"
+    "sass": "^1.58.0",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.1"
   }
 }
