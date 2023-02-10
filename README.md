@@ -42,7 +42,7 @@ or at https://technokrat.ch
   ```
 4. Include `vuexr` CSS-styles in your top package:
   ```css
-  @import 'vuexr';
+  @import 'vuexr/style';
   ```
 5. Copy the `worker.*.js` file within the `node_modules/vuexr/assets/` folder into your public path under `/assets/`. Example for Vite:
   ```js
