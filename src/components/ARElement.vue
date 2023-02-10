@@ -47,8 +47,8 @@ onMounted(() => {
     props.id.toString(),
     element.value!,
     props.markerSize,
-    (tracked) => {
-      state.tracked = tracked;
+    (tracked: boolean) => {
+      state.tracked = tracked ?? false;
 
       if (tracked) {
         state.show = true;

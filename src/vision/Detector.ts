@@ -1,9 +1,9 @@
-import { WorkerOperation, WorkerReturn, WorkerReturnMessage } from "../types";
+import { WorkerOperation, WorkerReturnMessage } from "../types";
 import Session from "./Session";
 
 export default class Detector {
   session: Session;
-  detectionOngoing: boolean = false;
+  detectionOngoing = false;
   constructor(session: Session) {
     this.session = session;
   }

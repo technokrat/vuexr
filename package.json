@@ -1,6 +1,6 @@
 {
   "name": "vuexr",
-  "version": "0.4.7",
+  "version": "0.5.0",
   "description": "VueXR is a Vue plugin that let's you project regular DOM components onto augmented reality (AR) markers in real-time.",
   "engines": {
     "yarn": ">=1.22.19",
@@ -11,12 +11,14 @@
     "dist/**/*.js",
     "dist/**/*.cjs",
     "dist/**/*.d.ts",
+    "dist/**/*.d.ts.map",
     "dist/**/*.css",
     "dist/**/*.html",
     "src/opencv/build_simd/opencv.js"
   ],
   "main": "./dist/vuexr.umd.cjs",
   "module": "./dist/vuexr.js",
+  "types": "./dist/index.d.ts",
   "style": "./dist/style.css",
   "exports": {
     ".": {
@@ -28,7 +30,7 @@
   "scripts": {
     "dev": "vite --config vite.demo.config.js",
     "build": "yarn run build:lib && yarn run build:demo",
-    "build:lib": "vite build",
+    "build:lib": "vite build && vue-tsc --declaration --emitDeclarationOnly",
     "build:demo": "vite build --config vite.demo.config.js",
     "prepublishOnly": "yarn build",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -51,18 +53,35 @@
   },
   "devDependencies": {
     "@babel/types": "^7.20.7",
-    "@rollup/plugin-typescript": "^11.0.0",
     "@types/w3c-generic-sensor": "^1.0.6",
     "@types/w3c-image-capture": "^1.0.7",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
+    "@typescript-eslint/parser": "^5.51.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-typescript": "^11.0.1",
+    "eslint": "^8.33.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.9.0",
+    "prettier": "^2.8.4",
     "rollup": "^3.14.0",
-    "rollup-plugin-clear": "^2.0.7",
-    "rollup-plugin-typescript2": "^0.34.0",
     "rollup-plugin-vue": "^6.0.0",
     "sass": "^1.58.0",
     "typescript": "^4.9.5",
     "vite": "^4.1.1",
-    "vite-plugin-dts": "^1.7.2"
+    "vite-plugin-checker": "^0.5.5",
+    "vue-tsc": "^1.0.24"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:vue/vue3-recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "root": true
   }
 }

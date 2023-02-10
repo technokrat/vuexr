@@ -1,12 +1,12 @@
-import { mat4, vec3 } from "gl-matrix";
+import { mat3, mat4, vec3 } from "gl-matrix";
 
 export function drawVideoFrameToCanvas(
   canvas: HTMLCanvasElement,
   img: ImageBitmap
 ) {
-  let ratio = Math.min(canvas.width / img.width, canvas.height / img.height);
-  let x = (canvas.width - img.width * ratio) / 2;
-  let y = (canvas.height - img.height * ratio) / 2;
+  const ratio = Math.min(canvas.width / img.width, canvas.height / img.height);
+  const x = (canvas.width - img.width * ratio) / 2;
+  const y = (canvas.height - img.height * ratio) / 2;
   canvas
     .getContext("2d")
     ?.drawImage(
@@ -22,7 +22,7 @@ export function drawVideoFrameToCanvas(
     );
 }
 
-export function computeProjMat(ratio: number, cameraMatrix: number[], rmat: mat4, tvec: vec3, viewMatrix: mat4) {
+export function computeProjMat(ratio: number, cameraMatrix: mat3, rmat: mat4, tvec: vec3, viewMatrix: mat4) {
   const projMat = mat4.create();
 
   const flipMat = mat4.fromValues(

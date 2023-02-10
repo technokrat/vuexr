@@ -1,7 +1,6 @@
-import { mat4, quat, vec3 } from "gl-matrix";
+import { mat3, mat4, quat, vec3 } from "gl-matrix";
 import { computeProjMat } from "./helpers";
 import Session from "./Session";
-import ARViewVue from "../components/ARView.vue";
 import { WorkerMarker } from "../types";
 
 type ViewCallback = (tracked: string[]) => void;
@@ -13,7 +12,7 @@ export interface Transformation {
 }
 
 interface ViewData {
-  id: Symbol;
+  id: symbol;
   callback: ViewCallback;
 }
 
@@ -39,11 +38,11 @@ export default class Poser {
     this.session = session;
   }
 
-  registerView(id: Symbol, callback: ViewCallback) {
+  registerView(id: symbol, callback: ViewCallback) {
     this.views.push({ id, callback });
   }
 
-  unregisterView(id: Symbol) {
+  unregisterView(id: symbol) {
     this.views = this.views.filter((element) => element.id !== id);
   }
 
@@ -118,7 +117,7 @@ export default class Poser {
   }
 
   readjustElements() {
-    const ratio = this.session.canvas!.clientWidth / this.session.canvas!.width;
+    const ratio = (this.session.canvas?.clientWidth ?? 0) / (this.session.canvas?.width ?? 0);
     const allElements = Object.keys(this.elements).map(
       (key) => this.elements[key]
     );
@@ -130,7 +129,7 @@ export default class Poser {
         );
         const projMatrix = computeProjMat(
           ratio,
-          this.session.calibration.calibration!.cameraMatrix,
+          this.session.calibration.calibration?.cameraMatrix ?? mat3.create(),
           element.lastRMat,
           element.lastTVec,
           offset

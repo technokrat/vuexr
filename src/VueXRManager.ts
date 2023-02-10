@@ -22,8 +22,7 @@ export class VueXRManager {
 
   async check() {
     if (window.isSecureContext) {
-      // @ts-ignore
-      if (navigator.mediaDevices && window.ImageCapture) {
+      if (navigator.mediaDevices && ImageCapture) {
         const streams = (await navigator.mediaDevices.enumerateDevices()).filter(stream => stream.kind === 'videoinput');
 
         if (streams.length) {

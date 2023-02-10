@@ -1,13 +1,17 @@
-import { vec3, mat4 } from "gl-matrix";
-import { CalibrationData } from "./vision/Calibration";
+import { vec3, mat4, mat3 } from "gl-matrix";
+
+export interface CalibrationData {
+  cameraMatrix: mat3;
+  distCoeffs: [number, number, number, number, number];
+}
 
 export interface ARViewStatus {
-  motion?: { acceleration: { error: any }; gyro: { error: any } };
+  motion?: { acceleration: { error?: Error | string | null }; gyro: { error?: Error | string | null } };
   initialized?: boolean;
   feed?: {
     selected?: string | null;
     available?: MediaDeviceInfo[];
-    error?: any;
+    error?: Error | string | null;
   };
   calibration?: {
     calibrated: boolean;

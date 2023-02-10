@@ -6,10 +6,10 @@ import { VueXRManager } from "./VueXRManager";
 import { App, Plugin } from "vue";
 
 export const VueXR: Plugin = {
-  install(app: App, options?: any) {
-    app.component("ar-view", ARView);
-    app.component("ar-element", ARElement);
-    app.component("ar-chessboard", ARChessboard);
+  install(app: App) {
+    app.component("ArView", ARView);
+    app.component("ArElement", ARElement);
+    app.component("ArChessboard", ARChessboard);
     const vueXRManager = new VueXRManager();
     app.config.globalProperties.$vuexr = vueXRManager;
     app.provide("vuexr", vueXRManager);

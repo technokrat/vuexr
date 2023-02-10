@@ -1,5 +1,5 @@
 import { drawVideoFrameToCanvas } from "./helpers";
-import Session, { SessionCallbackType } from "./Session";
+import Session from "./Session";
 
 interface FeedOptions {
   constraints?: {
@@ -26,7 +26,7 @@ interface FeedStatus {
 export default class CameraFeed {
   session: Session;
   options: FeedOptions;
-  paused: boolean = false;
+  paused = false;
   mediaStream?: MediaStream;
   track?: MediaStreamTrack;
   videoElement: HTMLVideoElement;
@@ -136,8 +136,8 @@ export default class CameraFeed {
 
       this.videoElement.srcObject = this.mediaStream;
 
-      await new Promise<void>((resolve, reject) => {
-        this.videoElement.onloadedmetadata = (e) => {
+      await new Promise<void>((resolve) => {
+        this.videoElement.onloadedmetadata = () => {
           this.videoElement.play();
           if (this.session.canvas) {
             this.session.canvas.width = this.videoElement.videoWidth;

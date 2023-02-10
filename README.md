@@ -10,11 +10,11 @@ VueXR is a Vue plugin that let's you **project regular DOM components onto augme
 Please the official demo at [vuexr.technokrat.ch](https://vuexr.technokrat.ch). It is just as easy as:
 
 ```html
-<ar-view>
-  <ar-element :id="23">
+<ArView>
+  <ArElement :id="23">
     <div class="hello">Hello World!</div>
-  </ar-element>
-</ar-view>
+  </ArElement>
+</ArView>
 ```
 
 With VueXR, you are able to build an AR-Prototype in minutes using your existing 2D web-application.
@@ -33,11 +33,11 @@ or at https://technokrat.ch
 3. Setup VueXR's built in components
   ```vue
   <template>
-    <ar-view>
-      <ar-element :id="23">
+    <ArView>
+      <ArElement :id="23">
         <div class="hello">Hello World!</div>
-      </ar-element>
-    </ar-view>
+      </ArElement>
+    </ArView>
   </template>
   ```
 4. Include `vuexr` CSS-styles in your top package:
@@ -94,11 +94,11 @@ or at https://technokrat.ch
 
   ```vue
   <template>
-      <ar-view>
-        <ar-element :id="23">
+      <ArView>
+        <ArElement :id="23">
           <div class="hello">Hello World!</div>
-        </ar-element>
-      </ar-view>
+        </ArElement>
+      </ArView>
   </template>
 
   <script>
@@ -124,7 +124,7 @@ or at https://technokrat.ch
 
 4. Finally you have to copy the WebWorker module `worker.*.js` (e.g. `worker.7d65f39e.js`) file within the `node_modules/vuexr/assets/` folder into your public path under `/assets/`. 
   The WebWorker can be thought of a script that is run in parallel in the background (to relieve the main thread). It contains a WebAssembly 
-  version of the computer vision library `OpenCV` (roughly 11 MB) which is loaded as soon as `<ar-view>` is shown the first time. As the WebWorker is run in parallel, 
+  version of the computer vision library `OpenCV` (roughly 11 MB) which is loaded as soon as `<ArView>` is shown the first time. As the WebWorker is run in parallel, 
   the computer vision processing should not impact the overall app performance and responsivity.
   The WebWorker is imported by VueXR using 
 
@@ -200,12 +200,12 @@ Sadly, iOS is not supported due to the limited feature set of Safari.
 ### General
 In general, you only require two new components to use VueXR
 
-* `<ar-view>` is our wrapper around the AR-session. It does initialize all required components for computer vision, camera,
-  and position tracking. It can contain arbitrarily many `<ar-element>`'s
-  * The `v-slot="{trackedMarkers}"` slot property gives you the current tracked AruCo tags as an `Array<string>`. This is useful in case you do not know the AR-tag numbers in advance, and want to instantiate the `<ar-element>` in a dynamic way.
-* `<ar-element>` is the container around the content rendered onto a ArUco marker.
+* `<ArView>` is our wrapper around the AR-session. It does initialize all required components for computer vision, camera,
+  and position tracking. It can contain arbitrarily many `<ArElement>`'s
+  * The `v-slot="{trackedMarkers}"` slot property gives you the current tracked AruCo tags as an `Array<string>`. This is useful in case you do not know the AR-tag numbers in advance, and want to instantiate the `<ArElement>` in a dynamic way.
+* `<ArElement>` is the container around the content rendered onto a ArUco marker.
   * The `id` attribute (of type `Number`) is required and assigns a unique ArUco identifier.
-  * The `timeout` attribute (of type `Number` in milliseconds, default `1000`) sets the time, a `<ar-element>` vanishes
+  * The `timeout` attribute (of type `Number` in milliseconds, default `1000`) sets the time, a `<ArElement>` vanishes
   after it is not detected by the camera anymore
   * **(NOT SUPPORTED)** The `markerSize` attribute (of type `Number` in millimeters, default `50`) sets the size of the respective ArUco
   marker for accurate projection sizing.
@@ -218,9 +218,9 @@ If you need to determine dynamically whether your client supports VueXR before a
 
 ```vue
 <template>
-    <ar-view v-if="supported">
+    <ArView v-if="supported">
         // …
-    </ar-view>
+    </ArView>
 </template>
 
 <script>
@@ -249,30 +249,30 @@ If you need to determine dynamically whether your client supports VueXR before a
 VueXR can detect **6x6** ArUco markers up to decimal ID `250`. They are quite robust, and encode orientation and identity
 in one. Use this [generator webpage](http://chev.me/arucogen/) to print out a marker and stick it onto your toaster!
 
-An `<ar-element>`'s origin is based in the middle of the marker. Use absolute positioning or CSS transforms to correctly
+An `<ArElement>`'s origin is based in the middle of the marker. Use absolute positioning or CSS transforms to correctly
 align the content.
 
 ### Nested Transformations
-You might use nested transformations inside your `<ar-element>`'s content, e.g. `transform3d(10px, 20px 30px)`. Ensure to
+You might use nested transformations inside your `<ArElement>`'s content, e.g. `transform3d(10px, 20px 30px)`. Ensure to
 set the CSS attribute `transform-style` to `preserve-3d` for all nested elements.
 
 ### Tracking State & Animations
-By default, if a `<ar-element>` times out due to not being tracked anymore, it will fade out and it's content removed from the DOM.
+By default, if a `<ArElement>` times out due to not being tracked anymore, it will fade out and it's content removed from the DOM.
 See (https://vuejs.org/guide/built-ins/transition.html).
 
-If you want to handle things yourself, VueXR offers you a way to check if an `<ar-element>` is tracked from inside your
-`<ar-element>`'s content using [Scoped Slots](https://vuejs.org/guide/components/slots.html)
+If you want to handle things yourself, VueXR offers you a way to check if an `<ArElement>` is tracked from inside your
+`<ArElement>`'s content using [Scoped Slots](https://vuejs.org/guide/components/slots.html)
 
-Just use the following pattern to access the `tracked` property for a given `<ar-element>`:
+Just use the following pattern to access the `tracked` property for a given `<ArElement>`:
 
 ```vue
-<ar-view>
-  <ar-element :id="50" v-slot:="{tracked}">
+<ArView>
+  <ArElement :id="50" v-slot:="{tracked}">
     <div class="hello" :class="{tracked: tracked}">
       Hello World!
     </div>
-  </ar-element>
-</ar-view>
+  </ArElement>
+</ArView>
 ```
 
 Of course you are free to assign `tracked` to a sub-components property, use it for conditional rendering, and other
@@ -297,10 +297,10 @@ write
 ```
 
 ### Sizing
-One *millimeter* (*mm*) in real-world matches one *pixel* (*`px`*) in your `<ar-element>`, plain and simple.
+One *millimeter* (*mm*) in real-world matches one *pixel* (*`px`*) in your `<ArElement>`, plain and simple.
 
 ### Calibration Pattern
-Display [this chessboard pattern](./vendor/pattern.png) manually on a different screen, or use the `<ar-chessboard>`
+Display [this chessboard pattern](./vendor/pattern.png) manually on a different screen, or use the `<ArChessboard>`
 component inside your Vue application. It will show an embedded image of the chessboard pattern.
 
 ## Demo

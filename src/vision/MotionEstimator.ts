@@ -1,7 +1,8 @@
 import { mat4, vec4, quat, vec3 } from "gl-matrix";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import Fili from "fili";
-import Session, { SessionCallbackType } from "./Session";
+import Session from "./Session";
 import { Transformation } from "./Poser";
 
 const FREQUENCY = 60;
@@ -9,16 +10,21 @@ const VELOCITY_DECAY = 0.95;
 const POSITION_DECAY = 0.995;
 // const DRIFT_COMPENSATION = 1 / FREQUENCY * 0.000001;
 
+interface IirFilter {
+  singleStep: (input: number) => number
+}
+
 export default class MotionEstimator {
   session: Session;
-  iirFilter: { x: any; y: any; z: any };
+  iirFilter: { x: IirFilter; y: IirFilter; z: IirFilter };
   accelerometerDrift: vec3;
   velocity: vec3;
   position: vec3;
-  motionStatus: { acceleration: { error: any }; gyro: { error: any } };
+  orientation: quat;
+  motionStatus: { acceleration: { error?: Error | string | null }; gyro: { error?: Error | string | null } };
   accelerometer?: LinearAccelerationSensor;
   orientationSensor?: RelativeOrientationSensor;
-  orientation?: quat;
+
 
   constructor(session: Session) {
     this.session = session;
@@ -36,14 +42,15 @@ export default class MotionEstimator {
     });
 
     this.iirFilter = {
-      x: new Fili.IirFilter(iirFilterCoeffs),
-      y: new Fili.IirFilter(iirFilterCoeffs),
-      z: new Fili.IirFilter(iirFilterCoeffs),
+      x: new Fili.IirFilter(iirFilterCoeffs) as IirFilter,
+      y: new Fili.IirFilter(iirFilterCoeffs) as IirFilter,
+      z: new Fili.IirFilter(iirFilterCoeffs) as IirFilter,
     };
 
     this.accelerometerDrift = vec3.create();
     this.velocity = vec3.create();
     this.position = vec3.create();
+    this.orientation = quat.create();
 
     this.motionStatus = {
       acceleration: {
@@ -55,7 +62,7 @@ export default class MotionEstimator {
     };
   }
 
-  readingHandler(event: Event) {
+  readingHandler() {
     const acceleration = vec4.fromValues(
       this.accelerometer?.x ?? 0,
       -(this.accelerometer?.z ?? 0),
@@ -156,40 +163,42 @@ export default class MotionEstimator {
           this.session.updateStatus();
         });
 
-        this.accelerometer.addEventListener("reading", (e) => {
-          this.readingHandler(e);
+        this.accelerometer.addEventListener("reading", () => {
+          this.readingHandler();
         });
 
         this.run();
-      } catch (error: any) {
+      } catch (error) {
         // Handle construction errors.
-        if (error.name === "SecurityError") {
-          this.motionStatus = {
-            acceleration: {
-              error: "Permission denied",
-            },
-            gyro: {
-              error: "Permission denied",
-            },
-          };
-        } else if (error.name === "ReferenceError") {
-          this.motionStatus = {
-            acceleration: {
-              error: "Sensor is not supported by the User Agent.",
-            },
-            gyro: {
-              error: "Sensor is not supported by the User Agent.",
-            },
-          };
-        } else {
-          this.motionStatus = {
-            acceleration: {
-              error: error,
-            },
-            gyro: {
-              error: error,
-            },
-          };
+        if (error instanceof DOMException) {
+          if (error.name === "SecurityError") {
+            this.motionStatus = {
+              acceleration: {
+                error: "Permission denied",
+              },
+              gyro: {
+                error: "Permission denied",
+              },
+            };
+          } else if (error.name === "ReferenceError") {
+            this.motionStatus = {
+              acceleration: {
+                error: "Sensor is not supported by the User Agent.",
+              },
+              gyro: {
+                error: "Sensor is not supported by the User Agent.",
+              },
+            };
+          } else {
+            this.motionStatus = {
+              acceleration: {
+                error: error,
+              },
+              gyro: {
+                error: error,
+              },
+            };
+          }
         }
       }
     } else {
@@ -225,7 +234,8 @@ export default class MotionEstimator {
   getOffsetMatrix(referenceTransform: { orientation: quat; position: vec3 }) {
     if (
       !this.motionStatus.acceleration.error &&
-      !this.motionStatus.gyro.error
+      !this.motionStatus.gyro.error && 
+      this.orientation
     ) {
       const referenceRotationQuat = quat.fromValues(
         referenceTransform.orientation[0],
@@ -243,10 +253,10 @@ export default class MotionEstimator {
       );
 
       const currentRotationQuat = quat.fromValues(
-        this.orientation![0],
-        -this.orientation![1],
-        -this.orientation![2],
-        this.orientation![3]
+        this.orientation[0],
+        -this.orientation[1],
+        -this.orientation[2],
+        this.orientation[3]
       );
 
       const currentTransformMat = mat4.create();
@@ -270,8 +280,8 @@ export default class MotionEstimator {
 
   getCurrentTransform(): Transformation {
     return {
-      orientation: this.orientation!,
-      position: this.position
+      orientation: this.orientation,
+      position: this.position,
     };
   }
 }

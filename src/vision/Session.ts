@@ -43,7 +43,8 @@ export interface SessionCallbackArgs {
 type SessionCallback = (args: SessionCallbackArgs) => void;
 
 export default class Session {
-  initialized: boolean = false;
+  initialized = false;
+  workerInitialized = false;
   name: string;
   state: SessionState;
   feed: CameraFeed;
@@ -51,7 +52,6 @@ export default class Session {
   motion: MotionEstimator;
   calibration: Calibration;
   detector: Detector;
-  workerInitialized: boolean = false;
   eventCallback?: SessionCallback;
   focusEventRegistration: () => Promise<void>;
   blurEventRegistration: () => void;
@@ -102,7 +102,7 @@ export default class Session {
   }
 
   loadSetup(): SessionSetup {
-    let setupString = window.localStorage.getItem(`vuexr/${this.name}/setup`);
+    const setupString = window.localStorage.getItem(`vuexr/${this.name}/setup`);
     if (setupString) {
       return JSON.parse(setupString) as SessionSetup;
     } else {
@@ -122,9 +122,7 @@ export default class Session {
   showSetup(show: boolean) {
     this.setup.show = show;
     this.storeSetup();
-    if (this.eventCallback) {
-      this.eventCallback!({ name: SessionCallbackType.statusChanged });
-    }
+    this.updateStatus();
   }
 
   async init(canvas: HTMLCanvasElement, eventCallback: SessionCallback) {
@@ -147,7 +145,7 @@ export default class Session {
   }
 
   async initWorker() {
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>((resolve) => {
       this.worker = new Worker(new URL("../worker.ts", import.meta.url), {
         type: "module",
       });

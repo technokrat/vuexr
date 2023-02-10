@@ -55,8 +55,8 @@
       <div class="view" v-else-if="step === 'view'">
         <div v-if="supported" class="supported">
           <!-- The magic happens here! -->
-          <ar-view>
-            <ar-element :id="42" v-slot:="{ tracked }">
+          <ArView>
+            <ArElement :id="42" v-slot:="{ tracked }">
               <div class="hello">
                 <h1 class="title">Vue<strong>XR</strong> says hello!</h1>
                 <p>
@@ -78,8 +78,8 @@
                   </p>
                 </div>
               </div>
-            </ar-element>
-          </ar-view>
+            </ArElement>
+          </ArView>
           <a class="back-button" href="" @click.prevent="step = 'selection'"
             >Back</a
           >
@@ -113,7 +113,7 @@
           >Calibrated</a
         >
         <div class="chessboard">
-          <ar-chessboard style="max-height: 60vh" />
+          <ArChessboard style="max-height: 60vh" />
         </div>
       </div>
       <div class="detection" v-else-if="step === 'detection'">

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { mat4, vec3 } from "gl-matrix";
 //@ts-ignore
 import cv from "./opencv/build_simd/opencv";
@@ -38,7 +40,7 @@ interface OpenCV {
 }
 
 class CVProcessor {
-  initialized: boolean = false;
+  initialized = false;
   cv: OpenCV;
   dict: any;
   calibrationImagePoints: any;
@@ -127,12 +129,12 @@ class CVProcessor {
         }
 
         for (let i = 0; i < markerIds.rows; ++i) {
-          let rvec = this.cv.matFromArray(3, 1, this.cv.CV_64F, [
+          const rvec = this.cv.matFromArray(3, 1, this.cv.CV_64F, [
             rvecs.doublePtr(0, i)[0],
             rvecs.doublePtr(0, i)[1],
             rvecs.doublePtr(0, i)[2],
           ]);
-          let tvec = this.cv.matFromArray(3, 1, this.cv.CV_64F, [
+          const tvec = this.cv.matFromArray(3, 1, this.cv.CV_64F, [
             tvecs.doublePtr(0, i)[0],
             tvecs.doublePtr(0, i)[1],
             tvecs.doublePtr(0, i)[2],
@@ -151,11 +153,11 @@ class CVProcessor {
 
           rotMat.delete();
 
-          if (highlight) {
+          if (highlight && data.calibration) {
             this.cv.drawAxis(
               rbgFrame,
-              data.calibration!.cameraMatrix,
-              data.calibration!.distCoeffs,
+              data.calibration.cameraMatrix,
+              data.calibration.distCoeffs,
               rvec,
               tvec,
               ARUCO_SIZE
@@ -235,6 +237,7 @@ class CVProcessor {
   }
 
   captureCalibrationPoints(points: { imagePoints: any; objectPoints: any }) {
+    console.log(points);
     this.calibrationImagePoints.push_back(points.imagePoints);
     this.calibrationObjectPoints.push_back(points.objectPoints);
   }

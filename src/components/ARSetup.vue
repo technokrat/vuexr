@@ -34,7 +34,7 @@
           <span
             v-if="status.feed?.error"
             class="status-value"
-            :title="status.feed.error"
+            :title="status.feed.error.toString()"
             >✗</span
           >
           <span v-else class="status-value">✓</span>
@@ -57,7 +57,7 @@
           <span
             v-if="status.motion && status.motion.acceleration.error"
             class="status-value"
-            :title="status.motion.acceleration.error"
+            :title="status.motion.acceleration.error.toString()"
             >⚠</span
           >
           <span v-else class="status-value">✓</span>
@@ -68,7 +68,7 @@
           <span
             v-if="status.motion && status.motion.gyro.error"
             class="status-value"
-            :title="status.motion.gyro.error"
+            :title="status.motion.gyro.error.toString()"
             >⚠</span
           >
           <span v-else class="status-value">✓</span>
@@ -94,7 +94,7 @@
           <button class="reset-button" @click="reset">Reset Calibration</button>
         </div>
         <div
-          v-else-if="!status.feed?.error && status.worker?.initialized"
+          v-else-if="!status.feed?.error && status.initialized"
           style="margin-top: 20px; text-align: center"
         >
           <button class="reset-button" @click="showHowToCalibrate = true">

@@ -1,10 +1,9 @@
-import { WorkerReturnMessage, WorkerOperation } from "../types";
-import Session, { SessionCallbackType, SessionState } from "./Session";
-
-export interface CalibrationData {
-  cameraMatrix: number[];
-  distCoeffs: number[];
-}
+import {
+  WorkerReturnMessage,
+  WorkerOperation,
+  CalibrationData,
+} from "../types";
+import Session, { SessionState } from "./Session";
 
 export default class Calibration {
   session: Session;
@@ -50,7 +49,7 @@ export default class Calibration {
   }
 
   loadCameraCalibration() {
-    let calibrationString = window.localStorage.getItem(
+    const calibrationString = window.localStorage.getItem(
       `vuexr/${this.session.name}/calibration/${this.session.feed.feedStatus.selected}`
     );
 
@@ -89,11 +88,11 @@ export default class Calibration {
       this.session.worker.postMessage({
         operation: WorkerOperation.FIND_CHESSBOARD_CORNERS,
         image: this.session.context2d?.getImageData(
-            0,
-            0,
-            this.session.canvas.width,
-            this.session.canvas.height,
-          ),
+          0,
+          0,
+          this.session.canvas.width,
+          this.session.canvas.height
+        ),
         captureNextCalibrationPoints: this.captureNextCalibrationPoints,
         highlight: highlight,
       });
@@ -135,11 +134,13 @@ export default class Calibration {
   }
 
   calibrationFinished(data: WorkerReturnMessage) {
-    this.calibrationOngoing = false;
-    this.calibration = data.calibration!;
-    this.storeCameraCalibration();
+    if (data.calibration) {
+      this.calibrationOngoing = false;
+      this.calibration = data.calibration;
+      this.storeCameraCalibration();
 
-    this.calibrationStatus.calibrated = true;
-    this.session.updateStatus();
+      this.calibrationStatus.calibrated = true;
+      this.session.updateStatus();
+    }
   }
 }
